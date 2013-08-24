@@ -59,8 +59,9 @@ public class GUI extends JFrame implements ActionListener {
     
 	private void assemble(Container container) {
 		container.add(toolBar, BorderLayout.NORTH);
+		// TODO
          //container.add(mainPane, BorderLayout.CENTER);
-		this.setVisible(true);
+		this.setVisible(true); 
 	}
 
 	private void createCENTER() {
