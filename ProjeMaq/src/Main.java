@@ -1,9 +1,10 @@
 
 public class Main {
-	private GUI gui;
-	private ARM arm;
+	private static GUI gui;
+	private static ARM arm;
 	
 	public static void main(String[] args) {
+		gui = new GUI();
 		System.out.println("Hello World!");
 	}
 }
