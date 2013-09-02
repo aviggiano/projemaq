@@ -16,7 +16,7 @@ import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.EtchedBorder;
 
-public class GUI extends JFrame implements ActionListener {
+public class IHM extends JFrame implements ActionListener {
 	
     // variaveis
     private JFileChooser fileChooser;
@@ -38,7 +38,7 @@ public class GUI extends JFrame implements ActionListener {
     /*
      * Constructor
      */   
-    public GUI () {
+    public IHM () {
         //set title, size and location
         setTitleSizeAndLocation();
         //set look and feel
@@ -105,7 +105,7 @@ public class GUI extends JFrame implements ActionListener {
             try {
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             } catch (Exception ex) {
-                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(IHM.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -127,7 +127,7 @@ public class GUI extends JFrame implements ActionListener {
     
     private void createButtons() {
         buttonManual = new JButton("Modo Manual"); //, new ImageIcon(getClass().getResource("images/manual.png")));
-        buttonAutomatico = new JButton("Modo Automático");//, new ImageIcon(getClass().getResource("images/automatico.png")));
+        buttonAutomatico = new JButton("Modo Automï¿½tico");//, new ImageIcon(getClass().getResource("images/automatico.png")));
     }
     
     private void createToolBar() {
