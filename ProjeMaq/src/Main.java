@@ -1,10 +1,10 @@
 
 public class Main {
-	private static GUI gui;
+	private static IHM ihm;
 	private static ARM arm;
 	
 	public static void main(String[] args) {
-		gui = new GUI();
+		ihm = new IHM();
 		System.out.println("Hello World!");
 	}
 }
