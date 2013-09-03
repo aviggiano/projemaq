@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -26,8 +27,8 @@ public class IHM extends JFrame implements ActionListener {
     
     private JMenuBar barreDeMenus;
   
-    protected JTextArea textArea;
-    protected JScrollPane scrollPane;
+    protected JScrollPane scrollPaneConsole;
+    protected JScrollPane scrollPaneCodigoGEmExecucao;
     protected Toolkit toolkit = Toolkit.getDefaultToolkit();
     protected Dimension screenSize = toolkit.getScreenSize();
     protected Dimension frameSize;
@@ -71,6 +72,8 @@ public class IHM extends JFrame implements ActionListener {
 	private JLabel labelAtencao;
 
 	private JPanel panel8;
+
+	private Font font;
     
     /*
      * Constructor
@@ -122,19 +125,28 @@ public class IHM extends JFrame implements ActionListener {
 	}
 
 	private void create6() {
-		textAreaConsole = new JTextArea();
+		textAreaConsole = new JTextArea("IHM inicializada com sucesso.", screenSize.height/100, screenSize.width/100);
+        font = new Font("Arial", Font.PLAIN, 12);
+        textAreaConsole.setFont(font);
+        textAreaConsole.setEditable(false);
+        scrollPaneConsole = new JScrollPane(textAreaConsole);
 		
 		// layout parte 6
 		panel6 = new JPanel();
-		panel6.add(textAreaConsole);
+		panel6.add(scrollPaneConsole);
 	}
 
 	private void create5() {
-		textAreaCodigoGEmExecucao = new JTextArea();
+		textAreaCodigoGEmExecucao = new JTextArea("Código G em execução:", screenSize.height/100, screenSize.width/100);
+        font = new Font("Arial", Font.PLAIN, 12);
+        textAreaCodigoGEmExecucao.setFont(font);
+        textAreaCodigoGEmExecucao.setEditable(false);
+        scrollPaneCodigoGEmExecucao = new JScrollPane(textAreaCodigoGEmExecucao);
+		
 		
 		// layout parte 5
 		panel5 = new JPanel();
-		panel5.add(textAreaCodigoGEmExecucao);
+		panel5.add(scrollPaneCodigoGEmExecucao);
 	}
 
 	private void create4() {
@@ -291,9 +303,12 @@ public class IHM extends JFrame implements ActionListener {
 
 	private void assemble(Container container) {
 		JPanel west = new JPanel();
-		west.add(panel1, BorderLayout.WEST);
-		west.add(panel2, BorderLayout.EAST);
-		west.add(panel3, BorderLayout.SOUTH);
+		west.setLayout(new BoxLayout(west, BoxLayout.Y_AXIS));
+		JPanel panel1and2 = new JPanel();
+		panel1and2.add(panel1);
+		panel1and2.add(panel2);
+		west.add(panel1and2);
+		west.add(panel3);
 		
 		JPanel centercenter = new JPanel();
 		centercenter.add(panel4, BorderLayout.CENTER);
@@ -302,6 +317,7 @@ public class IHM extends JFrame implements ActionListener {
 		centersouth.add(panel6, BorderLayout.CENTER);
 		centersouth.add(panel7, BorderLayout.EAST);
 		JPanel center = new JPanel();
+		center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
 		center.add(centercenter, BorderLayout.CENTER);
 		center.add(centersouth, BorderLayout.SOUTH);
 
@@ -316,7 +332,7 @@ public class IHM extends JFrame implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent actionEvent) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -341,7 +357,7 @@ public class IHM extends JFrame implements ActionListener {
     
     private void setTitleSizeAndLocation() {
         setTitle("PMR2450 - Torno CNC");
-        frameSize = new Dimension ((int)(screenSize.width/2), (int)(screenSize.height/2));
+        frameSize = new Dimension ((int)(screenSize.width*0.9), (int)(screenSize.height*0.9));
         
         setSize(frameSize); 
         setLocation(0,0); // localisation standard
