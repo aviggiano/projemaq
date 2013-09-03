@@ -1,3 +1,5 @@
+import org.jfree.ui.RefineryUtilities;
+
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -64,6 +66,22 @@ public class IHM extends JFrame implements ActionListener {
 
 	private JPanel panel2;
 
+	private JButton buttonZerarX;
+
+	private JButton buttonZerarZ;
+
+	private JButton buttonXplus;
+
+	private JButton buttonXless;
+
+	private JButton buttonZplus;
+
+	private JButton buttonZless;
+
+	private JPanel panel3;
+
+	private JPanel panel4;
+
     
     
     /*
@@ -112,14 +130,62 @@ public class IHM extends JFrame implements ActionListener {
 		
 	}
 
-	private void create3() {
-		// TODO Auto-generated method stub
-		
+	private void create4() {
+		// grafico XZ
+		XZPlot xzPlot = new XZPlot("XZ Series Demo");
+        xzPlot.setVisible(true);
+        
+        panel4 = new JPanel();
+        panel4.add(xzPlot);
 	}
 
-	private void create4() {
-		// TODO Auto-generated method stub
+	private void create3() {
+		// botao Setar Zero Peça Eixo X
+		buttonZerarX = new JButton("Zerar X");
+		buttonZerarX.addActionListener(this);
+		buttonZerarX.setEnabled(true);
+        
+		// botao Setar Zero Peça Eixo Z
+		buttonZerarZ = new JButton("Zerar Z");
+		buttonZerarZ.addActionListener(this);
+		buttonZerarZ.setEnabled(true);
+        
+		// botao X+
+		buttonXplus = new JButton ("X+");
+		buttonXplus.addActionListener(this);
+		buttonXplus.setEnabled(true);
+
+		// botao X-
+		buttonXless = new JButton ("X-");
+		buttonXless.addActionListener(this);
+		buttonXless.setEnabled(true);
+
+		// botao Z+
+		buttonZplus = new JButton ("Z+");
+		buttonZplus.addActionListener(this);
+		buttonZplus.setEnabled(true);
+
+		// botao Z-
+		buttonZless = new JButton ("Z-");
+		buttonZless.addActionListener(this);
+		buttonZless.setEnabled(true);
 		
+		// layout parte 3
+		JPanel panelZerar = new JPanel();
+		panelZerar.setLayout(new FlowLayout());
+		panelZerar.add(buttonZerarX);
+		panelZerar.add(buttonZerarZ);
+		
+		JPanel panelSetinhas = new JPanel();
+		panelSetinhas.add(buttonXless, BorderLayout.WEST);
+		panelSetinhas.add(buttonXplus, BorderLayout.EAST);
+		panelSetinhas.add(buttonZless, BorderLayout.SOUTH);
+		panelSetinhas.add(buttonZplus, BorderLayout.NORTH);
+
+		panel3 = new JPanel();
+		panel3.setLayout(new BoxLayout(panel3, BoxLayout.Y_AXIS));
+		panel3.add(panelZerar, BorderLayout.NORTH);
+		panel3.add(panelSetinhas, BorderLayout.SOUTH);
 	}
 
 	private void create2() {
@@ -156,8 +222,8 @@ public class IHM extends JFrame implements ActionListener {
         // layout parte 2
         JPanel panelBotoesDeControle = new JPanel();
         panelBotoesDeControle.setLayout(new FlowLayout());
-        panelBotoesDeControle.add(buttonStop);
         panelBotoesDeControle.add(buttonPlay);
+        panelBotoesDeControle.add(buttonStop);
         panelBotoesDeControle.add(buttonPause);
         
         panel2 = new JPanel();
@@ -218,8 +284,9 @@ public class IHM extends JFrame implements ActionListener {
 	private void assemble(Container container) {
 		container.add(panel1, BorderLayout.WEST);
 		container.add(panel2, BorderLayout.EAST);
-		// TODO
-         //container.add(mainPane, BorderLayout.CENTER);
+		container.add(panel3, BorderLayout.SOUTH);
+		container.add(panel4, BorderLayout.CENTER);
+		
 		this.setVisible(true); 
 	}
 
@@ -249,7 +316,7 @@ public class IHM extends JFrame implements ActionListener {
     
     private void setTitleSizeAndLocation() {
         setTitle("PMR2450 - Torno CNC");
-        frameSize = new Dimension ((int)(screenSize.width), (int)(screenSize.height));
+        frameSize = new Dimension ((int)(screenSize.width/2), (int)(screenSize.height/2));
         
         setSize(frameSize); 
         setLocation(0,0); // localisation standard
