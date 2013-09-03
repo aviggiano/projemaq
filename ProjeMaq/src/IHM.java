@@ -35,54 +35,42 @@ public class IHM extends JFrame implements ActionListener {
     
     private JButton buttonManual;
     private JButton buttonAutomatico;
-
 	private JLabel labelPassoDoDeslocamento;
-
 	private SpinnerNumberModel spinnerNumberModel;
-
 	private JSpinner spinnerPassoDoDeslocamento;
-
 	private JLabel labelUnidadePassoDoDeslocamento;
-
 	private JLabel labelVelocidade;
-
 	private JTextField textFieldVelocidade;
-
 	private JLabel labelUnidadeDaVelocidade;
-
 	private JButton buttonLigarEixoArvore;
-
 	private JPanel panel1;
-
 	private JButton buttonCarregarCodigoG;
-
 	private JButton buttonEnviarCodigoG;
-
 	private JButton buttonStop;
-
 	private JButton buttonPlay;
-
 	private JButton buttonPause;
-
 	private JPanel panel2;
-
 	private JButton buttonZerarX;
-
 	private JButton buttonZerarZ;
-
 	private JButton buttonXplus;
-
 	private JButton buttonXless;
-
 	private JButton buttonZplus;
-
 	private JButton buttonZless;
-
 	private JPanel panel3;
-
 	private JPanel panel4;
+	private JTextArea textAreaCodigoGEmExecucao;
+	private JPanel panel5;
+	private JTextArea textAreaConsole;
+	private JPanel panel6;
+	private JLabel labelParametros;
+	private JLabel labelZeroX;
+	private JLabel labelZeroZ;
+	private JPanel panel7;
+	private JButton buttonEmergencia;
 
-    
+	private JLabel labelAtencao;
+
+	private JPanel panel8;
     
     /*
      * Constructor
@@ -111,23 +99,42 @@ public class IHM extends JFrame implements ActionListener {
     }
     
 	private void create8() {
-		// TODO Auto-generated method stub
+		buttonEmergencia = new JButton("Emergência");
+		labelAtencao = new JLabel("Atenção: máquina ligada!");
 		
+		panel8 = new JPanel();
+		panel8.setLayout(new FlowLayout());
+		panel8.add(buttonEmergencia);
+		panel8.add(labelAtencao);
 	}
 
 	private void create7() {
-		// TODO Auto-generated method stub
-		
+		labelParametros = new JLabel("Parâmetros");
+		labelZeroX = new JLabel("Zero X: ");
+		labelZeroZ = new JLabel("Zero Z: ");
+
+		// layout parte 7
+		panel7 = new JPanel();
+		panel7.setLayout(new BoxLayout(panel7, BoxLayout.Y_AXIS));
+		panel7.add(labelParametros);
+		panel7.add(labelZeroX);
+		panel7.add(labelZeroZ);
 	}
 
 	private void create6() {
-		// TODO Auto-generated method stub
+		textAreaConsole = new JTextArea();
 		
+		// layout parte 6
+		panel6 = new JPanel();
+		panel6.add(textAreaConsole);
 	}
 
 	private void create5() {
-		// TODO Auto-generated method stub
+		textAreaCodigoGEmExecucao = new JTextArea();
 		
+		// layout parte 5
+		panel5 = new JPanel();
+		panel5.add(textAreaCodigoGEmExecucao);
 	}
 
 	private void create4() {
@@ -135,6 +142,7 @@ public class IHM extends JFrame implements ActionListener {
 		XZPlot xzPlot = new XZPlot("XZ Series Demo");
         xzPlot.setVisible(true);
         
+        // layout parte 4
         panel4 = new JPanel();
         panel4.add(xzPlot);
 	}
@@ -282,10 +290,27 @@ public class IHM extends JFrame implements ActionListener {
 	}
 
 	private void assemble(Container container) {
-		container.add(panel1, BorderLayout.WEST);
-		container.add(panel2, BorderLayout.EAST);
-		container.add(panel3, BorderLayout.SOUTH);
-		container.add(panel4, BorderLayout.CENTER);
+		JPanel west = new JPanel();
+		west.add(panel1, BorderLayout.WEST);
+		west.add(panel2, BorderLayout.EAST);
+		west.add(panel3, BorderLayout.SOUTH);
+		
+		JPanel centercenter = new JPanel();
+		centercenter.add(panel4, BorderLayout.CENTER);
+		centercenter.add(panel5, BorderLayout.EAST);
+		JPanel centersouth = new JPanel();
+		centersouth.add(panel6, BorderLayout.CENTER);
+		centersouth.add(panel7, BorderLayout.EAST);
+		JPanel center = new JPanel();
+		center.add(centercenter, BorderLayout.CENTER);
+		center.add(centersouth, BorderLayout.SOUTH);
+
+		JPanel south = new JPanel();
+		south.add(panel8);
+		
+		container.add(west, BorderLayout.WEST);
+		container.add(center, BorderLayout.CENTER);
+		container.add(south, BorderLayout.SOUTH);
 		
 		this.setVisible(true); 
 	}
