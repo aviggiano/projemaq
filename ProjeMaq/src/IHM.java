@@ -215,12 +215,12 @@ public class IHM extends JFrame implements ActionListener {
         buttonAutomatico.setEnabled(true);
         
         // Carregar código G
-        buttonCarregarCodigoG = new JButton("Carregar código G");
+        buttonCarregarCodigoG = new JButton("Carregar código G", new ImageIcon(getClass().getResource("img/down.png")));
         buttonCarregarCodigoG.addActionListener(this);
         buttonCarregarCodigoG.setEnabled(true);
         
         // Enviar código G
-        buttonEnviarCodigoG = new JButton("Enviar código G");
+        buttonEnviarCodigoG = new JButton("Enviar código G", new ImageIcon(getClass().getResource("img/up.png")));
         buttonEnviarCodigoG.addActionListener(this);
         buttonEnviarCodigoG.setEnabled(true);  
         
