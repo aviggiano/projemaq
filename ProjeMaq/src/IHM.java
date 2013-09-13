@@ -197,22 +197,22 @@ public class IHM extends JFrame implements ActionListener {
 		buttonZerarZ.setEnabled(true);
         
 		// botao X+
-		buttonXplus = new JButton ("X+");
+		buttonXplus = new JButton ("X+", new ImageIcon(getClass().getResource("img/next.png")));
 		buttonXplus.addActionListener(this);
 		buttonXplus.setEnabled(true);
 
 		// botao X-
-		buttonXless = new JButton ("X-");
+		buttonXless = new JButton ("X-", new ImageIcon(getClass().getResource("img/previous.png")));
 		buttonXless.addActionListener(this);
 		buttonXless.setEnabled(true);
 
 		// botao Z+
-		buttonZplus = new JButton ("Z+ ");
+		buttonZplus = new JButton ("Z+ ", new ImageIcon(getClass().getResource("img/up.png")));
 		buttonZplus.addActionListener(this);
 		buttonZplus.setEnabled(true);
 
 		// botao Z-
-		buttonZless = new JButton ("Z-  ");
+		buttonZless = new JButton ("Z-  ", new ImageIcon(getClass().getResource("img/down.png")));
 		buttonZless.addActionListener(this);
 		buttonZless.setEnabled(true);
 		
@@ -247,33 +247,33 @@ public class IHM extends JFrame implements ActionListener {
 
 	private void create2() {
 		// botao Modo Automatico
-        buttonAutomatico = new JButton("Automático"); //, new ImageIcon(getClass().getResource("images/manual.png")));
+        buttonAutomatico = new JButton("Automático", new ImageIcon(getClass().getResource("img/computer.png")));
         buttonAutomatico.addActionListener(this);
         buttonAutomatico.setEnabled(true);
 
         
         // Carregar código G
-        buttonCarregarCodigoG = new JButton("Carregar código G", new ImageIcon(getClass().getResource("img/down.png")));
+        buttonCarregarCodigoG = new JButton("Carregar código G", new ImageIcon(getClass().getResource("img/filesave.png")));
         buttonCarregarCodigoG.addActionListener(this);
         buttonCarregarCodigoG.setEnabled(true);
         
         // Enviar código G
-        buttonEnviarCodigoG = new JButton("Enviar código G", new ImageIcon(getClass().getResource("img/up.png")));
+        buttonEnviarCodigoG = new JButton("Enviar código G", new ImageIcon(getClass().getResource("img/extract-archive.png")));
         buttonEnviarCodigoG.addActionListener(this);
         buttonEnviarCodigoG.setEnabled(true);  
         
         // Stop
-        buttonStop = new JButton("Stop");
+        buttonStop = new JButton("", new ImageIcon(getClass().getResource("img/player_stop.png")));
         buttonStop.addActionListener(this);
         buttonStop.setEnabled(true);
         
         // Play
-        buttonPlay = new JButton("Play");
+        buttonPlay = new JButton("", new ImageIcon(getClass().getResource("img/player_play.png")));
         buttonPlay.addActionListener(this);
         buttonPlay.setEnabled(true);
         
         // Pause
-        buttonPause = new JButton("Pause");
+        buttonPause = new JButton("", new ImageIcon(getClass().getResource("img/player_pause.png")));
         buttonPause.addActionListener(this);
         buttonPause.setEnabled(true);
         
@@ -297,7 +297,7 @@ public class IHM extends JFrame implements ActionListener {
 
 	private void create1() {
 		// botao Modo Manual
-        buttonManual = new JButton("Manual"); //, new ImageIcon(getClass().getResource("images/manual.png")));
+        buttonManual = new JButton("Manual", new ImageIcon(getClass().getResource("img/stock_person.png")));
 		buttonManual.addActionListener(this);
         buttonManual.setEnabled(true);
         
@@ -317,7 +317,7 @@ public class IHM extends JFrame implements ActionListener {
         labelUnidadeDaVelocidade = new JLabel("% Vmax");
         
         // botao Ligar Eixo Arvore
-        buttonLigarEixoArvore = new JButton("Ligar Eixo Árvore");
+        buttonLigarEixoArvore = new JButton("Ligar Eixo Árvore", new ImageIcon(getClass().getResource("img/preferences-system.png")));
         
         // layout parte 1
         JPanel panelPassoDoDeslocamento = new JPanel();
