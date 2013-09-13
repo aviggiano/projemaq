@@ -18,9 +18,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.Border;
@@ -87,6 +91,8 @@ public class IHM extends JFrame implements ActionListener {
 	private JTextField textFieldConsoleInterativo;
 
 	private JButton buttonConsoleInterativo;
+
+	private BufferedImage imageIconWarning;
     
     /*
      * Constructor
@@ -116,12 +122,20 @@ public class IHM extends JFrame implements ActionListener {
     
 	private void create8() {
 		buttonEmergencia = new JButton("Emergência");
+		buttonEmergencia.setForeground(Color.RED);
+		buttonEmergencia.setBackground(Color.RED);
+		try {
+			imageIconWarning = ImageIO.read(this.getClass().getResource("img/warning.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		labelAtencao = new JLabel("Atenção: máquina ligada!");
 		
 		panel8 = new JPanel();
 		panel8.setLayout(new FlowLayout(FlowLayout.LEFT));
 		panel8.add(buttonEmergencia);
 		buttonEmergencia.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panel8.add(new JLabel(new ImageIcon(imageIconWarning)));
 		panel8.add(labelAtencao);
 		
 	}
@@ -258,7 +272,7 @@ public class IHM extends JFrame implements ActionListener {
         buttonCarregarCodigoG.setEnabled(true);
         
         // Enviar código G
-        buttonEnviarCodigoG = new JButton("Enviar código G", new ImageIcon(getClass().getResource("img/extract-archive.png")));
+        buttonEnviarCodigoG = new JButton("	    Enviar código G", new ImageIcon(getClass().getResource("img/extract-archive.png")));
         buttonEnviarCodigoG.addActionListener(this);
         buttonEnviarCodigoG.setEnabled(true);  
         
