@@ -121,9 +121,11 @@ public class IHM extends JFrame implements ActionListener {
     }
     
 	private void create8() {
+		/*
 		buttonEmergencia = new JButton("Emergência");
 		buttonEmergencia.setForeground(Color.RED);
 		buttonEmergencia.setBackground(Color.RED);
+		*/
 		try {
 			imageIconWarning = ImageIO.read(this.getClass().getResource("img/warning.png"));
 		} catch (IOException e) {
@@ -133,8 +135,8 @@ public class IHM extends JFrame implements ActionListener {
 		
 		panel8 = new JPanel();
 		panel8.setLayout(new FlowLayout(FlowLayout.LEFT));
-		panel8.add(buttonEmergencia);
-		buttonEmergencia.setAlignmentX(Component.LEFT_ALIGNMENT);
+		//panel8.add(buttonEmergencia);
+		
 		panel8.add(new JLabel(new ImageIcon(imageIconWarning)));
 		panel8.add(labelAtencao);
 		
@@ -158,6 +160,7 @@ public class IHM extends JFrame implements ActionListener {
         font = new Font("Arial", Font.PLAIN, 12);
         textAreaConsole.setFont(font);
         textAreaConsole.setEditable(false);
+        
         scrollPaneConsole = new JScrollPane(textAreaConsole);
         scrollPaneConsole.setBorder(new TitledBorder("Avisos do sistema"));
 		
@@ -194,12 +197,14 @@ public class IHM extends JFrame implements ActionListener {
 	}
 
 	private void create3() {
+		/*
 		// console interativo
 		textFieldConsoleInterativo = new JTextField("				");
 		// botao console interativo
 		buttonConsoleInterativo = new JButton("Enviar comando");
 		buttonConsoleInterativo.addActionListener(this);
 		buttonConsoleInterativo.setEnabled(true);
+		*/
 		
 		// botao Setar Zero Peça Eixo X
 		buttonZerarX = new JButton("Zerar eixo X");
@@ -232,11 +237,13 @@ public class IHM extends JFrame implements ActionListener {
 		buttonZless.setEnabled(true);
 		
 		// layout parte 3
+		/*
 		JPanel panelConsole = new JPanel();
 		panelConsole.setBorder(new TitledBorder("Console interativo"));
 		panelConsole.setLayout(new GridBagLayout());
 		panelConsole.add(textFieldConsoleInterativo);
 		panelConsole.add(buttonConsoleInterativo);
+		*/
 		
 		JPanel panelZerar = new JPanel();
 		panelZerar.setLayout(new GridBagLayout());//(panelZerar, BoxLayout.X_AXIS));
@@ -253,8 +260,9 @@ public class IHM extends JFrame implements ActionListener {
 		panelSetinhas.add(buttonXplus, BorderLayout.EAST);
 		
 		panel3 = new JPanel();
-		panel3.setLayout(new GridLayout(3,0));//(new BoxLayout(panel3, BoxLayout.Y_AXIS));
-		panel3.add(panelConsole);
+		panel3.setLayout(new GridLayout(5,0));//(new BoxLayout(panel3, BoxLayout.Y_AXIS));
+		panel3.add(new JLabel());panel3.add(new JLabel());
+		panel3.add(new JLabel());
 		panel3.add(panelZerar);
 		panel3.add(panelSetinhas);
 		
@@ -317,6 +325,7 @@ public class IHM extends JFrame implements ActionListener {
         buttonManual.setEnabled(true);
         
         // Passo da Setinha
+        /*
         labelPassoDoDeslocamento = new JLabel("Passo do deslocamento:");
         double initialValue = 1;
         double min = 0;
@@ -325,6 +334,7 @@ public class IHM extends JFrame implements ActionListener {
         spinnerNumberModel =  new SpinnerNumberModel(initialValue, min, max, step);
         spinnerPassoDoDeslocamento = new JSpinner(spinnerNumberModel);
         labelUnidadePassoDoDeslocamento = new JLabel("mm");
+        */
         
         // Velocidade
         labelVelocidade = new JLabel("Velocidade:");
@@ -335,11 +345,13 @@ public class IHM extends JFrame implements ActionListener {
         buttonLigarEixoArvore = new JButton("Ligar Eixo Árvore", new ImageIcon(getClass().getResource("img/preferences-system.png")));
         
         // layout parte 1
+        /*
         JPanel panelPassoDoDeslocamento = new JPanel();
         panelPassoDoDeslocamento.setLayout(new FlowLayout());
         panelPassoDoDeslocamento.add(labelPassoDoDeslocamento);
         panelPassoDoDeslocamento.add(spinnerPassoDoDeslocamento);
         panelPassoDoDeslocamento.add(labelUnidadePassoDoDeslocamento);
+        */
         
         JPanel panelVelocidade = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPanel p1 = new JPanel();
@@ -361,8 +373,9 @@ public class IHM extends JFrame implements ActionListener {
         panel1.setLayout(new GridLayout(4,0));
         
         panel1.add(buttonManual);
-        panel1.add(panelPassoDoDeslocamento);
+        //panel1.add(panelPassoDoDeslocamento);
         panel1.add(panelVelocidade);
+        panel1.add(new JLabel());
         panel1.add(buttonLigarEixoArvore);
         
 	}
@@ -376,9 +389,10 @@ public class IHM extends JFrame implements ActionListener {
 		
 		west.add(panel1and2);
 		west.add(panel3);
+		west.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 
-		panel1and2.setBorder((Border)BorderFactory.createLineBorder(Color.black));
-		panel3.setBorder((Border)BorderFactory.createLineBorder(Color.black));
+		//panel1and2.setBorder((Border)BorderFactory.createLineBorder(Color.black));
+		//panel3.setBorder((Border)BorderFactory.createLineBorder(Color.black));
 		
 		JPanel centercenter = panel4;//new JPanel();
 		panel4.add(panel5);
@@ -394,11 +408,11 @@ public class IHM extends JFrame implements ActionListener {
 		center.add(centercenter, BorderLayout.CENTER);
 		center.add(centersouth, BorderLayout.SOUTH);
 		
-		center.setBorder((Border)BorderFactory.createLineBorder(Color.black));
+		center.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 
 		JPanel south = panel8;
 		
-		south.setBorder((Border)BorderFactory.createLineBorder(Color.black));
+		south.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
 		container.add(west, BorderLayout.WEST);
 		container.add(center, BorderLayout.CENTER);
@@ -432,13 +446,15 @@ public class IHM extends JFrame implements ActionListener {
     }
     
     private void setTitleSizeAndLocation() {
-        setTitle("PMR2450 - Torno CNC");
-        frameSize = new Dimension ((int)(screenSize.width*0.9), (int)(screenSize.height*0.9));
+        this.setTitle("PMR2450 - Torno CNC");
+        //frameSize = new Dimension ((int)(screenSize.width), (int)(screenSize.height));
+        // this.setSize(frameSize);
         
-        setSize(frameSize); 
+        this.setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH );
+         
         setLocation(0,0); // localisation standard
         // exit on close
-        addWindowListener(new WindowAdapter() {
+        this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
