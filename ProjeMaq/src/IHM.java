@@ -154,7 +154,7 @@ public class IHM extends JFrame implements ActionListener {
 	}
 
 	private void create6() {
-		textAreaConsole = new JTextArea("IHM inicializada com sucesso.", screenSize.height/60, screenSize.width/40);
+		textAreaConsole = new JTextArea("IHM inicializada com sucesso.", 10, 60);
         font = new Font("Arial", Font.PLAIN, 12);
         textAreaConsole.setFont(font);
         textAreaConsole.setEditable(false);
@@ -168,12 +168,13 @@ public class IHM extends JFrame implements ActionListener {
 	}
 
 	private void create5() {
-		textAreaCodigoGEmExecucao = new JTextArea("Código G em execução: dsadsaoddoldoqwldwqodkwqodwoq", 
-				screenSize.height/50, screenSize.width/50);
+		textAreaCodigoGEmExecucao = new JTextArea("", 
+				19, 30);
         font = new Font("Arial", Font.PLAIN, 12);
         textAreaCodigoGEmExecucao.setFont(font);
         textAreaCodigoGEmExecucao.setEditable(false);
         scrollPaneCodigoGEmExecucao = new JScrollPane(textAreaCodigoGEmExecucao);
+        scrollPaneCodigoGEmExecucao.setBorder(new TitledBorder("Código G em execução"));
 		
 		
 		// layout parte 5
@@ -294,8 +295,8 @@ public class IHM extends JFrame implements ActionListener {
         // layout parte 2
         JPanel panelBotoesDeControle = new JPanel();
         panelBotoesDeControle.setLayout(new GridLayout(1,3));
-        panelBotoesDeControle.add(buttonPlay);
         panelBotoesDeControle.add(buttonStop);
+        panelBotoesDeControle.add(buttonPlay);
         panelBotoesDeControle.add(buttonPause);
         
         panel2 = new JPanel();
