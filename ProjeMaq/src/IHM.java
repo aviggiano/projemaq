@@ -8,6 +8,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
@@ -24,6 +25,7 @@ import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 public class IHM extends JFrame implements ActionListener {
 	
@@ -79,6 +81,12 @@ public class IHM extends JFrame implements ActionListener {
 	private JPanel panel8;
 
 	private Font font;
+
+	private JLabel labelConsoleInterativo;
+
+	private JTextField textFieldConsoleInterativo;
+
+	private JButton buttonConsoleInterativo;
     
     /*
      * Constructor
@@ -181,13 +189,20 @@ public class IHM extends JFrame implements ActionListener {
 	}
 
 	private void create3() {
+		// console interativo
+		textFieldConsoleInterativo = new JTextField("				");
+		// botao console interativo
+		buttonConsoleInterativo = new JButton("Enviar comando");
+		buttonConsoleInterativo.addActionListener(this);
+		buttonConsoleInterativo.setEnabled(true);
+		
 		// botao Setar Zero Peça Eixo X
-		buttonZerarX = new JButton("Zerar X");
+		buttonZerarX = new JButton("Zerar eixo X");
 		buttonZerarX.addActionListener(this);
 		buttonZerarX.setEnabled(true);
         
 		// botao Setar Zero Peça Eixo Z
-		buttonZerarZ = new JButton("Zerar Z");
+		buttonZerarZ = new JButton("Zerar eixo Z");
 		buttonZerarZ.addActionListener(this);
 		buttonZerarZ.setEnabled(true);
         
@@ -202,20 +217,25 @@ public class IHM extends JFrame implements ActionListener {
 		buttonXless.setEnabled(true);
 
 		// botao Z+
-		buttonZplus = new JButton ("Z+");
+		buttonZplus = new JButton ("Z+ ");
 		buttonZplus.addActionListener(this);
 		buttonZplus.setEnabled(true);
 
 		// botao Z-
-		buttonZless = new JButton ("Z-");
+		buttonZless = new JButton ("Z-  ");
 		buttonZless.addActionListener(this);
 		buttonZless.setEnabled(true);
 		
 		// layout parte 3
+		JPanel panelConsole = new JPanel();
+		panelConsole.setBorder(new TitledBorder("Console interativo"));
+		panelConsole.setLayout(new GridBagLayout());
+		panelConsole.add(textFieldConsoleInterativo);
+		panelConsole.add(buttonConsoleInterativo);
+		
 		JPanel panelZerar = new JPanel();
-		JPanel panel1 = new JPanel();
-		panelZerar.setLayout(new FlowLayout());
-		panelZerar.add(buttonZerarX);
+		panelZerar.setLayout(new GridBagLayout());//(panelZerar, BoxLayout.X_AXIS));
+		panelZerar.add(buttonZerarX); 
 		panelZerar.add(buttonZerarZ);
 		
 		JPanel panelSetinhas = new JPanel();
@@ -228,9 +248,10 @@ public class IHM extends JFrame implements ActionListener {
 		panelSetinhas.add(buttonXplus, BorderLayout.EAST);
 		
 		panel3 = new JPanel();
-		panel3.setLayout(new BoxLayout(panel3, BoxLayout.Y_AXIS));
-		panel3.add(panelZerar, BorderLayout.NORTH);
-		panel3.add(panelSetinhas, BorderLayout.SOUTH);
+		panel3.setLayout(new GridLayout(3,0));//(new BoxLayout(panel3, BoxLayout.Y_AXIS));
+		panel3.add(panelConsole);
+		panel3.add(panelZerar);
+		panel3.add(panelSetinhas);
 		
 		Border b = BorderFactory.createLineBorder(Color.black);
 		panel3.setBorder(b);
