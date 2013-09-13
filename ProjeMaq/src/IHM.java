@@ -124,8 +124,6 @@ public class IHM extends JFrame implements ActionListener {
 		buttonEmergencia.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel8.add(labelAtencao);
 		
-		Border b = BorderFactory.createLineBorder(Color.black);
-		panel8.setBorder(b);
 	}
 
 	private void create7() {
@@ -139,24 +137,20 @@ public class IHM extends JFrame implements ActionListener {
 		panel7.add(labelParametros);
 		panel7.add(labelZeroX);
 		panel7.add(labelZeroZ);
-		
-		Border b = BorderFactory.createLineBorder(Color.black);
-		panel7.setBorder(b);
 	}
 
 	private void create6() {
-		textAreaConsole = new JTextArea("IHM inicializada com sucesso.", screenSize.height/100, screenSize.width/100);
+		textAreaConsole = new JTextArea("IHM inicializada com sucesso.", screenSize.height/60, screenSize.width/40);
         font = new Font("Arial", Font.PLAIN, 12);
         textAreaConsole.setFont(font);
         textAreaConsole.setEditable(false);
         scrollPaneConsole = new JScrollPane(textAreaConsole);
+        scrollPaneConsole.setBorder(new TitledBorder("Avisos do sistema"));
 		
 		// layout parte 6
-		panel6 = new JPanel();
+		panel6 = new JPanel(new GridBagLayout());
 		panel6.add(scrollPaneConsole);
 		
-		Border b = BorderFactory.createLineBorder(Color.black);
-		panel6.setBorder(b);
 	}
 
 	private void create5() {
@@ -171,8 +165,6 @@ public class IHM extends JFrame implements ActionListener {
 		// layout parte 5
 		panel5 = scrollPaneCodigoGEmExecucao;
 		
-		Border b = BorderFactory.createLineBorder(Color.black);
-		panel5.setBorder(b);
 	}
 
 	private void create4() {
@@ -184,8 +176,6 @@ public class IHM extends JFrame implements ActionListener {
         panel4 = new JPanel();
         panel4.add(xzPlot);
         
-		Border b = BorderFactory.createLineBorder(Color.black);
-		panel4.setBorder(b);
 	}
 
 	private void create3() {
@@ -253,8 +243,6 @@ public class IHM extends JFrame implements ActionListener {
 		panel3.add(panelZerar);
 		panel3.add(panelSetinhas);
 		
-		Border b = BorderFactory.createLineBorder(Color.black);
-		panel3.setBorder(b);
 	}
 
 	private void create2() {
@@ -305,8 +293,6 @@ public class IHM extends JFrame implements ActionListener {
         panel2.add(buttonEnviarCodigoG);
         panel2.add(panelBotoesDeControle);
         
-		Border b = BorderFactory.createLineBorder(Color.black);
-		panel2.setBorder(b);
 	}
 
 	private void create1() {
@@ -364,8 +350,6 @@ public class IHM extends JFrame implements ActionListener {
         panel1.add(panelVelocidade);
         panel1.add(buttonLigarEixoArvore);
         
-		Border b = BorderFactory.createLineBorder(Color.black);
-		panel1.setBorder(b);
 	}
 
 	private void assemble(Container container) {
@@ -374,16 +358,19 @@ public class IHM extends JFrame implements ActionListener {
 		JPanel panel1and2 = new JPanel();
 		panel1and2.add(panel1);
 		panel1and2.add(panel2);
+		
 		west.add(panel1and2);
 		west.add(panel3);
+
+		panel1and2.setBorder((Border)BorderFactory.createLineBorder(Color.black));
+		panel3.setBorder((Border)BorderFactory.createLineBorder(Color.black));
 		
-		JPanel centercenter = panel4;
-		panel4.add(panel5);//new JPanel();
-		//centercenter.add(panel4, BorderLayout.CENTER);
-		//centercenter.add(panel5, BorderLayout.EAST);
-		JPanel centersouth = panel6; 
-				//new JPanel();
-		panel6.add(panel7);
+		JPanel centercenter = panel4;//new JPanel();
+		panel4.add(panel5);
+		
+		JPanel centersouth = new JPanel();
+		centersouth.add(panel6, BorderLayout.CENTER);
+		centersouth.add(panel7, BorderLayout.EAST);
 		
 		//centersouth.add(panel6, BorderLayout.CENTER);
 		//centersouth.add(panel7, BorderLayout.EAST);
@@ -391,8 +378,12 @@ public class IHM extends JFrame implements ActionListener {
 		center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
 		center.add(centercenter, BorderLayout.CENTER);
 		center.add(centersouth, BorderLayout.SOUTH);
+		
+		center.setBorder((Border)BorderFactory.createLineBorder(Color.black));
 
 		JPanel south = panel8;
+		
+		south.setBorder((Border)BorderFactory.createLineBorder(Color.black));
 		
 		container.add(west, BorderLayout.WEST);
 		container.add(center, BorderLayout.CENTER);
