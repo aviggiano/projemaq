@@ -1,6 +1,8 @@
 import org.jfree.ui.RefineryUtilities;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -18,6 +20,7 @@ import java.util.logging.Logger;
 
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
 public class IHM extends JFrame implements ActionListener {
@@ -60,7 +63,7 @@ public class IHM extends JFrame implements ActionListener {
 	private JPanel panel3;
 	private JPanel panel4;
 	private JTextArea textAreaCodigoGEmExecucao;
-	private JPanel panel5;
+	private JScrollPane panel5;
 	private JTextArea textAreaConsole;
 	private JPanel panel6;
 	private JLabel labelParametros;
@@ -106,9 +109,13 @@ public class IHM extends JFrame implements ActionListener {
 		labelAtencao = new JLabel("Atenção: máquina ligada!");
 		
 		panel8 = new JPanel();
-		panel8.setLayout(new FlowLayout());
+		panel8.setLayout(new FlowLayout(FlowLayout.LEFT));
 		panel8.add(buttonEmergencia);
+		buttonEmergencia.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel8.add(labelAtencao);
+		
+		Border b = BorderFactory.createLineBorder(Color.black);
+		panel8.setBorder(b);
 	}
 
 	private void create7() {
@@ -122,6 +129,9 @@ public class IHM extends JFrame implements ActionListener {
 		panel7.add(labelParametros);
 		panel7.add(labelZeroX);
 		panel7.add(labelZeroZ);
+		
+		Border b = BorderFactory.createLineBorder(Color.black);
+		panel7.setBorder(b);
 	}
 
 	private void create6() {
@@ -134,10 +144,14 @@ public class IHM extends JFrame implements ActionListener {
 		// layout parte 6
 		panel6 = new JPanel();
 		panel6.add(scrollPaneConsole);
+		
+		Border b = BorderFactory.createLineBorder(Color.black);
+		panel6.setBorder(b);
 	}
 
 	private void create5() {
-		textAreaCodigoGEmExecucao = new JTextArea("Código G em execução:", screenSize.height/100, screenSize.width/100);
+		textAreaCodigoGEmExecucao = new JTextArea("Código G em execução: dsadsaoddoldoqwldwqodkwqodwoq", 
+				screenSize.height/50, screenSize.width/50);
         font = new Font("Arial", Font.PLAIN, 12);
         textAreaCodigoGEmExecucao.setFont(font);
         textAreaCodigoGEmExecucao.setEditable(false);
@@ -145,8 +159,10 @@ public class IHM extends JFrame implements ActionListener {
 		
 		
 		// layout parte 5
-		panel5 = new JPanel();
-		panel5.add(scrollPaneCodigoGEmExecucao);
+		panel5 = scrollPaneCodigoGEmExecucao;
+		
+		Border b = BorderFactory.createLineBorder(Color.black);
+		panel5.setBorder(b);
 	}
 
 	private void create4() {
@@ -157,6 +173,9 @@ public class IHM extends JFrame implements ActionListener {
         // layout parte 4
         panel4 = new JPanel();
         panel4.add(xzPlot);
+        
+		Border b = BorderFactory.createLineBorder(Color.black);
+		panel4.setBorder(b);
 	}
 
 	private void create3() {
@@ -192,20 +211,27 @@ public class IHM extends JFrame implements ActionListener {
 		
 		// layout parte 3
 		JPanel panelZerar = new JPanel();
+		JPanel panel1 = new JPanel();
 		panelZerar.setLayout(new FlowLayout());
 		panelZerar.add(buttonZerarX);
 		panelZerar.add(buttonZerarZ);
 		
 		JPanel panelSetinhas = new JPanel();
+		JPanel panelVertical = new JPanel();
+		panelVertical.setLayout(new BoxLayout(panelVertical, BoxLayout.Y_AXIS));
+		panelVertical.add(buttonZplus);
+		panelVertical.add(buttonZless);
 		panelSetinhas.add(buttonXless, BorderLayout.WEST);
+		panelSetinhas.add(panelVertical, BorderLayout.CENTER);
 		panelSetinhas.add(buttonXplus, BorderLayout.EAST);
-		panelSetinhas.add(buttonZless, BorderLayout.SOUTH);
-		panelSetinhas.add(buttonZplus, BorderLayout.NORTH);
-
+		
 		panel3 = new JPanel();
 		panel3.setLayout(new BoxLayout(panel3, BoxLayout.Y_AXIS));
 		panel3.add(panelZerar, BorderLayout.NORTH);
 		panel3.add(panelSetinhas, BorderLayout.SOUTH);
+		
+		Border b = BorderFactory.createLineBorder(Color.black);
+		panel3.setBorder(b);
 	}
 
 	private void create2() {
@@ -253,6 +279,9 @@ public class IHM extends JFrame implements ActionListener {
         panel2.add(buttonCarregarCodigoG);
         panel2.add(buttonEnviarCodigoG);
         panel2.add(panelBotoesDeControle);
+        
+		Border b = BorderFactory.createLineBorder(Color.black);
+		panel2.setBorder(b);
 	}
 
 	private void create1() {
@@ -299,6 +328,9 @@ public class IHM extends JFrame implements ActionListener {
         panel1.add(panelPassoDoDeslocamento);
         panel1.add(panelVelocidade);
         panel1.add(buttonLigarEixoArvore);
+        
+		Border b = BorderFactory.createLineBorder(Color.black);
+		panel1.setBorder(b);
 	}
 
 	private void assemble(Container container) {
@@ -310,19 +342,22 @@ public class IHM extends JFrame implements ActionListener {
 		west.add(panel1and2);
 		west.add(panel3);
 		
-		JPanel centercenter = new JPanel();
-		centercenter.add(panel4, BorderLayout.CENTER);
-		centercenter.add(panel5, BorderLayout.EAST);
-		JPanel centersouth = new JPanel();
-		centersouth.add(panel6, BorderLayout.CENTER);
-		centersouth.add(panel7, BorderLayout.EAST);
+		JPanel centercenter = panel4;
+		panel4.add(panel5);//new JPanel();
+		//centercenter.add(panel4, BorderLayout.CENTER);
+		//centercenter.add(panel5, BorderLayout.EAST);
+		JPanel centersouth = panel6; 
+				//new JPanel();
+		panel6.add(panel7);
+		
+		//centersouth.add(panel6, BorderLayout.CENTER);
+		//centersouth.add(panel7, BorderLayout.EAST);
 		JPanel center = new JPanel();
 		center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
 		center.add(centercenter, BorderLayout.CENTER);
 		center.add(centersouth, BorderLayout.SOUTH);
 
-		JPanel south = new JPanel();
-		south.add(panel8);
+		JPanel south = panel8;
 		
 		container.add(west, BorderLayout.WEST);
 		container.add(center, BorderLayout.CENTER);
