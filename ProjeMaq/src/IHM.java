@@ -3,10 +3,12 @@ import org.jfree.ui.RefineryUtilities;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -239,6 +241,7 @@ public class IHM extends JFrame implements ActionListener {
         buttonAutomatico = new JButton("Automático"); //, new ImageIcon(getClass().getResource("images/manual.png")));
         buttonAutomatico.addActionListener(this);
         buttonAutomatico.setEnabled(true);
+
         
         // Carregar código G
         buttonCarregarCodigoG = new JButton("Carregar código G", new ImageIcon(getClass().getResource("img/down.png")));
@@ -267,13 +270,14 @@ public class IHM extends JFrame implements ActionListener {
         
         // layout parte 2
         JPanel panelBotoesDeControle = new JPanel();
-        panelBotoesDeControle.setLayout(new FlowLayout());
+        panelBotoesDeControle.setLayout(new GridLayout(1,3));
         panelBotoesDeControle.add(buttonPlay);
         panelBotoesDeControle.add(buttonStop);
         panelBotoesDeControle.add(buttonPause);
         
         panel2 = new JPanel();
-        panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
+        //panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
+        panel2.setLayout(new GridLayout(4,0));
         
         panel2.add(buttonAutomatico);
         panel2.add(buttonCarregarCodigoG);
@@ -301,8 +305,8 @@ public class IHM extends JFrame implements ActionListener {
         labelUnidadePassoDoDeslocamento = new JLabel("mm");
         
         // Velocidade
-        labelVelocidade = new JLabel("Velocidade");
-        textFieldVelocidade = new JTextField("50");
+        labelVelocidade = new JLabel("Velocidade:");
+        textFieldVelocidade = new JTextField("  50");
         labelUnidadeDaVelocidade = new JLabel("% Vmax");
         
         // botao Ligar Eixo Arvore
@@ -315,14 +319,24 @@ public class IHM extends JFrame implements ActionListener {
         panelPassoDoDeslocamento.add(spinnerPassoDoDeslocamento);
         panelPassoDoDeslocamento.add(labelUnidadePassoDoDeslocamento);
         
-        JPanel panelVelocidade = new JPanel();
-        panelVelocidade.setLayout(new FlowLayout());
+        JPanel panelVelocidade = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel p1 = new JPanel();
+        p1.add(labelVelocidade);
+        JPanel p2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        p2.add(textFieldVelocidade);
+        p2.add(labelUnidadeDaVelocidade);
+        panelVelocidade.add(p1);
+        panelVelocidade.add(p2);
+        
+        /*
         panelVelocidade.add(labelVelocidade);
         panelVelocidade.add(textFieldVelocidade);
         panelVelocidade.add(labelUnidadeDaVelocidade);
+*/
 
         panel1 = new JPanel();
-        panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
+        //panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
+        panel1.setLayout(new GridLayout(4,0));
         
         panel1.add(buttonManual);
         panel1.add(panelPassoDoDeslocamento);
