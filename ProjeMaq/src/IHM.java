@@ -159,7 +159,7 @@ public class IHM extends JFrame implements ActionListener {
 	}
 
 	private void create6() {
-		textAreaConsole = new JTextArea("IHM inicializada com sucesso.", 10, 60);
+		textAreaConsole = new JTextArea("IHM inicializada com sucesso.", 10, 68);
         font = new Font("Arial", Font.PLAIN, 12);
         textAreaConsole.setFont(font);
         textAreaConsole.setEditable(false);
@@ -264,7 +264,7 @@ public class IHM extends JFrame implements ActionListener {
 		
 		panel3 = new JPanel();
 		panel3.setLayout(new GridLayout(5,0));//(new BoxLayout(panel3, BoxLayout.Y_AXIS));
-		panel3.add(new JLabel());panel3.add(new JLabel());
+		panel3.add(new JLabel());
 		panel3.add(new JLabel());
 		panel3.add(panelZerar);
 		panel3.add(panelSetinhas);
@@ -402,7 +402,7 @@ public class IHM extends JFrame implements ActionListener {
 		
 		JPanel centersouth = new JPanel();
 		centersouth.add(panel6, BorderLayout.CENTER);
-		centersouth.add(panel7, BorderLayout.EAST);
+		//centersouth.add(panel7, BorderLayout.EAST);
 		
 		//centersouth.add(panel6, BorderLayout.CENTER);
 		//centersouth.add(panel7, BorderLayout.EAST);
@@ -450,12 +450,12 @@ public class IHM extends JFrame implements ActionListener {
     
     private void setTitleSizeAndLocation() {
         this.setTitle("PMR2450 - Torno CNC");
-        //frameSize = new Dimension ((int)(screenSize.width), (int)(screenSize.height));
-        // this.setSize(frameSize);
+        frameSize = new Dimension ((int)(screenSize.width*0.85), (int)(screenSize.height*0.85));
+        this.setSize(frameSize);
         
-        this.setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH );
+        //this.setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH );
          
-        setLocation(0,0); // localisation standard
+        setLocation(0,0); 
         // exit on close
         this.addWindowListener(new WindowAdapter() {
             @Override

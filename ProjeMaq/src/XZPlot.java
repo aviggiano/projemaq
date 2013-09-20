@@ -6,11 +6,15 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.ui.ApplicationFrame;
 
 public class XZPlot extends JPanel {
 
-    public XZPlot(String title) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public XZPlot(String title) {
 
         XYSeries series = new XYSeries("Random Data");
         series.add(1.0, 500.2);
