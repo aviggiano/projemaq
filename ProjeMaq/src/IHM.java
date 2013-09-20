@@ -78,7 +78,7 @@ public class IHM extends JFrame implements ActionListener {
 	private JLabel labelZeroX;
 	private JLabel labelZeroZ;
 	private JPanel panel7;
-	private JButton buttonEmergencia;
+	private JButton buttonConsole;
 
 	private JLabel labelAtencao;
 
@@ -121,11 +121,9 @@ public class IHM extends JFrame implements ActionListener {
     }
     
 	private void create8() {
-		/*
-		buttonEmergencia = new JButton("Emergência");
-		buttonEmergencia.setForeground(Color.RED);
-		buttonEmergencia.setBackground(Color.RED);
-		*/
+		
+		buttonConsole = new JButton("Console", new ImageIcon(getClass().getResource("img/terminal.png")));
+		
 		try {
 			imageIconWarning = ImageIO.read(this.getClass().getResource("img/warning.png"));
 		} catch (IOException e) {
@@ -134,12 +132,17 @@ public class IHM extends JFrame implements ActionListener {
 		labelAtencao = new JLabel("Atenção: máquina ligada!");
 		
 		panel8 = new JPanel();
-		panel8.setLayout(new FlowLayout(FlowLayout.LEFT));
-		//panel8.add(buttonEmergencia);
+		panel8.setLayout(new BoxLayout(panel8, BoxLayout.X_AXIS));
 		
+		
+		panel8.add(new JLabel("  "));
 		panel8.add(new JLabel(new ImageIcon(imageIconWarning)));
+		panel8.add(new JLabel("  "));
 		panel8.add(labelAtencao);
 		
+		panel8.add(Box.createHorizontalGlue());
+		
+		panel8.add(buttonConsole);
 	}
 
 	private void create7() {
@@ -247,8 +250,8 @@ public class IHM extends JFrame implements ActionListener {
 		
 		JPanel panelZerar = new JPanel();
 		panelZerar.setLayout(new GridBagLayout());//(panelZerar, BoxLayout.X_AXIS));
-		panelZerar.add(buttonZerarX); 
-		panelZerar.add(buttonZerarZ);
+		panelZerar.add(buttonZerarX);
+		panelZerar.add(buttonZerarZ); 
 		
 		JPanel panelSetinhas = new JPanel();
 		JPanel panelVertical = new JPanel();
