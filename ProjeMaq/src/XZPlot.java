@@ -28,7 +28,7 @@ public class XZPlot extends JPanel {
         series.add(30.0, 453.2);
         XYSeriesCollection data = new XYSeriesCollection(series);
         JFreeChart chart = ChartFactory.createXYLineChart(
-            "Posição da ferramenta",
+            "Posição da ferramenta.......",
             "X", 
             "Z", 
             data,

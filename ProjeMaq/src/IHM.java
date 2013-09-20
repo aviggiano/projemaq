@@ -455,7 +455,8 @@ public class IHM extends JFrame implements ActionListener {
         
         //this.setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH );
          
-        setLocation(0,0); 
+        setLocation(0,0); // centralizar?
+        
         // exit on close
         this.addWindowListener(new WindowAdapter() {
             @Override
