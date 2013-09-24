@@ -21,6 +21,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,8 +31,14 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
 
 public class IHM extends JFrame implements ActionListener {
+	
+	public static final int INFO = 0;
+	public static final int ERRO = 1;
 	
     // variaveis
     private JFileChooser fileChooser;
@@ -72,7 +79,7 @@ public class IHM extends JFrame implements ActionListener {
 	private JScrollPane panel4;
 	private JTextArea textAreaCodigoGEmExecucao;
 	private JScrollPane panel5;
-	private JTextArea textAreaConsole;
+	private JTextPane textPaneConsole;
 	private JPanel panel6;
 	private JLabel labelParametros;
 	private JLabel labelZeroX;
@@ -90,11 +97,14 @@ public class IHM extends JFrame implements ActionListener {
 	private JButton buttonConsoleInterativo;
 
 	private BufferedImage imageIconWarning;
+	private ARM arm;
     
     /*
      * Constructor
      */   
     public IHM () {
+    	//init external classes
+    	initExternalClasses();
         //set title, size and location
         setTitleSizeAndLocation();
         //set look and feel
@@ -158,12 +168,15 @@ public class IHM extends JFrame implements ActionListener {
 	}
 
 	private void create5() {
-		textAreaConsole = new JTextArea("IHM inicializada com sucesso.", 10, 68);
+		textPaneConsole = new JTextPane();
+		textPaneConsole.setText("IHM incializada com sucesso.");
+		textPaneConsole.setPreferredSize(new Dimension (750, 150));
+		
         font = new Font("Arial", Font.PLAIN, 12);
-        textAreaConsole.setFont(font);
-        textAreaConsole.setEditable(false);
+        textPaneConsole.setFont(font);
+        textPaneConsole.setEditable(false);
         
-        scrollPaneConsole = new JScrollPane(textAreaConsole);
+        scrollPaneConsole = new JScrollPane(textPaneConsole);
         scrollPaneConsole.setBorder(new TitledBorder("Avisos do sistema"));
 		
 		panel5 = scrollPaneConsole;
@@ -337,8 +350,10 @@ public class IHM extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent actionEvent) {
-		// TODO Auto-generated method stub
-		if (actionEvent.getSource() == buttonPlay) {
+		if (actionEvent.getSource() == buttonCarregarCodigoG) {
+			carregarArquivo();
+		}
+		else if (actionEvent.getSource() == buttonPlay) {
 			
 		}
 		
@@ -378,5 +393,66 @@ public class IHM extends JFrame implements ActionListener {
                 System.exit(0);
             }
         });
+    }
+    
+    private void initExternalClasses() {
+    	arm = new ARM();
+    }
+
+    private void append(ArrayList<String> textArray) {
+    	for (String i : textArray) {
+    		append(i); 
+    	}
+    }
+    
+    private void append(String text) {
+    	try {
+			textPaneConsole.getStyledDocument().insertString(
+					textPaneConsole.getStyledDocument().getLength(), "\n" + text, null);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
+    	
+    }
+    
+    
+    private void append(String text, final int tipo) {
+    	Style style = textPaneConsole.addStyle("style", null);
+        
+    	if (tipo == INFO) { 
+    		StyleConstants.setForeground(style, Color.BLUE);
+    	}
+    	else if (tipo == ERRO) {
+    		StyleConstants.setForeground(style, Color.RED);
+    	}
+    	try {
+			textPaneConsole.getStyledDocument().insertString(
+					textPaneConsole.getStyledDocument().getLength(), "\n" + text, style);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    private void carregarArquivo () {
+        int returnValue = 0;
+        try{
+            fileChooser = new JFileChooser("."); // ele abre no current directory
+            returnValue = fileChooser.showOpenDialog(this);
+            
+            if (returnValue == JFileChooser.APPROVE_OPTION) { 
+                File file = fileChooser.getSelectedFile();
+                ArrayList<String> linhasDoArquivo = arm.readData(file);
+                
+                append("\nArquivo selecionado com sucesso.", INFO);
+                append(linhasDoArquivo);
+            }
+            else {
+                append("\nProblema na seleção do arquivo.", ERRO); 
+            }
+        }
+        catch (Exception ex) {
+            System.out.println(ex);
+        }
+        
     }
 }
