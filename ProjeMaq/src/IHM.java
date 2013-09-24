@@ -69,7 +69,7 @@ public class IHM extends JFrame implements ActionListener {
 	private JButton buttonZplus;
 	private JButton buttonZless;
 	private JPanel panel3;
-	private JPanel panel4;
+	private JScrollPane panel4;
 	private JTextArea textAreaCodigoGEmExecucao;
 	private JScrollPane panel5;
 	private JTextArea textAreaConsole;
@@ -77,12 +77,9 @@ public class IHM extends JFrame implements ActionListener {
 	private JLabel labelParametros;
 	private JLabel labelZeroX;
 	private JLabel labelZeroZ;
-	private JPanel panel7;
 	private JButton buttonConsole;
 
 	private JLabel labelAtencao;
-
-	private JPanel panel8;
 
 	private Font font;
 
@@ -106,21 +103,36 @@ public class IHM extends JFrame implements ActionListener {
         Container container = getContentPane();
 
         //criar as diferentes partes do container
+        
+        /**
+         *  ________	 ___________   _____	
+         * |		|	|			| |		|
+         * |		|	|			| |		|
+         * |	1	|	|	3		| |	4	|
+         * |________|	|___________| |_____|
+         *  ________	 ___________________
+         * |		|	|					|
+         * |	2	|	|		5			|
+         * |________|	|___________________|
+         * 
+         *  ________________________________
+         * |				6				|
+         * |________________________________|
+         */
+        
         create1();
         create2();
         create3();
         create4();
         create5();
         create6();
-        create7();
-        create8();
         
         //junta as diferentes partes
         assemble(container);
 
     }
     
-	private void create8() {
+	private void create6() {
 		
 		buttonConsole = new JButton("Console", new ImageIcon(getClass().getResource("img/terminal.png")));
 		
@@ -131,34 +143,21 @@ public class IHM extends JFrame implements ActionListener {
 		}
 		labelAtencao = new JLabel("Atenção: máquina ligada!");
 		
-		panel8 = new JPanel();
-		panel8.setLayout(new BoxLayout(panel8, BoxLayout.X_AXIS));
+		panel6 = new JPanel();
+		panel6.setLayout(new BoxLayout(panel6, BoxLayout.X_AXIS));
 		
 		
-		panel8.add(new JLabel("  "));
-		panel8.add(new JLabel(new ImageIcon(imageIconWarning)));
-		panel8.add(new JLabel("  "));
-		panel8.add(labelAtencao);
+		panel6.add(new JLabel("  "));
+		panel6.add(new JLabel(new ImageIcon(imageIconWarning)));
+		panel6.add(new JLabel("  "));
+		panel6.add(labelAtencao);
 		
-		panel8.add(Box.createHorizontalGlue());
+		panel6.add(Box.createHorizontalGlue());
 		
-		panel8.add(buttonConsole);
+		panel6.add(buttonConsole);
 	}
 
-	private void create7() {
-		labelParametros = new JLabel("Parâmetros");
-		labelZeroX = new JLabel("Zero X: ");
-		labelZeroZ = new JLabel("Zero Z: ");
-
-		// layout parte 7
-		panel7 = new JPanel();
-		panel7.setLayout(new BoxLayout(panel7, BoxLayout.Y_AXIS));
-		panel7.add(labelParametros);
-		panel7.add(labelZeroX);
-		panel7.add(labelZeroZ);
-	}
-
-	private void create6() {
+	private void create5() {
 		textAreaConsole = new JTextArea("IHM inicializada com sucesso.", 10, 68);
         font = new Font("Arial", Font.PLAIN, 12);
         textAreaConsole.setFont(font);
@@ -167,13 +166,11 @@ public class IHM extends JFrame implements ActionListener {
         scrollPaneConsole = new JScrollPane(textAreaConsole);
         scrollPaneConsole.setBorder(new TitledBorder("Avisos do sistema"));
 		
-		// layout parte 6
-		panel6 = new JPanel(new GridBagLayout());
-		panel6.add(scrollPaneConsole);
+		panel5 = scrollPaneConsole;
 		
 	}
 
-	private void create5() {
+	private void create4() {
 		textAreaCodigoGEmExecucao = new JTextArea("", 
 				19, 30);
         font = new Font("Arial", Font.PLAIN, 12);
@@ -181,33 +178,27 @@ public class IHM extends JFrame implements ActionListener {
         textAreaCodigoGEmExecucao.setEditable(false);
         scrollPaneCodigoGEmExecucao = new JScrollPane(textAreaCodigoGEmExecucao);
         scrollPaneCodigoGEmExecucao.setBorder(new TitledBorder("Código G em execução"));
-		
-		
-		// layout parte 5
-		panel5 = scrollPaneCodigoGEmExecucao;
-		
-	}
 
-	private void create4() {
-		// grafico XZ
-		XZPlot xzPlot = new XZPlot("XZ Series Demo");
-        xzPlot.setVisible(true);
-        
-        // layout parte 4
-        panel4 = new JPanel();
-        panel4.add(xzPlot);
-        
+		panel4 = scrollPaneCodigoGEmExecucao;
+		
 	}
 
 	private void create3() {
-		/*
-		// console interativo
-		textFieldConsoleInterativo = new JTextField("				");
-		// botao console interativo
-		buttonConsoleInterativo = new JButton("Enviar comando");
-		buttonConsoleInterativo.addActionListener(this);
-		buttonConsoleInterativo.setEnabled(true);
-		*/
+		// grafico XZ
+		XZPlot xzPlot = new XZPlot("XZ Series Demo");
+        xzPlot.setVisible(true);
+
+        panel3 = new JPanel();
+        panel3.add(xzPlot);
+        
+	}
+
+	private void create2() {
+
+        // Velocidade
+        labelVelocidade = new JLabel("Velocidade:");
+        textFieldVelocidade = new JTextField("  50");
+        labelUnidadeDaVelocidade = new JLabel("% Vmax");
 		
 		// botao Setar Zero Peça Eixo X
 		buttonZerarX = new JButton("Zerar eixo X");
@@ -238,18 +229,9 @@ public class IHM extends JFrame implements ActionListener {
 		buttonZless = new JButton ("Z-  ", new ImageIcon(getClass().getResource("img/down.png")));
 		buttonZless.addActionListener(this);
 		buttonZless.setEnabled(true);
-		
-		// layout parte 3
-		/*
-		JPanel panelConsole = new JPanel();
-		panelConsole.setBorder(new TitledBorder("Console interativo"));
-		panelConsole.setLayout(new GridBagLayout());
-		panelConsole.add(textFieldConsoleInterativo);
-		panelConsole.add(buttonConsoleInterativo);
-		*/
-		
+				
 		JPanel panelZerar = new JPanel();
-		panelZerar.setLayout(new GridBagLayout());//(panelZerar, BoxLayout.X_AXIS));
+		panelZerar.setLayout(new GridLayout(1,2));
 		panelZerar.add(buttonZerarX);
 		panelZerar.add(buttonZerarZ); 
 		
@@ -262,21 +244,21 @@ public class IHM extends JFrame implements ActionListener {
 		panelSetinhas.add(panelVertical, BorderLayout.CENTER);
 		panelSetinhas.add(buttonXplus, BorderLayout.EAST);
 		
-		panel3 = new JPanel();
-		panel3.setLayout(new GridLayout(5,0));//(new BoxLayout(panel3, BoxLayout.Y_AXIS));
-		panel3.add(new JLabel());
-		panel3.add(new JLabel());
-		panel3.add(panelZerar);
-		panel3.add(panelSetinhas);
+		JPanel panelVelocidade = new JPanel();
+		panelVelocidade.add(labelVelocidade);
+        panelVelocidade.add(textFieldVelocidade);
+        panelVelocidade.add(labelUnidadeDaVelocidade);
+        
+		panel2 = new JPanel();
+		panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
+		panel2.add(panelVelocidade, BorderLayout.NORTH);
+		panel2.add(panelZerar);
+		panel2.add(new JLabel(" "));
+		panel2.add(panelSetinhas);
 		
 	}
 
-	private void create2() {
-		// botao Modo Automatico
-        buttonAutomatico = new JButton("Automático", new ImageIcon(getClass().getResource("img/computer.png")));
-        buttonAutomatico.addActionListener(this);
-        buttonAutomatico.setEnabled(true);
-
+	private void create1() {
         
         // Carregar código G
         buttonCarregarCodigoG = new JButton("Carregar código G", new ImageIcon(getClass().getResource("img/filesave.png")));
@@ -284,7 +266,7 @@ public class IHM extends JFrame implements ActionListener {
         buttonCarregarCodigoG.setEnabled(true);
         
         // Enviar código G
-        buttonEnviarCodigoG = new JButton("	    Enviar código G", new ImageIcon(getClass().getResource("img/extract-archive.png")));
+        buttonEnviarCodigoG = new JButton("    Enviar código G", new ImageIcon(getClass().getResource("img/extract-archive.png")));
         buttonEnviarCodigoG.addActionListener(this);
         buttonEnviarCodigoG.setEnabled(true);  
         
@@ -302,110 +284,39 @@ public class IHM extends JFrame implements ActionListener {
         buttonPause = new JButton("", new ImageIcon(getClass().getResource("img/player_pause.png")));
         buttonPause.addActionListener(this);
         buttonPause.setEnabled(true);
-        
-        // layout parte 2
+
+
         JPanel panelBotoesDeControle = new JPanel();
         panelBotoesDeControle.setLayout(new GridLayout(1,3));
         panelBotoesDeControle.add(buttonStop);
         panelBotoesDeControle.add(buttonPlay);
         panelBotoesDeControle.add(buttonPause);
         
-        panel2 = new JPanel();
-        //panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
-        panel2.setLayout(new GridLayout(4,0));
-        
-        panel2.add(buttonAutomatico);
-        panel2.add(buttonCarregarCodigoG);
-        panel2.add(buttonEnviarCodigoG);
-        panel2.add(panelBotoesDeControle);
-        
-	}
-
-	private void create1() {
-		// botao Modo Manual
-        buttonManual = new JButton("Manual", new ImageIcon(getClass().getResource("img/stock_person.png")));
-		buttonManual.addActionListener(this);
-        buttonManual.setEnabled(true);
-        
-        // Passo da Setinha
-        /*
-        labelPassoDoDeslocamento = new JLabel("Passo do deslocamento:");
-        double initialValue = 1;
-        double min = 0;
-        double max = 10;
-        double step = 1;
-        spinnerNumberModel =  new SpinnerNumberModel(initialValue, min, max, step);
-        spinnerPassoDoDeslocamento = new JSpinner(spinnerNumberModel);
-        labelUnidadePassoDoDeslocamento = new JLabel("mm");
-        */
-        
-        // Velocidade
-        labelVelocidade = new JLabel("Velocidade:");
-        textFieldVelocidade = new JTextField("  50");
-        labelUnidadeDaVelocidade = new JLabel("% Vmax");
-        
-        // botao Ligar Eixo Arvore
-        buttonLigarEixoArvore = new JButton("Ligar Eixo Árvore", new ImageIcon(getClass().getResource("img/preferences-system.png")));
-        
-        // layout parte 1
-        /*
-        JPanel panelPassoDoDeslocamento = new JPanel();
-        panelPassoDoDeslocamento.setLayout(new FlowLayout());
-        panelPassoDoDeslocamento.add(labelPassoDoDeslocamento);
-        panelPassoDoDeslocamento.add(spinnerPassoDoDeslocamento);
-        panelPassoDoDeslocamento.add(labelUnidadePassoDoDeslocamento);
-        */
-        
-        JPanel panelVelocidade = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPanel p1 = new JPanel();
-        p1.add(labelVelocidade);
-        JPanel p2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        p2.add(textFieldVelocidade);
-        p2.add(labelUnidadeDaVelocidade);
-        panelVelocidade.add(p1);
-        panelVelocidade.add(p2);
-        
-        /*
-        panelVelocidade.add(labelVelocidade);
-        panelVelocidade.add(textFieldVelocidade);
-        panelVelocidade.add(labelUnidadeDaVelocidade);
-*/
-
         panel1 = new JPanel();
-        //panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
-        panel1.setLayout(new GridLayout(4,0));
+        //panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
+        panel1.setLayout(new GridLayout(6,0));
         
-        panel1.add(buttonManual);
-        //panel1.add(panelPassoDoDeslocamento);
-        panel1.add(panelVelocidade);
-        panel1.add(new JLabel());
-        panel1.add(buttonLigarEixoArvore);
+        panel1.add(buttonCarregarCodigoG);
+        panel1.add(buttonEnviarCodigoG);
+        panel1.add(panelBotoesDeControle);
         
 	}
-
+	
 	private void assemble(Container container) {
 		JPanel west = new JPanel();
 		west.setLayout(new BoxLayout(west, BoxLayout.Y_AXIS));
-		JPanel panel1and2 = new JPanel();
-		panel1and2.add(panel1);
-		panel1and2.add(panel2);
 		
-		west.add(panel1and2);
-		west.add(panel3);
+		west.add(panel1);
+		west.add(Box.createVerticalGlue());
+		west.add(panel2);
 		west.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 
-		//panel1and2.setBorder((Border)BorderFactory.createLineBorder(Color.black));
-		//panel3.setBorder((Border)BorderFactory.createLineBorder(Color.black));
-		
-		JPanel centercenter = panel4;//new JPanel();
-		panel4.add(panel5);
+		JPanel centercenter = panel3;//new JPanel();
+		panel3.add(panel4);
 		
 		JPanel centersouth = new JPanel();
-		centersouth.add(panel6, BorderLayout.CENTER);
-		//centersouth.add(panel7, BorderLayout.EAST);
-		
-		//centersouth.add(panel6, BorderLayout.CENTER);
-		//centersouth.add(panel7, BorderLayout.EAST);
+		centersouth.add(panel5, BorderLayout.CENTER);
+
 		JPanel center = new JPanel();
 		center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
 		center.add(centercenter, BorderLayout.CENTER);
@@ -413,7 +324,7 @@ public class IHM extends JFrame implements ActionListener {
 		
 		center.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 
-		JPanel south = panel8;
+		JPanel south = panel6;
 		
 		south.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
@@ -427,8 +338,11 @@ public class IHM extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent actionEvent) {
 		// TODO Auto-generated method stub
+		if (actionEvent.getSource() == buttonPlay) {
+			
+		}
 		
-	}
+	} 
 	
     private void setLookAndFeel(String nomeDoLookAndFeel) {
         try {
@@ -450,7 +364,7 @@ public class IHM extends JFrame implements ActionListener {
     
     private void setTitleSizeAndLocation() {
         this.setTitle("PMR2450 - Torno CNC");
-        frameSize = new Dimension ((int)(screenSize.width*0.85), (int)(screenSize.height*0.85));
+        frameSize = new Dimension ((int)(screenSize.width*0.8), (int)(screenSize.height*0.80));
         this.setSize(frameSize);
         
         //this.setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH );
