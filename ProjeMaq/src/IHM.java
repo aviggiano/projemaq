@@ -1,21 +1,14 @@
-import org.jfree.ui.RefineryUtilities;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -27,11 +20,31 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.InputVerifier;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.JToolBar;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -44,25 +57,15 @@ public class IHM extends JFrame implements ActionListener {
     // variaveis
     private JFileChooser fileChooser;
     
-    private JMenuBar barreDeMenus;
-  
     protected JScrollPane scrollPaneConsole;
     protected JScrollPane scrollPaneCodigoGEmExecucao;
     protected Toolkit toolkit = Toolkit.getDefaultToolkit();
     protected Dimension screenSize = toolkit.getScreenSize();
     protected Dimension frameSize;
-    private JToolBar toolBar;
     
-    private JButton buttonManual;
-    private JButton buttonAutomatico;
-	private JLabel labelPassoDoDeslocamento;
-	private SpinnerNumberModel spinnerNumberModel;
-	private JSpinner spinnerPassoDoDeslocamento;
-	private JLabel labelUnidadePassoDoDeslocamento;
 	private JLabel labelVelocidade;
 	private JTextField textFieldVelocidade;
 	private JLabel labelUnidadeDaVelocidade;
-	private JButton buttonLigarEixoArvore;
 	private JPanel panel1;
 	private JButton buttonCarregarCodigoG;
 	private JButton buttonEnviarCodigoG;
@@ -80,22 +83,13 @@ public class IHM extends JFrame implements ActionListener {
 	private JScrollPane panel4;
 	private JTextArea textAreaCodigoGEmExecucao;
 	private JScrollPane panel5;
-	private JTextPane textPaneConsole;
+	private JTextPane textPaneAvisosDoSistema;
 	private JPanel panel6;
-	private JLabel labelParametros;
-	private JLabel labelZeroX;
-	private JLabel labelZeroZ;
 	private JButton buttonConsole;
 
 	private JLabel labelAtencao;
 
 	private Font font;
-
-	private JLabel labelConsoleInterativo;
-
-	private JTextField textFieldConsoleInterativo;
-
-	private JButton buttonConsoleInterativo;
 
 	private BufferedImage imageIconWarning;
 	private ARM arm;
@@ -169,15 +163,15 @@ public class IHM extends JFrame implements ActionListener {
 	}
 
 	private void create5() {
-		textPaneConsole = new JTextPane();
-		textPaneConsole.setText("IHM incializada com sucesso.");
-		textPaneConsole.setPreferredSize(new Dimension (750, 150));
+		textPaneAvisosDoSistema = new JTextPane();
+		textPaneAvisosDoSistema.setText("IHM incializada com sucesso.");
+		textPaneAvisosDoSistema.setPreferredSize(new Dimension (750, 150));
 		
         font = new Font("Arial", Font.PLAIN, 12);
-        textPaneConsole.setFont(font);
-        textPaneConsole.setEditable(false);
+        textPaneAvisosDoSistema.setFont(font);
+        textPaneAvisosDoSistema.setEditable(false);
         
-        scrollPaneConsole = new JScrollPane(textPaneConsole);
+        scrollPaneConsole = new JScrollPane(textPaneAvisosDoSistema);
         scrollPaneConsole.setBorder(new TitledBorder("Avisos do sistema"));
 		
 		panel5 = scrollPaneConsole;
@@ -211,7 +205,27 @@ public class IHM extends JFrame implements ActionListener {
 
         // Velocidade
         labelVelocidade = new JLabel("Velocidade:");
-        textFieldVelocidade = new JTextField("  50");
+        textFieldVelocidade = new JTextField("   50");
+        textFieldVelocidade.setInputVerifier(new InputVerifier() {
+			@Override
+			public boolean verify(JComponent input) {
+                JTextField tField = (JTextField) input;
+                return (Integer.parseInt(tField.getText()) >=0 && Integer.parseInt(tField.getText()) <= 100);  
+			}
+            });  
+        textFieldVelocidade.addActionListener(this); // interpreta o <enter> do usuario
+        textFieldVelocidade.addFocusListener(new FocusListener() {
+        	@Override
+            public void focusGained(FocusEvent e) {
+              // nao faz nada
+            }
+
+        	@Override
+            public void focusLost(FocusEvent e) {
+              atualizaVelocidadeJog();
+            }
+          });
+
         labelUnidadeDaVelocidade = new JLabel("% Vmax");
 		
 		// botao Setar Zero Peça Eixo X
@@ -354,13 +368,56 @@ public class IHM extends JFrame implements ActionListener {
 		if (actionEvent.getSource() == buttonCarregarCodigoG) {
 			carregarArquivo();
 		}
-		else if (actionEvent.getSource() == buttonPlay) {
+		else if (actionEvent.getSource() == buttonEnviarCodigoG) {
 			
 		}
+		else if (actionEvent.getSource() == buttonStop) {
+			
+		}
+		else if (actionEvent.getSource() == buttonPlay) {
+
+		} 
+		else if (actionEvent.getSource() == buttonPause) {
+
+		}
+		else if (actionEvent.getSource() == textFieldVelocidade) {
+			atualizaVelocidadeJog();
+		}
+		else if (actionEvent.getSource() == buttonZerarX) {
+			
+		}
+		else if (actionEvent.getSource() == buttonZerarZ) {
+			
+		}
+		else if (actionEvent.getSource() == buttonXless) {
+			
+		}
+		else if (actionEvent.getSource() == buttonXplus) {
+			
+		}
+		else if (actionEvent.getSource() == buttonZless) {
+			
+		}
+		else if (actionEvent.getSource() == buttonZplus) {
+			
+		}
+		else if (actionEvent.getSource() == buttonConsole) {
+			
+		}		
 		
 	} 
 	
-    private void setLookAndFeel(String nomeDoLookAndFeel) {
+    private void atualizaVelocidadeJog() {
+    	int vel = ( textFieldVelocidade.getText().isEmpty()) ? 
+    				0
+    			:
+    				Integer.parseInt(textFieldVelocidade.getText().trim());
+		arm.setVelocidadeJog(vel);
+		append("Velocidade da movimentação manual: " + arm.getVelocidadeJog(), INFO);
+		textFieldVelocidade.setText(String.valueOf(arm.getVelocidadeJog()));
+	}
+
+	private void setLookAndFeel(String nomeDoLookAndFeel) {
         try {
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if (nomeDoLookAndFeel.equals(info.getName())) {
@@ -406,10 +463,10 @@ public class IHM extends JFrame implements ActionListener {
     	}
     }
     
-    private void append(String text) {
+    private void append(Object text) {
     	try {
-			textPaneConsole.getStyledDocument().insertString(
-					textPaneConsole.getStyledDocument().getLength(), "\n" + text, null);
+			textPaneAvisosDoSistema.getStyledDocument().insertString(
+					textPaneAvisosDoSistema.getStyledDocument().getLength(), "\n" + text, null);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
@@ -418,7 +475,7 @@ public class IHM extends JFrame implements ActionListener {
     
     
     private void append(String text, final int tipo) {
-    	Style style = textPaneConsole.addStyle("style", null);
+    	Style style = textPaneAvisosDoSistema.addStyle("style", null);
         
     	if (tipo == INFO) { 
     		StyleConstants.setForeground(style, Color.BLUE);
@@ -427,8 +484,8 @@ public class IHM extends JFrame implements ActionListener {
     		StyleConstants.setForeground(style, Color.RED);
     	}
     	try {
-			textPaneConsole.getStyledDocument().insertString(
-					textPaneConsole.getStyledDocument().getLength(), "\n" + text, style);
+			textPaneAvisosDoSistema.getStyledDocument().insertString(
+					textPaneAvisosDoSistema.getStyledDocument().getLength(), "\n" + text, style);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
