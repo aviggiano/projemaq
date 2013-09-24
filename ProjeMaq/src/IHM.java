@@ -21,6 +21,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -433,6 +434,24 @@ public class IHM extends JFrame implements ActionListener {
 		}
     }
     
+    public ArrayList<String> readData(File f) {
+		ArrayList<String> lines = new ArrayList<>();
+		try {
+			RandomAccessFile fichier = new java.io.RandomAccessFile(f, "r");
+
+			String line = "";
+			while ((line = fichier.readLine()) != null) // tant que la ligne n'est pas nulle
+				lines.add(line);
+			
+			return lines;
+		}
+
+		catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+    
     private void carregarArquivo () {
         int returnValue = 0;
         try{
@@ -441,7 +460,7 @@ public class IHM extends JFrame implements ActionListener {
             
             if (returnValue == JFileChooser.APPROVE_OPTION) { 
                 File file = fileChooser.getSelectedFile();
-                ArrayList<String> linhasDoArquivo = arm.readData(file);
+                ArrayList<String> linhasDoArquivo = readData(file);
                 
                 append("\nArquivo selecionado com sucesso.", INFO);
                 append(linhasDoArquivo);
