@@ -23,6 +23,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonModel;
 import javax.swing.ImageIcon;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
@@ -39,10 +40,14 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.Timer;
+import javax.swing.ButtonModel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
@@ -210,7 +215,7 @@ public class IHM extends JFrame implements ActionListener {
 			@Override
 			public boolean verify(JComponent input) {
                 JTextField tField = (JTextField) input;
-                return (Integer.parseInt(tField.getText()) >=0 && Integer.parseInt(tField.getText()) <= 100);  
+                return (Integer.parseInt(tField.getText().trim()) >=0 && Integer.parseInt(tField.getText().trim()) <= 100);  
 			}
             });  
         textFieldVelocidade.addActionListener(this); // interpreta o <enter> do usuario
@@ -258,6 +263,8 @@ public class IHM extends JFrame implements ActionListener {
 		buttonZless.addActionListener(this);
 		buttonZless.setEnabled(true);
 				
+		buttonsJog();
+		
 		JPanel panelZerar = new JPanel();
 		panelZerar.setLayout(new GridLayout(1,2));
 		panelZerar.add(buttonZerarX);
@@ -372,40 +379,158 @@ public class IHM extends JFrame implements ActionListener {
 			
 		}
 		else if (actionEvent.getSource() == buttonStop) {
-			
+			writeregister(3,0);
 		}
 		else if (actionEvent.getSource() == buttonPlay) {
-
+			writeregister(1,0);
 		} 
 		else if (actionEvent.getSource() == buttonPause) {
-
+			writeregister(2,0);
 		}
 		else if (actionEvent.getSource() == textFieldVelocidade) {
 			atualizaVelocidadeJog();
 		}
 		else if (actionEvent.getSource() == buttonZerarX) {
-			
+			writeregister(8,0);
 		}
 		else if (actionEvent.getSource() == buttonZerarZ) {
-			
+			writeregister(9,0);
 		}
 		else if (actionEvent.getSource() == buttonXless) {
-			
+			System.out.println("X-");
 		}
 		else if (actionEvent.getSource() == buttonXplus) {
-			
+			System.out.println("X+");
 		}
 		else if (actionEvent.getSource() == buttonZless) {
-			
+			System.out.println("Z-");
 		}
 		else if (actionEvent.getSource() == buttonZplus) {
-			
+			System.out.println("Z+");
 		}
 		else if (actionEvent.getSource() == buttonConsole) {
 			
 		}		
 		
 	} 
+	//Funcao que captura o evento de segurar o clique de X+, X-, Z+, Z-
+	private void buttonsJog() {
+		int timerDelay = 100;
+		//Botao X+
+		final Timer timer_Xplus = new Timer(timerDelay , new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Button X + Pressed!");
+				writeregister(4, arm.getVelocidadeJog());
+			}
+	    });
+		
+		final ButtonModel bModel_Xplus = buttonXplus.getModel();
+		bModel_Xplus.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent cEvt) {
+				if (bModel_Xplus.isPressed() && !timer_Xplus.isRunning()) {
+					timer_Xplus.start();
+				} else if (!bModel_Xplus.isPressed() && timer_Xplus.isRunning()) {
+					timer_Xplus.stop();
+				}
+	        }
+		});
+		
+		//Botao X-
+		final Timer timer_Xless = new Timer(timerDelay , new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Button X - Pressed!");
+				writeregister(6, arm.getVelocidadeJog());
+			}
+	    });
+		
+		final ButtonModel bModel_Xless = buttonXless.getModel();
+		bModel_Xless.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent cEvt) {
+				if (bModel_Xless.isPressed() && !timer_Xless.isRunning()) {
+					timer_Xless.start();
+				} else if (!bModel_Xless.isPressed() && timer_Xless.isRunning()) {
+					timer_Xless.stop();
+				}
+	        }
+		});
+		
+		//Botao Z+
+		final Timer timer_Zplus = new Timer(timerDelay , new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Button Z + Pressed!");
+				writeregister(5, arm.getVelocidadeJog());
+			}
+	    });
+		
+		final ButtonModel bModel_Zplus = buttonZplus.getModel();
+		bModel_Zplus.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent cEvt) {
+				if (bModel_Zplus.isPressed() && !timer_Zplus.isRunning()) {
+					timer_Zplus.start();
+				} else if (!bModel_Zplus.isPressed() && timer_Zplus.isRunning()) {
+					timer_Zplus.stop();
+				}
+	        }
+		});
+		
+		//Botao Z-
+		final Timer timer_Zless = new Timer(timerDelay , new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Button Z- Pressed!");
+				writeregister(7, arm.getVelocidadeJog());
+			}
+	    });
+		
+		final ButtonModel bModel_Zless = buttonZless.getModel();
+		bModel_Zless.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent cEvt) {
+				if (bModel_Zless.isPressed() && !timer_Zless.isRunning()) {
+					timer_Zless.start();
+				} else if (!bModel_Zless.isPressed() && timer_Zless.isRunning()) {
+					timer_Zless.stop();
+				}
+	        }
+		});
+	}
+	
+		//funcao writeregister que cria os comandos no protocolo definido para enviar para o ARM
+		//Protocolo:
+		/**	Botao			Protocolo
+		 * 
+		 */
+		private void writeregister(int nbotao, int vel) {
+			char[] palavra=new char [9];
+			palavra[0]=':';
+			palavra[1]='2';
+			palavra[2]='0';
+			palavra[3]=(char) (nbotao+48);
+			palavra[7]=(char) 13;
+			palavra[8]=(char) 10;
+			if(vel<10){
+				palavra[4]='0';
+				palavra[5]='0';
+				palavra[6]=(char) (vel+48);
+			} else if(vel<=99) {
+				palavra[4]='0';
+				palavra[5]=(char) ((int)(vel/10)+48);
+				palavra[6]=(char) ((vel%10)+48);
+				} else  {
+					palavra[4]='1';
+					palavra[5]='0';
+					palavra[6]='0';
+					
+				}
+
+			System.out.println(palavra);
+		}
+			
 	
     private void atualizaVelocidadeJog() {
     	int vel = ( textFieldVelocidade.getText().isEmpty()) ? 
