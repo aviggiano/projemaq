@@ -98,6 +98,7 @@ public class IHM extends JFrame implements ActionListener {
 
 	private BufferedImage imageIconWarning;
 	private ARM arm;
+	private Protocolo protocolo;
     
     /*
      * Constructor
@@ -379,22 +380,22 @@ public class IHM extends JFrame implements ActionListener {
 			
 		}
 		else if (actionEvent.getSource() == buttonStop) {
-			writeregister(3,0);
+			arm.writeregister(3,0);
 		}
 		else if (actionEvent.getSource() == buttonPlay) {
-			writeregister(1,0);
+			arm.writeregister(1,0);
 		} 
 		else if (actionEvent.getSource() == buttonPause) {
-			writeregister(2,0);
+			arm.writeregister(2,0);
 		}
 		else if (actionEvent.getSource() == textFieldVelocidade) {
 			atualizaVelocidadeJog();
 		}
 		else if (actionEvent.getSource() == buttonZerarX) {
-			writeregister(8,0);
+			arm.writeregister(8,0);
 		}
 		else if (actionEvent.getSource() == buttonZerarZ) {
-			writeregister(9,0);
+			arm.writeregister(9,0);
 		}
 		else if (actionEvent.getSource() == buttonXless) {
 			System.out.println("X-");
@@ -421,7 +422,7 @@ public class IHM extends JFrame implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Button X + Pressed!");
-				writeregister(4, arm.getVelocidadeJog());
+				arm.writeregister(4, arm.getVelocidadeJog());
 			}
 	    });
 		
@@ -441,7 +442,7 @@ public class IHM extends JFrame implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Button X - Pressed!");
-				writeregister(6, arm.getVelocidadeJog());
+				arm.writeregister(6, arm.getVelocidadeJog());
 			}
 	    });
 		
@@ -462,7 +463,7 @@ public class IHM extends JFrame implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Button Z + Pressed!");
-				writeregister(5, arm.getVelocidadeJog());
+				arm.writeregister(5, arm.getVelocidadeJog());
 			}
 	    });
 		
@@ -483,7 +484,7 @@ public class IHM extends JFrame implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Button Z- Pressed!");
-				writeregister(7, arm.getVelocidadeJog());
+				arm.writeregister(7, arm.getVelocidadeJog());
 			}
 	    });
 		
@@ -499,38 +500,6 @@ public class IHM extends JFrame implements ActionListener {
 	        }
 		});
 	}
-	
-		//funcao writeregister que cria os comandos no protocolo definido para enviar para o ARM
-		//Protocolo:
-		/**	Botao			Protocolo
-		 * 
-		 */
-		private void writeregister(int nbotao, int vel) {
-			char[] palavra=new char [9];
-			palavra[0]=':';
-			palavra[1]='2';
-			palavra[2]='0';
-			palavra[3]=(char) (nbotao+48);
-			palavra[7]=(char) 13;
-			palavra[8]=(char) 10;
-			if(vel<10){
-				palavra[4]='0';
-				palavra[5]='0';
-				palavra[6]=(char) (vel+48);
-			} else if(vel<=99) {
-				palavra[4]='0';
-				palavra[5]=(char) ((int)(vel/10)+48);
-				palavra[6]=(char) ((vel%10)+48);
-				} else  {
-					palavra[4]='1';
-					palavra[5]='0';
-					palavra[6]='0';
-					
-				}
-
-			System.out.println(palavra);
-		}
-			
 	
     private void atualizaVelocidadeJog() {
     	int vel = ( textFieldVelocidade.getText().isEmpty()) ? 
