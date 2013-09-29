@@ -1,3 +1,4 @@
+package gui;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;

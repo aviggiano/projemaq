@@ -1,3 +1,7 @@
+package gui;
+
+import helpers.Protocolo;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -57,6 +61,8 @@ import javax.swing.text.DocumentFilter;
 import javax.swing.text.DocumentFilter.FilterBypass;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
+
+import connections.ARM;
 
 public class IHM extends JFrame implements ActionListener {
 	
@@ -149,10 +155,10 @@ public class IHM extends JFrame implements ActionListener {
     
 	private void create6() {
 		
-		buttonConsole = new JButton("Console", new ImageIcon(getClass().getResource("img/terminal.png")));
+		buttonConsole = new JButton("Console", new ImageIcon(getClass().getResource("../img/terminal.png")));
 		
 		try {
-			imageIconWarning = ImageIO.read(this.getClass().getResource("img/warning.png"));
+			imageIconWarning = ImageIO.read(this.getClass().getResource("../img/warning.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -269,22 +275,22 @@ public class IHM extends JFrame implements ActionListener {
 		buttonZerarZ.setEnabled(true);
         
 		// botao X+
-		buttonXplus = new JButton ("X+", new ImageIcon(getClass().getResource("img/next.png")));
+		buttonXplus = new JButton ("X+", new ImageIcon(getClass().getResource("../img/next.png")));
 		buttonXplus.addActionListener(this);
 		buttonXplus.setEnabled(true);
 
 		// botao X-
-		buttonXless = new JButton ("X-", new ImageIcon(getClass().getResource("img/previous.png")));
+		buttonXless = new JButton ("X-", new ImageIcon(getClass().getResource("../img/previous.png")));
 		buttonXless.addActionListener(this);
 		buttonXless.setEnabled(true);
 
 		// botao Z+
-		buttonZplus = new JButton ("Z+ ", new ImageIcon(getClass().getResource("img/up.png")));
+		buttonZplus = new JButton ("Z+ ", new ImageIcon(getClass().getResource("../img/up.png")));
 		buttonZplus.addActionListener(this);
 		buttonZplus.setEnabled(true);
 
 		// botao Z-
-		buttonZless = new JButton ("Z-  ", new ImageIcon(getClass().getResource("img/down.png")));
+		buttonZless = new JButton ("Z-  ", new ImageIcon(getClass().getResource("../img/down.png")));
 		buttonZless.addActionListener(this);
 		buttonZless.setEnabled(true);
 				
@@ -321,27 +327,27 @@ public class IHM extends JFrame implements ActionListener {
 	private void create1() {
         
         // Carregar código G
-        buttonCarregarCodigoG = new JButton("Carregar código G", new ImageIcon(getClass().getResource("img/filesave.png")));
+        buttonCarregarCodigoG = new JButton("Carregar código G", new ImageIcon(getClass().getResource("../img/filesave.png")));
         buttonCarregarCodigoG.addActionListener(this);
         buttonCarregarCodigoG.setEnabled(true);
         
         // Enviar código G
-        buttonEnviarCodigoG = new JButton("    Enviar código G", new ImageIcon(getClass().getResource("img/extract-archive.png")));
+        buttonEnviarCodigoG = new JButton("    Enviar código G", new ImageIcon(getClass().getResource("../img/extract-archive.png")));
         buttonEnviarCodigoG.addActionListener(this);
         buttonEnviarCodigoG.setEnabled(true);  
         
         // Stop
-        buttonStop = new JButton("", new ImageIcon(getClass().getResource("img/player_stop.png")));
+        buttonStop = new JButton("", new ImageIcon(getClass().getResource("../img/player_stop.png")));
         buttonStop.addActionListener(this);
         buttonStop.setEnabled(true);
         
         // Play
-        buttonPlay = new JButton("", new ImageIcon(getClass().getResource("img/player_play.png")));
+        buttonPlay = new JButton("", new ImageIcon(getClass().getResource("../img/player_play.png")));
         buttonPlay.addActionListener(this);
         buttonPlay.setEnabled(true);
         
         // Pause
-        buttonPause = new JButton("", new ImageIcon(getClass().getResource("img/player_pause.png")));
+        buttonPause = new JButton("", new ImageIcon(getClass().getResource("../img/player_pause.png")));
         buttonPause.addActionListener(this);
         buttonPause.setEnabled(true);
 

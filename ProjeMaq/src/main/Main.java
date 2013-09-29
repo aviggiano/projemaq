@@ -1,3 +1,7 @@
+package main;
+import connections.ARM;
+import gui.IHM;
+
 
 public class Main {
 	private static IHM ihm;
