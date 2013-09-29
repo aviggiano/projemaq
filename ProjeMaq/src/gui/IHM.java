@@ -1,7 +1,5 @@
 package gui;
 
-import helpers.Protocolo;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -35,17 +33,12 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.JToolBar;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.Timer;
-import javax.swing.ButtonModel;
 import javax.swing.text.AttributeSet;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -53,12 +46,9 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
-import javax.swing.text.DocumentFilter.FilterBypass;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 
@@ -98,7 +88,7 @@ public class IHM extends JFrame implements ActionListener {
 	private JScrollPane panel4;
 	private JTextArea textAreaCodigoGEmExecucao;
 	private JScrollPane panel5;
-	private JTextPane textPaneAvisosDoSistema;
+	private static JTextPane textPaneAvisosDoSistema;
 	private JPanel panel6;
 	private JButton buttonConsole;
 
@@ -108,7 +98,6 @@ public class IHM extends JFrame implements ActionListener {
 
 	private BufferedImage imageIconWarning;
 	private ARM arm;
-	private Protocolo protocolo;
     
     /*
      * Constructor
@@ -410,22 +399,22 @@ public class IHM extends JFrame implements ActionListener {
 			
 		}
 		else if (actionEvent.getSource() == buttonStop) {
-			arm.writeregister(3,0);
+			arm.writeRegister(3,0);
 		}
 		else if (actionEvent.getSource() == buttonPlay) {
-			arm.writeregister(1,0);
+			arm.writeRegister(1,0);
 		} 
 		else if (actionEvent.getSource() == buttonPause) {
-			arm.writeregister(2,0);
+			arm.writeRegister(2,0);
 		}
 		else if (actionEvent.getSource() == textFieldVelocidade) {
 			atualizaVelocidadeJog();
 		}
 		else if (actionEvent.getSource() == buttonZerarX) {
-			arm.writeregister(8,0);
+			arm.writeRegister(8,0);
 		}
 		else if (actionEvent.getSource() == buttonZerarZ) {
-			arm.writeregister(9,0);
+			arm.writeRegister(9,0);
 		}
 		else if (actionEvent.getSource() == buttonXless) {
 			System.out.println("X-");
@@ -452,7 +441,7 @@ public class IHM extends JFrame implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Button X + Pressed!");
-				arm.writeregister(4, arm.getVelocidadeJog());
+				arm.writeRegister(4, arm.getVelocidadeJog());
 			}
 	    });
 		
@@ -472,7 +461,7 @@ public class IHM extends JFrame implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Button X - Pressed!");
-				arm.writeregister(6, arm.getVelocidadeJog());
+				arm.writeRegister(6, arm.getVelocidadeJog());
 			}
 	    });
 		
@@ -493,7 +482,7 @@ public class IHM extends JFrame implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Button Z + Pressed!");
-				arm.writeregister(5, arm.getVelocidadeJog());
+				arm.writeRegister(5, arm.getVelocidadeJog());
 			}
 	    });
 		
@@ -514,7 +503,7 @@ public class IHM extends JFrame implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Button Z- Pressed!");
-				arm.writeregister(7, arm.getVelocidadeJog());
+				arm.writeRegister(7, arm.getVelocidadeJog());
 			}
 	    });
 		
@@ -585,13 +574,13 @@ public class IHM extends JFrame implements ActionListener {
     	arm = new ARM();
     }
 
-    private void append(ArrayList<String> textArray) {
+    public static void append(ArrayList<String> textArray) {
     	for (String i : textArray) {
     		append(i); 
     	}
     }
     
-    private void append(Object text) {
+    public static void append(Object text) {
     	try {
 			textPaneAvisosDoSistema.getStyledDocument().insertString(
 					textPaneAvisosDoSistema.getStyledDocument().getLength(), "\n" + text, null);
@@ -601,8 +590,7 @@ public class IHM extends JFrame implements ActionListener {
     	
     }
     
-    
-    private void append(String text, final int tipo) {
+    public static void append(String text, final int tipo) {
     	Style style = textPaneAvisosDoSistema.addStyle("style", null);
         
     	if (tipo == INFO) { 

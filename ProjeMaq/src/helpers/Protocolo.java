@@ -3,7 +3,7 @@ package helpers;
 
 public class Protocolo {
 	public Protocolo() {
-		
+		super();
 	}
 
 	// funcao writeregister que cria os comandos no protocolo definido para
@@ -13,7 +13,7 @@ public class Protocolo {
 	 * Botao Protocolo
 	 * 
 	 */
-	public void writeregister(int nbotao, int vel) {
+	public static String writeRegister(int nbotao, int vel) {
 		char[] palavra = new char[9];
 		palavra[0] = ':';
 		palavra[1] = '2';
@@ -35,7 +35,8 @@ public class Protocolo {
 			palavra[6] = '0';
 
 		}
-
+		
 		System.out.println(palavra);
+		return palavra.toString();
 	}
 }
