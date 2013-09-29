@@ -42,6 +42,7 @@ import javax.swing.JToolBar;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.Timer;
 import javax.swing.ButtonModel;
+import javax.swing.text.AttributeSet;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.EtchedBorder;
@@ -50,7 +51,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.DocumentFilter.FilterBypass;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 
@@ -211,7 +215,27 @@ public class IHM extends JFrame implements ActionListener {
 
         // Velocidade
         labelVelocidade = new JLabel("Velocidade:");
-        textFieldVelocidade = new JTextField("   50");
+        textFieldVelocidade = new JTextField("50  ");
+        ((AbstractDocument) textFieldVelocidade.getDocument()).setDocumentFilter(new DocumentFilter(){
+        	@Override
+        	public void insertString(FilterBypass fb, int off
+        	                    , String str, AttributeSet attr) 
+        	                            throws BadLocationException 
+        	{
+        	    // remove non-digits
+        	    fb.insertString(off, str.replaceAll("\\D++", ""), attr);
+        	} 
+        	@Override
+        	public void replace(FilterBypass fb, int off
+        	        , int len, String str, AttributeSet attr) 
+        	                        throws BadLocationException 
+        	{
+        	    // remove non-digits
+        	    fb.replace(off, len, str.replaceAll("\\D++", ""), attr);
+        	}
+        });
+        textFieldVelocidade.addActionListener(this); // interpreta o <enter> do usuario
+        // interpreta o <tab>
         textFieldVelocidade.setInputVerifier(new InputVerifier() {
 			@Override
 			public boolean verify(JComponent input) {
@@ -219,7 +243,7 @@ public class IHM extends JFrame implements ActionListener {
                 return (Integer.parseInt(tField.getText().trim()) >=0 && Integer.parseInt(tField.getText().trim()) <= 100);  
 			}
             });  
-        textFieldVelocidade.addActionListener(this); // interpreta o <enter> do usuario
+        // interpreta o <tab>
         textFieldVelocidade.addFocusListener(new FocusListener() {
         	@Override
             public void focusGained(FocusEvent e) {
@@ -506,6 +530,10 @@ public class IHM extends JFrame implements ActionListener {
     				0
     			:
     				Integer.parseInt(textFieldVelocidade.getText().trim());
+    	if (vel > 100) {
+    		textFieldVelocidade.setText("0");
+    		vel = 0;
+    	}
 		arm.setVelocidadeJog(vel);
 		append("Velocidade da movimentação manual: " + arm.getVelocidadeJog(), INFO);
 		textFieldVelocidade.setText(String.valueOf(arm.getVelocidadeJog()));
