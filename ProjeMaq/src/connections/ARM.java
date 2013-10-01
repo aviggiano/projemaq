@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
+import gui.IHM;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,12 +41,18 @@ public class ARM {
 	}
 	
 	public void writeRegister (int nbotao, int vel) {
-		this.write(Protocolo.writeRegister(nbotao, vel));
+		String s = Protocolo.writeRegister(nbotao, vel);
+		try {
+			outputStream.write(stringToByteArray(s));
+			outputStream.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void read (String s) {
-
-			// Protocolo.doSomething(ARM.nextMessage);
+		IHM.append(s);
+		// Protocolo.doSomething(s);
 	}
 
 	public void connect() throws Exception {
@@ -81,19 +88,6 @@ public class ARM {
 			e.printStackTrace();
 		}
 	} // disconnect
-
-	public void read() {
-		// TODO
-	}
-
-	public void write(String s) {
-		try {
-			outputStream.write(stringToByteArray(s));
-			outputStream.flush();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	public byte[] stringToByteArray(String s) {
 		ArrayList<Byte> bytes = new ArrayList<>();
