@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,6 +52,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
+
+import org.jfree.util.StringUtils;
 
 import connections.ARM;
 
@@ -98,6 +101,7 @@ public class IHM extends JFrame implements ActionListener {
 
 	private BufferedImage imageIconWarning;
 	private ARM arm;
+	private ArrayList<String> linhasDoArquivo;
     
     /*
      * Constructor
@@ -396,24 +400,30 @@ public class IHM extends JFrame implements ActionListener {
 			carregarArquivo();
 		}
 		else if (actionEvent.getSource() == buttonEnviarCodigoG) {
-			
+			enviarArquivo();
 		}
 		else if (actionEvent.getSource() == buttonStop) {
+			append("STOP", ERRO);
 			arm.writeRegister(3,0);
 		}
 		else if (actionEvent.getSource() == buttonPlay) {
+			append("PLAY", INFO);
 			arm.writeRegister(1,0);
 		} 
 		else if (actionEvent.getSource() == buttonPause) {
+			append("PAUSE", INFO);
 			arm.writeRegister(2,0);
 		}
 		else if (actionEvent.getSource() == textFieldVelocidade) {
+			append("Velocidade atualizada.", INFO);
 			atualizaVelocidadeJog();
 		}
 		else if (actionEvent.getSource() == buttonZerarX) {
+			append("Eixo X zerado.", INFO);
 			arm.writeRegister(8,0);
 		}
 		else if (actionEvent.getSource() == buttonZerarZ) {
+			append("Eixo Z zerado.", INFO);
 			arm.writeRegister(9,0);
 		}
 		else if (actionEvent.getSource() == buttonXless) {
@@ -530,7 +540,7 @@ public class IHM extends JFrame implements ActionListener {
     		vel = 0;
     	}
 		arm.setVelocidadeJog(vel);
-		append("Velocidade da movimentação manual: " + arm.getVelocidadeJog(), INFO);
+		append("Velocidade da movimentação manual: " + arm.getVelocidadeJog() + " % Vmax.", INFO);
 		textFieldVelocidade.setText(String.valueOf(arm.getVelocidadeJog()));
 	}
 
@@ -543,7 +553,6 @@ public class IHM extends JFrame implements ActionListener {
                 }
             }
         } catch (Exception e) {
-            //mainPane.append(e.toString());
             try {
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             } catch (Exception ex) {
@@ -633,9 +642,9 @@ public class IHM extends JFrame implements ActionListener {
             
             if (returnValue == JFileChooser.APPROVE_OPTION) { 
                 File file = fileChooser.getSelectedFile();
-                ArrayList<String> linhasDoArquivo = readData(file);
+                linhasDoArquivo = readData(file);
                 
-                append("\nArquivo selecionado com sucesso.", INFO);
+                append("\nCódigo G carregado com sucesso.", INFO);
                 append(linhasDoArquivo);
             }
             else {
@@ -646,5 +655,26 @@ public class IHM extends JFrame implements ActionListener {
             System.out.println(ex);
         }
         
+    }
+    
+    private void enviarArquivo() {
+    	if (linhasDoArquivo == null) {
+    		append("É necessário carregar um código G antes de enviá-lo à máquina.", ERRO);
+    		return;
+    	}
+    	// escreve linha por linha no microcontrolador
+    	for (String linha : linhasDoArquivo) {
+        	arm.write(linha);
+    	}
+    	append("Fim de envio de código G.", INFO);
+    	
+    	// escreve uma String gigante
+    	/*
+    	StringBuilder builder = new StringBuilder();
+    	for(String s : linhasDoArquivo) {
+    	    builder.append(s);
+    	}
+    	arm.write(builder.toString());
+    	*/
     }
 }

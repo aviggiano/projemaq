@@ -42,6 +42,10 @@ public class ARM {
 	
 	public void writeRegister (int nbotao, int vel) {
 		String s = Protocolo.writeRegister(nbotao, vel);
+		this.write(s);
+	}
+	
+	public void write (String s) {
 		try {
 			outputStream.write(stringToByteArray(s));
 			outputStream.flush();
@@ -51,13 +55,13 @@ public class ARM {
 	}
 	
 	public static void read (String s) {
-		IHM.append(s);
+		IHM.append("ARM > IHM: " + s);
 		// Protocolo.doSomething(s);
 	}
 
 	public void connect() throws Exception {
-		CommPortIdentifier portIdentifier = CommPortIdentifier
-				.getPortIdentifier(this.commPortName);
+		CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(this.commPortName);
+		
 		System.out.println(portIdentifier);
 		if (portIdentifier.isCurrentlyOwned()) {
 			System.out.println("Error: Port '" + portIdentifier.getName()
