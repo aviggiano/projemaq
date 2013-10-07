@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -57,7 +59,7 @@ import org.jfree.util.StringUtils;
 
 import connections.ARM;
 
-public class IHM extends JFrame implements ActionListener {
+public class IHM extends JFrame implements ActionListener, MouseListener {
 	
 	public static final int INFO = 0;
 	public static final int ERRO = 1;
@@ -270,21 +272,25 @@ public class IHM extends JFrame implements ActionListener {
 		// botao X+
 		buttonXplus = new JButton ("X+", new ImageIcon(getClass().getResource("../img/next.png")));
 		buttonXplus.addActionListener(this);
+		buttonXplus.addMouseListener(this);
 		buttonXplus.setEnabled(true);
 
 		// botao X-
 		buttonXless = new JButton ("X-", new ImageIcon(getClass().getResource("../img/previous.png")));
 		buttonXless.addActionListener(this);
+		buttonXless.addMouseListener(this);
 		buttonXless.setEnabled(true);
 
 		// botao Z+
 		buttonZplus = new JButton ("Z+ ", new ImageIcon(getClass().getResource("../img/up.png")));
 		buttonZplus.addActionListener(this);
+		buttonZplus.addMouseListener(this);
 		buttonZplus.setEnabled(true);
 
 		// botao Z-
 		buttonZless = new JButton ("Z-  ", new ImageIcon(getClass().getResource("../img/down.png")));
 		buttonZless.addActionListener(this);
+		buttonZless.addMouseListener(this);
 		buttonZless.setEnabled(true);
 				
 		buttonsJog();
@@ -403,7 +409,7 @@ public class IHM extends JFrame implements ActionListener {
 			enviarArquivo();
 		}
 		else if (actionEvent.getSource() == buttonStop) {
-			append("STOP", ERRO);
+			append("STOP", INFO);
 			arm.writeRegister(3,0);
 		}
 		else if (actionEvent.getSource() == buttonPlay) {
@@ -430,7 +436,7 @@ public class IHM extends JFrame implements ActionListener {
 			System.out.println("X-");
 		}
 		else if (actionEvent.getSource() == buttonXplus) {
-			System.out.println("X+");
+			//System.out.println("X+");
 		}
 		else if (actionEvent.getSource() == buttonZless) {
 			System.out.println("Z-");
@@ -445,6 +451,7 @@ public class IHM extends JFrame implements ActionListener {
 	} 
 	//Funcao que captura o evento de segurar o clique de X+, X-, Z+, Z-
 	private void buttonsJog() {
+		/*
 		int timerDelay = 100;
 		//Botao X+
 		final Timer timer_Xplus = new Timer(timerDelay , new ActionListener() {
@@ -528,6 +535,7 @@ public class IHM extends JFrame implements ActionListener {
 				}
 	        }
 		});
+		*/
 	}
 	
     private void atualizaVelocidadeJog() {
@@ -574,6 +582,7 @@ public class IHM extends JFrame implements ActionListener {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+            	arm.disconnect();
                 System.exit(0);
             }
         });
@@ -677,4 +686,51 @@ public class IHM extends JFrame implements ActionListener {
     	arm.write(builder.toString());
     	*/
     }
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		//System.out.println("clicked");
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		//System.out.println("entered");		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		//System.out.println("exited");		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if (e.getSource() == buttonXplus) {
+			arm.writeRegister(4, arm.getVelocidadeJog());
+		}
+		else if (e.getSource() == buttonZplus) {
+			arm.writeRegister(5, arm.getVelocidadeJog());
+		}
+		else if (e.getSource() == buttonXless) {
+			arm.writeRegister(6, arm.getVelocidadeJog());
+		}
+		else if (e.getSource() == buttonZless) {
+			arm.writeRegister(7, arm.getVelocidadeJog());
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		if (e.getSource() == buttonXplus) {
+			arm.writeRegister(4, arm.getVelocidadeJog());
+		}
+		else if (e.getSource() == buttonZplus) {
+			arm.writeRegister(5, arm.getVelocidadeJog());
+		}
+		else if (e.getSource() == buttonXless) {
+			arm.writeRegister(6, arm.getVelocidadeJog());
+		}
+		else if (e.getSource() == buttonZless) {
+			arm.writeRegister(7, arm.getVelocidadeJog());
+		}
+	}
 }

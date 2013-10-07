@@ -37,6 +37,6 @@ public class Protocolo {
 		}
 		
 		System.out.println(palavra);
-		return palavra.toString();
+		return  new String(palavra);
 	}
 }

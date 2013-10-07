@@ -22,8 +22,15 @@ public class ARM {
 	public ARM() {
 		velocidadeJog = 0;
 		
-	   	baudRate = 9600;
+	   	baudRate = 38400;
 	   	commPortName = "COM1";
+	   	
+	   	try {
+			connect();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	 public ARM (String commPortName) {
@@ -94,16 +101,10 @@ public class ARM {
 	} // disconnect
 
 	public byte[] stringToByteArray(String s) {
-		ArrayList<Byte> bytes = new ArrayList<>();
-		for (Byte b : s.getBytes()) {
-			bytes.add(b);
+		byte[] byteArray = new byte[s.length()];
+		for (int i = 0; i < s.length(); i++) {
+			byteArray[i] = (byte) s.charAt(i);
 		}
-
-		byte[] byteArray = new byte[bytes.size()];
-		for (int i = 0; i < bytes.size(); i++) {
-			byteArray[i] = bytes.get(i);
-		}
-
 		return byteArray;
 	}
 
@@ -121,7 +122,7 @@ public class ARM {
 			try {
 				while ((len = this.in.read(buffer)) > -1) {
 					String s = new String(buffer, 0, len);
-					System.out.print(s);
+					System.out.print(">> " + s);
 					ARM.read(s);
 				}
 			} catch (IOException e) {
