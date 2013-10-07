@@ -95,7 +95,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private JTextArea textAreaCodigoGEmExecucao;
 	private JScrollPane panel5;
 	private static JTextPane textPaneAvisosDoSistema;
-	private JPanel panel6;
+	private JTextPane panel6;
+	private JPanel panel7;
 	private JButton buttonConsole;
 
 	private JLabel labelAtencao;
@@ -127,13 +128,13 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
          * |		|	|			| |		|
          * |	1	|	|	3		| |	4	|
          * |________|	|___________| |_____|
-         *  ________	 ___________________
-         * |		|	|					|
-         * |	2	|	|		5			|
-         * |________|	|___________________|
+         *  ________	 ___________   _____
+         * |		|	|			| |		|
+         * |	2	|	|	5		| |	6	|
+         * |________|	|___________| |_____|
          * 
          *  ________________________________
-         * |				6				|
+         * |				7				|
          * |________________________________|
          */
         
@@ -143,13 +144,14 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
         create4();
         create5();
         create6();
+        create7();
         
         //junta as diferentes partes
         assemble(container);
 
     }
     
-	private void create6() {
+	private void create7() {
 		
 		buttonConsole = new JButton("Console", new ImageIcon(getClass().getResource("../img/terminal.png")));
 		buttonConsole.addActionListener(this);
@@ -162,24 +164,39 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		}
 		labelAtencao = new JLabel("Atenção: máquina ligada!");
 		
-		panel6 = new JPanel();
-		panel6.setLayout(new BoxLayout(panel6, BoxLayout.X_AXIS));
+		panel7 = new JPanel();
+		panel7.setLayout(new BoxLayout(panel7, BoxLayout.X_AXIS));
 		
 		
-		panel6.add(new JLabel("  "));
-		panel6.add(new JLabel(new ImageIcon(imageIconWarning)));
-		panel6.add(new JLabel("  "));
-		panel6.add(labelAtencao);
+		panel7.add(new JLabel("  "));
+		panel7.add(new JLabel(new ImageIcon(imageIconWarning)));
+		panel7.add(new JLabel("  "));
+		panel7.add(labelAtencao);
 		
-		panel6.add(Box.createHorizontalGlue());
+		panel7.add(Box.createHorizontalGlue());
 		
-		panel6.add(buttonConsole);
+		panel7.add(buttonConsole);
+	}
+	
+	private void create6() {
+		panel6 = new JTextPane();
+		
+		panel6.setPreferredSize(new Dimension (200, 165));
+		panel6.setText("Velocidade da peça: ");
+		appendToParameters("Zero Peça: ");
+		
+		Font font = new Font("Arial", Font.PLAIN, 14);
+		panel6.setFont(font);
+		panel6.setEditable(false);
+		
+		panel6.setLayout(new GridLayout(0,1));
+		panel6.setBorder(new TitledBorder("Parâmetros da máquina CNC"));
 	}
 
 	private void create5() {
 		textPaneAvisosDoSistema = new JTextPane();
 		textPaneAvisosDoSistema.setText("IHM incializada com sucesso.");
-		textPaneAvisosDoSistema.setPreferredSize(new Dimension (750, 150));
+		textPaneAvisosDoSistema.setPreferredSize(new Dimension (550, 150));
 		
         font = new Font("Arial", Font.PLAIN, 12);
         textPaneAvisosDoSistema.setFont(font);
@@ -384,6 +401,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		
 		JPanel centersouth = new JPanel();
 		centersouth.add(panel5, BorderLayout.CENTER);
+		centersouth.add(panel6, BorderLayout.WEST);
 
 		JPanel center = new JPanel();
 		center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
@@ -392,7 +410,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		
 		center.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 
-		JPanel south = panel6;
+		JPanel south = panel7;
 		
 		south.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
@@ -710,6 +728,16 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
     	}
     	arm.write(builder.toString());
     	*/
+    }
+    
+    private void appendToParameters(String text) {
+		try {
+			panel6.getStyledDocument().insertString(
+					panel6.getStyledDocument().getLength(), "\n" + text, null);
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
 	@Override
