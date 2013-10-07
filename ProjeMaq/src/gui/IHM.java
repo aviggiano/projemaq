@@ -36,6 +36,7 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -151,6 +152,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private void create6() {
 		
 		buttonConsole = new JButton("Console", new ImageIcon(getClass().getResource("../img/terminal.png")));
+		buttonConsole.addActionListener(this);
+		buttonConsole.setEnabled(true);
 		
 		try {
 			imageIconWarning = ImageIO.read(this.getClass().getResource("../img/warning.png"));
@@ -445,10 +448,32 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 			System.out.println("Z+");
 		}
 		else if (actionEvent.getSource() == buttonConsole) {
-			
+			createConsolePopup();
 		}		
 		
 	} 
+	private void createConsolePopup() {
+        JPanel panelPopUp = new JPanel();
+        JLabel labelEnviarComando = new JLabel ("Digite o comando em código G");
+        JTextField comando = new JTextField (30);
+        
+        panelPopUp.add(labelEnviarComando);
+        panelPopUp.add(new JLabel(" "));
+        panelPopUp.add(comando);
+        
+        panelPopUp.setLayout(new BoxLayout(panelPopUp, BoxLayout.Y_AXIS));
+        
+        int reponse = JOptionPane.showConfirmDialog(this, panelPopUp , "Enviar comando em código G", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                if (reponse == 0) {
+                	append("Comando enviado com sucesso.", INFO);
+                }
+                else {
+                	append("Envio cancelado.", ERRO);
+                }
+                
+                
+	}
+
 	//Funcao que captura o evento de segurar o clique de X+, X-, Z+, Z-
 	private void buttonsJog() {
 		/*
