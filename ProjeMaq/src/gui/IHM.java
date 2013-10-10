@@ -184,8 +184,10 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		panel6.setPreferredSize(new Dimension (200, 165));
 		panel6.setText("Velocidade da peça: ");
 		appendToParameters("Zero Peça: ");
+		appendToParameters("X: ");
+		appendToParameters("Z: ");
 		
-		Font font = new Font("Arial", Font.PLAIN, 14);
+		Font font = new Font("Arial", Font.PLAIN, 16);
 		panel6.setFont(font);
 		panel6.setEditable(false);
 		
@@ -236,7 +238,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 
         // Velocidade
         labelVelocidade = new JLabel("Velocidade:");
-        textFieldVelocidade = new JTextField("50  ");
+        textFieldVelocidade = new JTextField("0   ");
         ((AbstractDocument) textFieldVelocidade.getDocument()).setDocumentFilter(new DocumentFilter(){
         	@Override
         	public void insertString(FilterBypass fb, int off
@@ -761,19 +763,19 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	public void mousePressed(MouseEvent e) {
 		if (e.getSource() == buttonXplus) {
 			append("X+ pressed", INFO);
-			arm.writeRegister(4, arm.getVelocidadeJog());
+			arm.writeRegister(4, arm.getVelocidadeJog(), true);
 		}
 		else if (e.getSource() == buttonZplus) {
 			append("Z+ pressed", INFO);
-			arm.writeRegister(5, arm.getVelocidadeJog());
+			arm.writeRegister(5, arm.getVelocidadeJog(), true);
 		}
 		else if (e.getSource() == buttonXless) {
 			append("X- pressed", INFO);
-			arm.writeRegister(6, arm.getVelocidadeJog());
+			arm.writeRegister(6, arm.getVelocidadeJog(), true);
 		}
 		else if (e.getSource() == buttonZless) {
 			append("Z- pressed", INFO);
-			arm.writeRegister(7, arm.getVelocidadeJog());
+			arm.writeRegister(7, arm.getVelocidadeJog(), true);
 		}
 	}
 
@@ -781,19 +783,19 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	public void mouseReleased(MouseEvent e) {
 		if (e.getSource() == buttonXplus) {
 			append("X+ released", INFO);
-			arm.writeRegister(4, arm.getVelocidadeJog());
+			arm.writeRegister(4, arm.getVelocidadeJog(), false);
 		}
 		else if (e.getSource() == buttonZplus) {
 			append("Z+ released", INFO);
-			arm.writeRegister(5, arm.getVelocidadeJog());
+			arm.writeRegister(5, arm.getVelocidadeJog(), false);
 		}
 		else if (e.getSource() == buttonXless) {
 			append("X- released", INFO);
-			arm.writeRegister(6, arm.getVelocidadeJog());
+			arm.writeRegister(6, arm.getVelocidadeJog(), false);
 		}
 		else if (e.getSource() == buttonZless) {
 			append("Z- released", INFO);
-			arm.writeRegister(7, arm.getVelocidadeJog());
+			arm.writeRegister(7, arm.getVelocidadeJog(), false);
 		}
 	}
 }

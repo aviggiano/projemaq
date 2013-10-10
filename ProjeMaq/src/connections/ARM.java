@@ -18,7 +18,7 @@ public class ARM {
     private SerialPort serialPort;
     private InputStream inputStream = null;
     private OutputStream outputStream = null;
-	
+    
 	public ARM() {
 		velocidadeJog = 0;
 		
@@ -47,13 +47,24 @@ public class ARM {
 		this.velocidadeJog = velocidadeJog;
 	}
 	
+	/**
+	 * Funcao utilizada para os botoes diferentes de X+-Z+-, onde isPressed nao tem significado. 
+	 * Perceber que essa implementacao, apesar de generica, e' bastante error-prone. 
+	 * O programador desavisado pode esquecer de adicionar a variavel isPressed e obter comportamentos inesperados.
+	 * 
+	 * @param nbotao o numero correspondente do botao, segundo o protocolo.
+	 * @param vel a velocidade atual da peca.
+	 */
 	public void writeRegister (int nbotao, int vel) {
-		String s = Protocolo.writeRegister(nbotao, vel);
-		this.write(s);
+		this.write(Protocolo.writeRegister(nbotao, vel, true));
+	}
+	
+	public void writeRegister (int nbotao, int vel, boolean isPressed) {
+		this.write(Protocolo.writeRegister(nbotao, vel, isPressed));
 	}
 	
 	public void writeFile (String mensagem) {
-		this.write(mensagem);
+		this.write(mensagem + Protocolo.TERMINADOR_DE_MENSAGEM);
 	}
 	
 	public void write (String s) {
