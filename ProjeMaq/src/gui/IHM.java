@@ -483,6 +483,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
         
         int reponse = JOptionPane.showConfirmDialog(this, panelPopUp , "Enviar comando em código G", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 if (reponse == 0) {
+                	arm.writeFile(comando.getText());
                 	append("Comando enviado com sucesso.", INFO);
                 }
                 else {
@@ -714,20 +715,21 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
     		append("É necessário carregar um código G antes de enviá-lo à máquina.", ERRO);
     		return;
     	}
+    	/*
     	// escreve linha por linha no microcontrolador
     	for (String linha : linhasDoArquivo) {
         	arm.write(linha);
     	}
-    	append("Fim de envio de código G.", INFO);
+    	*/
     	
     	// escreve uma String gigante
-    	/*
     	StringBuilder builder = new StringBuilder();
     	for(String s : linhasDoArquivo) {
     	    builder.append(s);
     	}
-    	arm.write(builder.toString());
-    	*/
+    	arm.writeFile(builder.toString());
+    	append("Fim de envio de código G.", INFO);
+
     }
     
     private void appendToParameters(String text) {
@@ -758,15 +760,19 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (e.getSource() == buttonXplus) {
+			append("X+ pressed", INFO);
 			arm.writeRegister(4, arm.getVelocidadeJog());
 		}
 		else if (e.getSource() == buttonZplus) {
+			append("Z+ pressed", INFO);
 			arm.writeRegister(5, arm.getVelocidadeJog());
 		}
 		else if (e.getSource() == buttonXless) {
+			append("X- pressed", INFO);
 			arm.writeRegister(6, arm.getVelocidadeJog());
 		}
 		else if (e.getSource() == buttonZless) {
+			append("Z- pressed", INFO);
 			arm.writeRegister(7, arm.getVelocidadeJog());
 		}
 	}
@@ -774,15 +780,19 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (e.getSource() == buttonXplus) {
+			append("X+ released", INFO);
 			arm.writeRegister(4, arm.getVelocidadeJog());
 		}
 		else if (e.getSource() == buttonZplus) {
+			append("Z+ released", INFO);
 			arm.writeRegister(5, arm.getVelocidadeJog());
 		}
 		else if (e.getSource() == buttonXless) {
+			append("X- released", INFO);
 			arm.writeRegister(6, arm.getVelocidadeJog());
 		}
 		else if (e.getSource() == buttonZless) {
+			append("Z- released", INFO);
 			arm.writeRegister(7, arm.getVelocidadeJog());
 		}
 	}

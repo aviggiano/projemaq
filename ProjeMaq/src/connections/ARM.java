@@ -52,6 +52,10 @@ public class ARM {
 		this.write(s);
 	}
 	
+	public void writeFile (String mensagem) {
+		this.write(mensagem);
+	}
+	
 	public void write (String s) {
 		try {
 			outputStream.write(stringToByteArray(s));
