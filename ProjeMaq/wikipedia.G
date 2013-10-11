@@ -9,3 +9,7 @@ N08 G00 X1.1 Z0.0
 N09 G91 X0 Z0.0 
 N10 G91 X0 Z0 
 N11 M30
+
+:1 N01 G96 S854\r\nN02 G00 X1.1 Z1.1\r\n...N11 M30\r\nPPP%!
+
+onde PPP e' a paridade RFC
