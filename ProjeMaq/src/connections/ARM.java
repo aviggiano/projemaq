@@ -9,7 +9,7 @@ import gui.IHM;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
+//teste git 11Oct2013
 public class ARM {
 	private int velocidadeJog; // valor em % de Vmax
 	
