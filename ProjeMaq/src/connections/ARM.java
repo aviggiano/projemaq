@@ -64,12 +64,12 @@ public class ARM {
 	}
 	
 	public void writeFile (String mensagem) {
-		this.write(mensagem + Protocolo.TERMINADOR_DE_MENSAGEM);
+		this.write(mensagem);
 	}
 	
 	public void write (String s) {
 		try {
-			outputStream.write(stringToByteArray(s));
+			outputStream.write(stringToByteArray(s + Protocolo.TERMINADOR_DE_MENSAGEM));
 			outputStream.flush();
 		} catch (Exception e) {
 			e.printStackTrace();

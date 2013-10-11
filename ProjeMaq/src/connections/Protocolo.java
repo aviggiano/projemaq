@@ -89,4 +89,21 @@ public class Protocolo {
 		
 		return ans;
 	}
+	
+	char calculateLRC(char[] frame, int start, int end) {
+		char accum;
+		char ff;
+		char um;
+		int i;
+		accum = 0;
+		ff = (char) 0xff;
+		um = (char) 0x01;
+
+		for (i = start; i < end; i++) {
+			accum = (char) ((int) (accum + frame[i]) % ff);
+		}
+		accum = (char) (ff - accum);
+		accum = (char) (accum + um);
+		return accum;
+	}
 }
