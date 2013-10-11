@@ -106,6 +106,9 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private BufferedImage imageIconWarning;
 	private ARM arm;
 	private ArrayList<String> linhasDoArquivo;
+	private JLabel labelDiametroDaPeca;
+	private JTextField textFieldDiametroDaPeca;
+	private JLabel labelUnidadeDoDiametro;
     
     /*
      * Constructor
@@ -235,7 +238,50 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	}
 
 	private void create2() {
+		// Diametro
+		labelDiametroDaPeca = new JLabel("Diâmetro da Peça:");
+		textFieldDiametroDaPeca = new JTextField ("            ");
+		((AbstractDocument) textFieldDiametroDaPeca.getDocument()).setDocumentFilter(new DocumentFilter(){
+        	@Override
+        	public void insertString(FilterBypass fb, int off
+        	                    , String str, AttributeSet attr) 
+        	                            throws BadLocationException 
+        	{
+        	    // remove non-digits
+        	    fb.insertString(off, str.replaceAll("([^0-9.]?)", ""), attr);
+        	} 
+        	@Override
+        	public void replace(FilterBypass fb, int off
+        	        , int len, String str, AttributeSet attr) 
+        	                        throws BadLocationException 
+        	{
+        	    // remove non-digits
+        	    fb.replace(off, len, str.replaceAll("([^0-9.]?)", ""), attr);
+        	}
+        });
+		textFieldDiametroDaPeca.addActionListener(this); // interpreta o <enter> do usuario
+        // interpreta o <tab>
+		textFieldDiametroDaPeca.setInputVerifier(new InputVerifier() {
+			@Override
+			public boolean verify(JComponent input) {
+                JTextField tField = (JTextField) input;
+                return (Double.parseDouble(tField.getText().trim()) >=0 && Double.parseDouble(tField.getText().trim()) <= 100);  
+			}
+            });  
+        // interpreta o <tab>
+		textFieldDiametroDaPeca.addFocusListener(new FocusListener() {
+        	@Override
+            public void focusGained(FocusEvent e) {
+              // nao faz nada
+            }
 
+        	@Override
+            public void focusLost(FocusEvent e) {
+              atualizaDiametroDaPeca();
+            }
+          });
+        labelUnidadeDoDiametro = new JLabel("mm");
+		
         // Velocidade
         labelVelocidade = new JLabel("Velocidade:");
         textFieldVelocidade = new JTextField("0   ");
@@ -331,6 +377,11 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		panelSetinhas.add(panelVertical, BorderLayout.CENTER);
 		panelSetinhas.add(buttonXplus, BorderLayout.EAST);
 		
+		JPanel panelDiametro = new JPanel();
+		panelDiametro.add(labelDiametroDaPeca);
+		panelDiametro.add(textFieldDiametroDaPeca);
+		panelDiametro.add(labelUnidadeDoDiametro);
+		
 		JPanel panelVelocidade = new JPanel();
 		panelVelocidade.add(labelVelocidade);
         panelVelocidade.add(textFieldVelocidade);
@@ -338,7 +389,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
         
 		panel2 = new JPanel();
 		panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
-		panel2.add(panelVelocidade, BorderLayout.NORTH);
+		panel2.add(panelDiametro);
+		panel2.add(panelVelocidade);
 		panel2.add(panelZerar);
 		panel2.add(new JLabel(" "));
 		panel2.add(panelSetinhas);
@@ -444,8 +496,10 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 			arm.writeRegister(2,0);
 		}
 		else if (actionEvent.getSource() == textFieldVelocidade) {
-			append("Velocidade atualizada.", INFO);
 			atualizaVelocidadeJog();
+		}
+		else if (actionEvent.getSource() == textFieldDiametroDaPeca) {
+			atualizaDiametroDaPeca();
 		}
 		else if (actionEvent.getSource() == buttonZerarX) {
 			append("Eixo X zerado.", INFO);
@@ -583,6 +637,20 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		});
 		*/
 	}
+	
+	 private void atualizaDiametroDaPeca() {
+	    	double diametro = ( textFieldDiametroDaPeca.getText().isEmpty()) ? 
+	    				0
+	    			:
+	    				Double.parseDouble(textFieldDiametroDaPeca.getText().trim());
+	    	if (diametro > 100) {
+	    		textFieldDiametroDaPeca.setText("0");
+	    		diametro = 0;
+	    	}
+			arm.setDiametroDaPeca(diametro);
+			append("Diâmetro da peça: " + arm.getDiametroDaPeca() + " mm.", INFO);
+			textFieldDiametroDaPeca.setText(String.valueOf(arm.getDiametroDaPeca()));
+		}
 	
     private void atualizaVelocidadeJog() {
     	int vel = ( textFieldVelocidade.getText().isEmpty()) ? 

@@ -12,6 +12,7 @@ import java.io.OutputStream;
 //teste git 11Oct2013 antonio
 public class ARM {
 	private int velocidadeJog; // valor em % de Vmax
+	private double diametroDaPeca;
 	
     private int baudRate;
     private String commPortName;
@@ -121,6 +122,14 @@ public class ARM {
 			byteArray[i] = (byte) s.charAt(i);
 		}
 		return byteArray;
+	}
+
+	public double getDiametroDaPeca() {
+		return diametroDaPeca;
+	}
+
+	public void setDiametroDaPeca(double diametroDaPeca) {
+		this.diametroDaPeca = diametroDaPeca;
 	}
 
 	public static class SerialReader implements Runnable {
