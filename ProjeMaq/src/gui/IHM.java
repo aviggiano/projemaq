@@ -33,6 +33,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonModel;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
@@ -62,6 +63,8 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 
 import org.jfree.util.StringUtils;
+
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import connections.ARM;
 
@@ -115,6 +118,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private JTextField textFieldDiametroDaPeca;
 	private JLabel labelUnidadeDoDiametro;
 	private JList listCodigoGEmExecucao;
+	private JScrollPane listScroller;
     
     /*
      * Constructor
@@ -224,7 +228,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		listCodigoGEmExecucao = new JList<String>();
 		listCodigoGEmExecucao.setLayoutOrientation(JList.VERTICAL);
 		listCodigoGEmExecucao.setVisibleRowCount(-1); //?
-		JScrollPane listScroller = new JScrollPane(listCodigoGEmExecucao);
+		listScroller = new JScrollPane(listCodigoGEmExecucao);
 		listScroller.setPreferredSize(new Dimension(200, 300));
 		listScroller.setBorder(new TitledBorder("Código G em execução"));
 
@@ -786,6 +790,10 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
                 
                 append("\nCódigo G carregado com sucesso.", INFO);
                 append(linhasDoArquivo);
+                
+                listCodigoGEmExecucao.setListData(linhasDoArquivo.toArray());
+                listScroller.revalidate();
+                listScroller.repaint();
             }
             else {
                 append("\nProblema na seleção do arquivo.", ERRO); 
