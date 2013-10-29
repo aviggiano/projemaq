@@ -14,6 +14,7 @@ public class ARM {
 	private int velocidadeJog; // valor em % de Vmax
 	private double diametroDaPeca;
 	//eu modifiquei aqui hahahaha
+	// os dois mexendo mua mua mua
     private int baudRate;
     private String commPortName;
     private SerialPort serialPort;
