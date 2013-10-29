@@ -16,22 +16,32 @@ public class Protocolo {
 		super();
 	}
 
-	// funcao writeregister que cria os comandos no protocolo definido para
+	// funcao processReceiveCommand que cria os comandos no protocolo definido para
 	// enviar para o ARM
 	// Protocolo:
 	/**
 	 * Botao Protocolo
 	 * 
 	 */
-	public static String writeRegister(int nbotao, int vel, boolean isPressed) {
+	//public static String processReceiveCommand(int nbotao, int vel, boolean isPressed) {
+	
+	
+	
+	public static String processReceiveCommand(int nbotao, int vel, boolean isPressed) {
+		if(nbotao>=4 && nbotao<=7 )
+			// botões JOG
+		{
+		
 		char[] palavra = new char[10];
+		
 		palavra[0] = ':';						//inicio de mensagem
 		palavra[1] = '2';						//funcao do botao = funcao '2'
 		palavra[2] = '0';						//nbotao
 		palavra[3] = (char) (nbotao + 48);		//nbotao
+		
 		palavra[7] = (isPressed)? '1' : '0';	//ispressed
-		palavra[8] = '\r';						//fim de mensagem \r
-		palavra[9] = '\n';						//fim de mensagem \n
+		palavra[8] = '%';						//fim de mensagem %
+		palavra[9] = '!';						//fim de mensagem !
 		if (vel < 10) {							//velocidade velocidade velocidade
 			palavra[4] = '0';
 			palavra[5] = '0';
@@ -41,12 +51,64 @@ public class Protocolo {
 			palavra[5] = (char) ((int) (vel / 10) + 48);
 			palavra[6] = (char) ((vel % 10) + 48);
 		} else {
+			
 			palavra[4] = '1';
 			palavra[5] = '0';
 			palavra[6] = '0';
+			
 		}
 		System.out.println(palavra);
 		return  new String(palavra);
+		}
+		
+		
+		else if (nbotao==8)
+		{ //botão zpeçaX
+			char[] palavra = new char[9];
+			
+			palavra[0] = ':';						//inicio de mensagem
+			palavra[1] = '2';						//funcao do botao = funcao '2'
+			palavra[2] = '0';						//nbotao
+			palavra[3] = (char) (nbotao + 48);		//nbotao
+			
+			
+			palavra[7] = '%';						//fim de mensagem %
+			palavra[8] = '!';						//fim de mensagem !
+			if (vel < 10) {							//velocidade velocidade velocidade
+				palavra[4] = '0';
+				palavra[5] = '0';
+				palavra[6] = (char) (vel + 48);
+			} else if (vel <= 99) {
+				palavra[4] = '0';
+				palavra[5] = (char) ((int) (vel / 10) + 48);
+				palavra[6] = (char) ((vel % 10) + 48);
+			} else {
+				
+				palavra[4] = (char) ((int) (vel / 100) + 48);
+				palavra[5] = (char) ( (int) ((vel%100)/10)+48);
+				palavra[6] = (char) ((vel % 10) + 48);
+				
+			}
+			System.out.println(palavra);
+			return  new String(palavra);
+			
+		}
+			
+			else
+		{ //botões Play, Pause, Stop, ZeroZ
+			char[] palavra = new char[6];
+			
+			palavra[0] = ':';						//inicio de mensagem
+			palavra[1] = '2';						//funcao do botao = funcao '2'
+			palavra[2] = '0';						//nbotao
+			palavra[3] = (char) (nbotao + 48);		//nbotao
+			palavra[4] = '%';						//fim de mensagem %
+			palavra[5] = '!';
+			System.out.println(palavra);
+			return  new String(palavra);
+			
+		}
+	
 	}
 	
 	public Map<String, String> uplink(String mensagem) throws Exception {
