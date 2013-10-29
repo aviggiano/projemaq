@@ -103,7 +103,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private JTextArea textAreaCodigoGEmExecucao;
 	private JScrollPane panel5;
 	private static JTextPane textPaneAvisosDoSistema;
-	private JTextPane panel6;
+	private JScrollPane panel6;
 	private JPanel panel7;
 	private JButton buttonConsole;
 
@@ -118,7 +118,10 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private JTextField textFieldDiametroDaPeca;
 	private JLabel labelUnidadeDoDiametro;
 	private JList listCodigoGEmExecucao;
-	private JScrollPane listScroller;
+	private JScrollPane listScrollerCodigoG;
+	private JList<String> listParametros;
+	private JScrollPane listScrollerParametros;
+	private DefaultListModel listModelParametros;
     
     /*
      * Constructor
@@ -192,8 +195,27 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	}
 	
 	private void create6() {
-		panel6 = new JTextPane();
+		String[] parametros = {
+			"Velocidade da peça:",
+			"Diâmetro da peça:",
+			"Zero peça:",
+			"X:",
+			"Z:"
+		};
+		listModelParametros = new DefaultListModel();
+		for (String p : parametros) {
+			listModelParametros.addElement(p);	
+		}
 		
+		listParametros = new JList<String>(listModelParametros);
+		listParametros.setLayoutOrientation(JList.VERTICAL);
+		listParametros.setVisibleRowCount(-1); //?
+		listScrollerParametros = new JScrollPane(listParametros);
+		listScrollerParametros.setPreferredSize(new Dimension(200, 165));
+		listScrollerParametros.setBorder(new TitledBorder("Parâmetros"));
+
+		panel6 = listScrollerParametros;
+/*		
 		panel6.setPreferredSize(new Dimension (200, 165));
 		panel6.setText("Velocidade da peça: ");
 		appendToParameters("Zero Peça: ");
@@ -206,6 +228,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		
 		panel6.setLayout(new GridLayout(0,1));
 		panel6.setBorder(new TitledBorder("Parâmetros da máquina CNC"));
+*/
 	}
 
 	private void create5() {
@@ -228,9 +251,9 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		listCodigoGEmExecucao = new JList<String>();
 		listCodigoGEmExecucao.setLayoutOrientation(JList.VERTICAL);
 		listCodigoGEmExecucao.setVisibleRowCount(-1); //?
-		listScroller = new JScrollPane(listCodigoGEmExecucao);
-		listScroller.setPreferredSize(new Dimension(200, 300));
-		listScroller.setBorder(new TitledBorder("Código G em execução"));
+		listScrollerCodigoG = new JScrollPane(listCodigoGEmExecucao);
+		listScrollerCodigoG.setPreferredSize(new Dimension(200, 300));
+		listScrollerCodigoG.setBorder(new TitledBorder("Código G em execução"));
 
 /*		
 		textAreaCodigoGEmExecucao = new JTextArea("", 
@@ -241,7 +264,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
         scrollPaneCodigoGEmExecucao = new JScrollPane(textAreaCodigoGEmExecucao);
         scrollPaneCodigoGEmExecucao.setBorder(new TitledBorder("Código G em execução"));
 */
-		panel4 = listScroller; //scrollPaneCodigoGEmExecucao;
+		panel4 = listScrollerCodigoG; //scrollPaneCodigoGEmExecucao;
 		
 	}
 
@@ -668,6 +691,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 			arm.setDiametroDaPeca(diametro);
 			append("Diâmetro da peça: " + arm.getDiametroDaPeca() + " mm.", INFO);
 			textFieldDiametroDaPeca.setText(String.valueOf(arm.getDiametroDaPeca()));
+			
+			listModelParametros.setElementAt("Diâmetro da peça: " + diametro + " mm", 1);
 		}
 	
     private void atualizaVelocidadeJog() {
@@ -682,6 +707,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		arm.setVelocidadeJog(vel);
 		append("Velocidade da movimentação manual: " + arm.getVelocidadeJog() + " % Vmax.", INFO);
 		textFieldVelocidade.setText(String.valueOf(arm.getVelocidadeJog()));
+		
+		listModelParametros.setElementAt("Velocidade da peça: " + vel + " % Vmax", 0);
 	}
 
 	private void setLookAndFeel(String nomeDoLookAndFeel) {
@@ -792,8 +819,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
                 append(linhasDoArquivo);
                 
                 listCodigoGEmExecucao.setListData(linhasDoArquivo.toArray());
-                listScroller.revalidate();
-                listScroller.repaint();
+                listScrollerCodigoG.revalidate();
+                listScrollerCodigoG.repaint();
             }
             else {
                 append("\nProblema na seleção do arquivo.", ERRO); 
@@ -835,13 +862,14 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
     }
     
     private void appendToParameters(String text) {
+/*    	
 		try {
 			panel6.getStyledDocument().insertString(
 					panel6.getStyledDocument().getLength(), "\n" + text, null);
 		} catch (BadLocationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+*/
     }
 
 	@Override
