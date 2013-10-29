@@ -1,0 +1,49 @@
+grammar Gcode;
+def  :  statement+ fimprograma ;
+fimprograma : 'N'numerolinha mfim ;
+statement  	: 'N'numerolinha g00 fimdelinha
+			| 'N'numerolinha g01 fimdelinha
+			| 'N'numerolinha g76 fimdelinha
+			| 'N'numerolinha g96 fimdelinha
+			| fimdelinha ;
+
+decimal3p2 	: SIGN? INT  INT? INT? '.' INT? INT?	// exemplo -1.2, +5., -1.02
+			| SIGN? 			   '.' INT  INT?	// exemplo -.4, -.34
+			| SIGN? INT  INT? INT? ;				// exemplo -123, -1, +12
+decimal2p2	: INT INT? '.' INT? INT?
+			| 		   '.' INT  INT?
+			| INT INT? ;
+decimal1p1	: INT '.' INT?
+			| 	  '.' INT ;
+			
+			
+numerolinha : INT INT INT	;
+coord   	: decimal3p2	;
+coordx 		: 'X'coord  	;
+coordz  	: 'Z'coord  	;
+avanco		: 'F'decimal2p2	;
+fimdelinha	: '\r' 			;
+
+mfim 		: ('M30'|'M02')												;	// fim de programa
+g00		  	: 'G00' coordx coordz										;	// avanco rapido        
+g01			: 'G01' coordx coordz avanco								;	// interpolacao linear 
+g76			: 'G76' coordx coordz 'P' decimal2p2 'Q' decimal1p1 avanco	;	// rotina de rosca
+g96			: 'G96' 'S' INT? INT INT									;	// seta velocidade eixo arvore (em % Vmax)
+
+SIGN		: ('+'|'-');
+INT			: '0'..'9' ;
+
+ID  		: 'a'..'z'  ;
+WS  		: [' '\n] -> skip;
+STRING  	:  '"' ( ESC_SEQ | ~('\\'|'"') )* '"'   ;
+fragment HEX_DIGIT  :   ('0'..'9'|'a'..'f'|'A'..'F') ;
+fragment ESC_SEQ  	:   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\')
+					|   UNICODE_ESC    
+					|   OCTAL_ESC  ;
+
+fragment OCTAL_ESC  :     '\\' ('0'..'3') ('0'..'7') ('0'..'7')
+					|   '\\' ('0'..'7') ('0'..'7')
+					|   '\\' ('0'..'7')   ;
+
+fragment UNICODE_ESC:   '\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT  ;
+

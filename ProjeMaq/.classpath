@@ -6,5 +6,7 @@
 	<classpathentry kind="lib" path="lib/jfreechart-1.0.15.jar"/>
 	<classpathentry kind="lib" path="lib/RXTXcomm.jar"/>
 	<classpathentry kind="lib" path="lib/antlr-4.0-complete.jar"/>
+	<classpathentry kind="var" path="ANTLR_HOME/antlr.jar" sourcepath="ANTLR_HOME/antlrsrc.zip"/>
+	<classpathentry kind="lib" path="lib/antlr-runtime-4.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
