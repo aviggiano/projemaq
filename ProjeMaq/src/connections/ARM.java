@@ -56,21 +56,24 @@ public class ARM {
 	 * @param nbotao o numero correspondente do botao, segundo o protocolo.
 	 * @param vel a velocidade atual da peca.
 	 */
-	public void writeRegister (int nbotao, int vel) {
-		this.write(Protocolo.writeRegister(nbotao, vel, true));
+	public void processReceiveCommand (int nbotao, int vel) {
+		this.write(Protocolo.processReceiveCommand(nbotao, vel, true));
 	}
 	
-	public void writeRegister (int nbotao, int vel, boolean isPressed) {
-		this.write(Protocolo.writeRegister(nbotao, vel, isPressed));
+	public void processReceiveCommand (int nbotao, int vel, boolean isPressed) {
+		this.write(Protocolo.processReceiveCommand(nbotao, vel, isPressed));
 	}
 	
-	public void writeFile (String mensagem) {
+	public void processReceiveGCode (String mensagem) {
+		System.out.println(mensagem);
 		this.write(mensagem);
 	}
 	
 	public void write (String s) {
 		try {
+			//feito por Renan:
 			outputStream.write(stringToByteArray(s + Protocolo.TERMINADOR_DE_MENSAGEM));
+			//outputStream.write(stringToByteArray(s + Protocolo.TERMINADOR_DE_MENSAGEM));
 			outputStream.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -121,9 +124,11 @@ public class ARM {
 		for (int i = 0; i < s.length(); i++) {
 			byteArray[i] = (byte) s.charAt(i);
 		}
+		System.out.println(byteArray);
 		return byteArray;
 	}
-
+	
+	
 	public double getDiametroDaPeca() {
 		return diametroDaPeca;
 	}
