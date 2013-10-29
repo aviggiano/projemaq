@@ -13,7 +13,7 @@ import java.io.OutputStream;
 public class ARM {
 	private int velocidadeJog; // valor em % de Vmax
 	private double diametroDaPeca;
-	
+	//eu modifiquei aqui hahahaha
     private int baudRate;
     private String commPortName;
     private SerialPort serialPort;
