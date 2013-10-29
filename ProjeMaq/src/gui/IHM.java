@@ -890,19 +890,19 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (e.getSource() == buttonXplus) {
-			append("X+ pressed", INFO);
+			append("X+ pressionado", INFO);
 			arm.writeRegister(4, arm.getVelocidadeJog(), true);
 		}
 		else if (e.getSource() == buttonZplus) {
-			append("Z+ pressed", INFO);
+			append("Z+ pressionado", INFO);
 			arm.writeRegister(5, arm.getVelocidadeJog(), true);
 		}
 		else if (e.getSource() == buttonXless) {
-			append("X- pressed", INFO);
+			append("X- pressionado", INFO);
 			arm.writeRegister(6, arm.getVelocidadeJog(), true);
 		}
 		else if (e.getSource() == buttonZless) {
-			append("Z- pressed", INFO);
+			append("Z- pressionado", INFO);
 			arm.writeRegister(7, arm.getVelocidadeJog(), true);
 		}
 	}
@@ -910,19 +910,19 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (e.getSource() == buttonXplus) {
-			append("X+ released", INFO);
+			append("X+ solto", INFO);
 			arm.writeRegister(4, arm.getVelocidadeJog(), false);
 		}
 		else if (e.getSource() == buttonZplus) {
-			append("Z+ released", INFO);
+			append("Z+ solto", INFO);
 			arm.writeRegister(5, arm.getVelocidadeJog(), false);
 		}
 		else if (e.getSource() == buttonXless) {
-			append("X- released", INFO);
+			append("X- solto", INFO);
 			arm.writeRegister(6, arm.getVelocidadeJog(), false);
 		}
 		else if (e.getSource() == buttonZless) {
-			append("Z- released", INFO);
+			append("Z- solto", INFO);
 			arm.writeRegister(7, arm.getVelocidadeJog(), false);
 		}
 	}
