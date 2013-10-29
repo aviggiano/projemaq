@@ -4,6 +4,7 @@ import antlrp.*;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -31,6 +32,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
@@ -38,6 +40,7 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -111,6 +114,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private JLabel labelDiametroDaPeca;
 	private JTextField textFieldDiametroDaPeca;
 	private JLabel labelUnidadeDoDiametro;
+	private JList listCodigoGEmExecucao;
     
     /*
      * Constructor
@@ -203,7 +207,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private void create5() {
 		textPaneAvisosDoSistema = new JTextPane();
 		textPaneAvisosDoSistema.setText("IHM incializada com sucesso.");
-		textPaneAvisosDoSistema.setPreferredSize(new Dimension (550, 150));
+		textPaneAvisosDoSistema.setPreferredSize(new Dimension (400, 150));
 		
         font = new Font("Arial", Font.PLAIN, 12);
         textPaneAvisosDoSistema.setFont(font);
@@ -217,6 +221,14 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	}
 
 	private void create4() {
+		listCodigoGEmExecucao = new JList<String>();
+		listCodigoGEmExecucao.setLayoutOrientation(JList.VERTICAL);
+		listCodigoGEmExecucao.setVisibleRowCount(-1); //?
+		JScrollPane listScroller = new JScrollPane(listCodigoGEmExecucao);
+		listScroller.setPreferredSize(new Dimension(200, 300));
+		listScroller.setBorder(new TitledBorder("Código G em execução"));
+
+/*		
 		textAreaCodigoGEmExecucao = new JTextArea("", 
 				19, 30);
         font = new Font("Arial", Font.PLAIN, 12);
@@ -224,8 +236,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
         textAreaCodigoGEmExecucao.setEditable(false);
         scrollPaneCodigoGEmExecucao = new JScrollPane(textAreaCodigoGEmExecucao);
         scrollPaneCodigoGEmExecucao.setBorder(new TitledBorder("Código G em execução"));
-
-		panel4 = scrollPaneCodigoGEmExecucao;
+*/
+		panel4 = listScroller; //scrollPaneCodigoGEmExecucao;
 		
 	}
 
@@ -687,7 +699,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
     
     private void setTitleSizeAndLocation() {
         this.setTitle("PMR2450 - Torno CNC");
-        frameSize = new Dimension ((int)(screenSize.width*0.8), (int)(screenSize.height*0.80));
+        frameSize = new Dimension ((int)(screenSize.width*0.7), (int)(screenSize.height*0.80));
         this.setSize(frameSize);
         
         //this.setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH );
