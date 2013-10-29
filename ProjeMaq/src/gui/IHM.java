@@ -1,5 +1,7 @@
 package gui;
 
+import antlrp.*;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -765,6 +767,9 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
             
             if (returnValue == JFileChooser.APPROVE_OPTION) { 
                 File file = fileChooser.getSelectedFile();
+                
+                verificaGramatica(file.getAbsolutePath()); 
+                
                 linhasDoArquivo = readData(file);
                 
                 append("\nCódigo G carregado com sucesso.", INFO);
@@ -775,12 +780,19 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
             }
         }
         catch (Exception ex) {
+        	append("Erro na leitura do código G. Corrija e tente novamente.", ERRO);
+        	append(ex.getMessage(), ERRO);
             System.out.println(ex);
         }
         
     }
     
-    private void enviarArquivo() {
+    private void verificaGramatica (String absolutePath) throws Exception {
+		LoadGcodeHandler loadCodeHandler = new LoadGcodeHandler();
+		loadCodeHandler.loadProgram(absolutePath);
+	}
+
+	private void enviarArquivo() {
     	if (linhasDoArquivo == null) {
     		append("É necessário carregar um código G antes de enviá-lo à máquina.", ERRO);
     		return;

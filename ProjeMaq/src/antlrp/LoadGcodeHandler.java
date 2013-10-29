@@ -16,8 +16,8 @@ public class LoadGcodeHandler {
 	private List<String> errorList = null;
 
 	public void loadProgram(String filename) throws Exception {
-		//ANTLRFileStream f = new ANTLRFileStream(filename);
-		GcodeLexer lex = new GcodeLexer (new ANTLRInputStream("N000 G00 X1 Z2\r\nN01\r\nN002 M30\r"));//new GcodeLexer(f);
+		ANTLRFileStream f = new ANTLRFileStream(filename);
+		GcodeLexer lex = new GcodeLexer(f); //new GcodeLexer (new ANTLRInputStream("N000 G00 X1 Z2\r\nN011 G01 X-1. Z2.2 F\r\nN002 M30\r"));//
 		CommonTokenStream tokens = new CommonTokenStream(lex);
 		GcodeParser parser = new GcodeParser(tokens);
 		ErrorHandler errorHandler = new ErrorHandler();
@@ -54,7 +54,7 @@ public class LoadGcodeHandler {
 				Object offendingSymbol, int line, int charPositionInLine,
 				String msg, RecognitionException e) {
 					int msgSize = msg.split(" ").length;
-				errorList.add("ERRO: Linha, Posição, Palavra : " + line + ", " + charPositionInLine + ", " + msg.split(" ")[msgSize-1]);
+				errorList.add("ERRO: Linha:" + line + ", Posição:" + charPositionInLine + ", Palavra:" + msg.split(" ")[msgSize-1]);
 		}
 	}
 }

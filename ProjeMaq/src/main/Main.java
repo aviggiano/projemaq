@@ -9,16 +9,8 @@ public class Main {
 	private static IHM ihm;
 	
 	public static void main(String[] args) {
-		//ihm = new IHM();
+		ihm = new IHM();
 		System.out.println("Hello World!");
-
-		LoadGcodeHandler loadCodeHandler = new LoadGcodeHandler();
-		try {
-			loadCodeHandler.loadProgram("");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-            
 
 	}
 }
