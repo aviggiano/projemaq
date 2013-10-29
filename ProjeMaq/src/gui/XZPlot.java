@@ -10,14 +10,12 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 public class XZPlot extends JPanel {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	private XYSeries series;
 
 	public XZPlot(String title) {
 
-        XYSeries series = new XYSeries("Random Data");
+        series = new XYSeries("Posição da Ferramenta");
         series.add(1.0, 500.2);
         series.add(5.0, 694.1);
         series.add(4.0, 100.0);
@@ -29,7 +27,7 @@ public class XZPlot extends JPanel {
         series.add(30.0, 453.2);
         XYSeriesCollection data = new XYSeriesCollection(series);
         JFreeChart chart = ChartFactory.createXYLineChart(
-            "Posição da ferramenta.......",
+            "Posição da Ferramenta",
             "X", 
             "Z", 
             data,
@@ -43,4 +41,8 @@ public class XZPlot extends JPanel {
         chartPanel.setPreferredSize(new java.awt.Dimension(400, 300));
         this.add(chartPanel);
     }
+	
+	public void add(double x, double z) {
+		series.add(x,z);
+	}
 }
