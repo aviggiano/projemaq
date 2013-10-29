@@ -517,8 +517,6 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	public void actionPerformed(ActionEvent actionEvent) {
 		if (actionEvent.getSource() == buttonCarregarCodigoG) {
 			carregarArquivo();
-			//linha de teste, a apagar depois:
-			buttonEnviarCodigoG.setEnabled(true);
 		}
 		else if (actionEvent.getSource() == buttonEnviarCodigoG) {
 			enviarArquivo();

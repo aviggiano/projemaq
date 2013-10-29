@@ -15,7 +15,7 @@ public class XZPlot extends JPanel {
 	
 	public XZPlot(String title) {
 
-        series = new XYSeries("Random Data");
+        series = new XYSeries("Posição da Ferramenta");
         series.add(1.0, 500.2);
         series.add(5.0, 694.1);
         series.add(4.0, 100.0);
