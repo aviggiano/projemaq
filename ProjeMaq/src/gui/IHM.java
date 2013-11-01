@@ -2,6 +2,8 @@ package gui;
 
 import antlrp.*;
 
+import gnu.io.CommPortIdentifier;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -24,6 +26,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,6 +40,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -121,14 +125,19 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private DefaultListModel listModelParametros;
 	private JList<String> listParametros;
 	private JScrollPane listScrollerParametros;
+	private JButton buttonARM;
     
     /*
      * Constructor
      */   
     public IHM () {
+    	/**
+    	 * isso e' feito no botao Conexao ARM
+    	 */
     	//init external classes
-    	initExternalClasses();
-        //set title, size and location
+    	//initExternalClasses();
+        
+    	//set title, size and location
         setTitleSizeAndLocation();
         //set look and feel
         setLookAndFeel("Windows"); 
@@ -322,7 +331,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		
         // Velocidade
         labelVelocidade = new JLabel("Velocidade:");
-        textFieldVelocidade = new JTextField("0     ");
+        String velocidadeDefault = "50";
+        textFieldVelocidade = new JTextField(velocidadeDefault + "    ");
         ((AbstractDocument) textFieldVelocidade.getDocument()).setDocumentFilter(new DocumentFilter(){
         	@Override
         	public void insertString(FilterBypass fb, int off
@@ -436,7 +446,11 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	}
 
 	private void create1() {
-        
+		// Conectar ARM
+		buttonARM = new JButton("Conectar ARM");
+		buttonARM.addActionListener(this);
+		buttonARM.setEnabled(true);
+		
         // Carregar código G
         buttonCarregarCodigoG = new JButton("Carregar código G", new ImageIcon(getClass().getResource("../img/filesave.png")));
         buttonCarregarCodigoG.addActionListener(this);
@@ -472,7 +486,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
         panel1 = new JPanel();
         //panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
         panel1.setLayout(new GridLayout(6,0));
-        
+
+        panel1.add(buttonARM);
         panel1.add(buttonCarregarCodigoG);
         panel1.add(buttonEnviarCodigoG);
         panel1.add(panelBotoesDeControle);
@@ -515,7 +530,10 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 
 	@Override
 	public void actionPerformed(ActionEvent actionEvent) {
-		if (actionEvent.getSource() == buttonCarregarCodigoG) {
+		if (actionEvent.getSource() == buttonARM) {
+			conexaoARM();
+		}
+		else if (actionEvent.getSource() == buttonCarregarCodigoG) {
 			carregarArquivo();
 		}
 		else if (actionEvent.getSource() == buttonEnviarCodigoG) {
@@ -580,6 +598,57 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		}		
 		
 	} 
+	private void conexaoARM() {
+		//TODO
+        JPanel panelPopUp = new JPanel();
+        
+        JLabel labelCOMPort = new JLabel ("COM Port");
+        JComboBox<String> comboBoxCOMPort = new JComboBox<String>(availableCOMPorts());
+        
+        JLabel labelBaudRate = new JLabel("Baud");
+        JTextField textFieldBaudRate = new JTextField("9600");
+        
+        panelPopUp.add(labelCOMPort);
+        panelPopUp.add(comboBoxCOMPort);
+        panelPopUp.add(labelBaudRate);
+        panelPopUp.add(textFieldBaudRate);
+        
+        panelPopUp.setLayout(new BoxLayout(panelPopUp, BoxLayout.Y_AXIS));
+        
+        int reponse = JOptionPane.showConfirmDialog(this, panelPopUp , "Conexão com o ARM", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                if (reponse == 0) {
+                	int baudRate = Integer.parseInt(textFieldBaudRate.getText());
+                	String comPort = comboBoxCOMPort.getSelectedItem().toString();
+                	arm = new ARM(baudRate, comPort);
+                	
+                	try {
+						arm.connect();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                }
+                else {
+                	System.out.println("nay");
+                }
+	}
+	
+	public String[] availableCOMPorts () {
+        ArrayList<String> ports = new ArrayList<String>();
+
+        Enumeration portList = CommPortIdentifier.getPortIdentifiers();
+        System.out.println(portList);
+        while (portList.hasMoreElements()) {
+            CommPortIdentifier portId = (CommPortIdentifier) portList.nextElement();
+            if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+                ports.add(portId.getName());
+            }
+        }
+
+        return ports.toArray((new String[ports.size()]));
+	}
+	
+
 	private void createConsolePopup() {
         JPanel panelPopUp = new JPanel();
         JLabel labelEnviarComando = new JLabel ("Digite o comando em código G");
@@ -755,7 +824,13 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-            	arm.disconnect();
+            	try {
+            		arm.disconnect();	
+            	}
+            	catch (Exception ex) {
+            		
+            	}
+            	
                 System.exit(0);
             }
         });
@@ -874,7 +949,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
     		//System.out.println(s);
     	    builder.append(s+"\r\n");
     	}
-    	builder.append("PPP");
+    	// TODO tratar paridade posteriormente
+    	// builder.append("PPP");
     	builder.append(Protocolo.TERMINADOR_DE_MENSAGEM);
     	arm.processReceiveGCode(builder.toString());
     	//System.out.println(builder);

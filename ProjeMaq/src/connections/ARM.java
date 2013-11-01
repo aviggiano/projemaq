@@ -1,6 +1,8 @@
 package connections;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
+
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
@@ -13,9 +15,8 @@ import java.io.OutputStream;
 public class ARM {
 	private int velocidadeJog; // valor em % de Vmax
 	private double diametroDaPeca;
-	//eu modifiquei aqui hahahaha
-	// os dois mexendo mua mua mua
-    private int baudRate;
+
+	private int baudRate;
     private String commPortName;
     private SerialPort serialPort;
     private InputStream inputStream = null;
@@ -25,18 +26,12 @@ public class ARM {
 		velocidadeJog = 0;
 		
 	   	baudRate = 38400;
-	   	commPortName = "COM1";
-	   	
-	   	try {
-			connect();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	   	commPortName = "COM13";
 	}
 	
-	 public ARM (String commPortName) {
+	 public ARM (int baudRate, String commPortName) {
 	    	this();
+	    	this.baudRate = baudRate;
 	    	this.commPortName = commPortName;
 	 }
 
@@ -70,11 +65,25 @@ public class ARM {
 		this.write(mensagem);
 	}
 	
+	public static String[] availableCOMPorts () {
+        ArrayList<String> ports = new ArrayList<String>();
+
+        Enumeration portList = CommPortIdentifier.getPortIdentifiers();
+
+        while (portList.hasMoreElements()) {
+            CommPortIdentifier portId = (CommPortIdentifier) portList.nextElement();
+            if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+                ports.add(portId.getName());
+            }
+        }
+
+        return new String[ports.size()];
+	}
+	
 	public void write (String s) {
 		try {
 			//feito por Renan:
-			outputStream.write(stringToByteArray(s + Protocolo.TERMINADOR_DE_MENSAGEM));
-			//outputStream.write(stringToByteArray(s + Protocolo.TERMINADOR_DE_MENSAGEM));
+			outputStream.write(stringToByteArray(s)); //  + Protocolo.TERMINADOR_DE_MENSAGEM esta' incluso na propria classe protocolo
 			outputStream.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,7 +114,7 @@ public class ARM {
 				outputStream = serialPort.getOutputStream();
 
 				(new Thread(new SerialReader(inputStream))).start();
-				//(new Thread(new SerialWriter(outputStream))).start();
+				(new Thread(new SerialWriter(outputStream))).start();
 			} else {
 				System.out.println("Error: Only serial ports are handled.");
 			}
@@ -125,7 +134,7 @@ public class ARM {
 		for (int i = 0; i < s.length(); i++) {
 			byteArray[i] = (byte) s.charAt(i);
 		}
-		System.out.println(byteArray);
+		System.out.println("(String) " + s + " == (byte) " + byteArray);
 		return byteArray;
 	}
 	
@@ -152,8 +161,7 @@ public class ARM {
 			try {
 				while ((len = this.in.read(buffer)) > -1) {
 					String s = new String(buffer, 0, len);
-					System.out.print(">> " + s);
-					ARM.read(s);
+					//System.out.println("Uplink: " + s);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -161,7 +169,7 @@ public class ARM {
 		}
 	}
 
-	/*
+	
 	public static class SerialWriter implements Runnable {
 
 		static OutputStream out;
@@ -182,6 +190,6 @@ public class ARM {
 		}
 		
 	}
-	*/
+	
 
 }

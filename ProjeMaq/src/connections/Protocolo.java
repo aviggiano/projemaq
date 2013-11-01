@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Protocolo {
 	
-    public static final String TERMINADOR_DE_MENSAGEM = "!%"; 
+    public static final String TERMINADOR_DE_MENSAGEM = "%!"; 
     public static final int UPLINK_MESSAGE_SIZE = 19;
     public static final int EVENTUAL_MESSAGE_SIZE = 3;
     public static final int CODIGO_G_MESSAGE_SIZE = 27;
