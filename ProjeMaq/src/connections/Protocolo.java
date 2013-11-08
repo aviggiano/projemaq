@@ -32,7 +32,7 @@ public class Protocolo {
 	
 	public static String processReceiveCommand(int nbotao, int vel, boolean isPressed) {
 		if(nbotao>=4 && nbotao<=7 )
-			// botões JOG
+			// botÃµes JOG
 		{
 		
 		char[] palavra = new char[10];
@@ -66,7 +66,7 @@ public class Protocolo {
 		
 		
 		else if (nbotao==8)
-		{ //botão zpeçaX
+		{ //botÃ£o zpeÃ§aX
 			char[] palavra = new char[9];
 			
 			palavra[0] = ':';						//inicio de mensagem
@@ -98,7 +98,7 @@ public class Protocolo {
 		}
 			
 			else
-		{ //botões Play, Pause, Stop, ZeroZ
+		{ //botÃµes Play, Pause, Stop, ZeroZ
 			char[] palavra = new char[6];
 			
 			palavra[0] = ':';						//inicio de mensagem
@@ -116,7 +116,7 @@ public class Protocolo {
 	
 	public Map<String, String> uplink(String mensagem) throws Exception {
 		if (mensagem.length() != UPLINK_MESSAGE_SIZE) {
-			throw new Exception("Tamanho do uplink incompatível com o protocolo.");
+			throw new Exception("Tamanho do uplink incompatÃ­vel com o protocolo.");
 		}
 		Map<String, String> ans = new HashMap<String, String>();
 		
@@ -131,14 +131,14 @@ public class Protocolo {
 	
 	public boolean eventuais (String mensagem) throws Exception {
 		if (mensagem.length() != EVENTUAL_MESSAGE_SIZE) {
-			throw new Exception("Tamanho da mensagem eventual incompatível com o protocolo.");
+			throw new Exception("Tamanho da mensagem eventual incompatÃ­vel com o protocolo.");
 		}
 		return (mensagem.charAt(2) == '1');
 	}
 	
 	public Map<String, String> decodificaCodigoG (String mensagem) throws Exception {
 		if (mensagem.length() != CODIGO_G_MESSAGE_SIZE) {
-			throw new Exception("Tamanho do código G incompatível com o protocolo.");
+			throw new Exception("Tamanho do cÃ³digo G incompatÃ­vel com o protocolo.");
 		}
 		Map<String, String> ans = new HashMap<String, String>();
 		
@@ -185,28 +185,103 @@ public class Protocolo {
 	    return count;
 	}
 	
+	
+		public static int countSubstring(String subStr, String str){
+			return (str.length() - str.replace(subStr, "").length()) / subStr.length();
+		}
+	
 	public static void traduz_uplink(String s) {
 		
 		message_from_ARM=message_from_ARM.concat(s);
 		
+		//verifica se tem erro (ausÃªncia de terminador)
+		//if(Protocolo.countOccurrences(message_from_ARM, ':')>1)
 		
-		while(Protocolo.countOccurrences(message_from_ARM, ':')>1)
+		
+		while(Protocolo.countOccurrences(message_from_ARM, ':')>0 && Protocolo.countSubstring(TERMINADOR_DE_MENSAGEM,message_from_ARM)>0)
 		{
+			//System.out.println(message_from_ARM);
+			//String temp=message_from_ARM.substring((message_from_ARM.indexOf(':')+1));
 			
-			String stemp=message_from_ARM.substring((message_from_ARM.indexOf(':')+1));
+			String message=message_from_ARM.substring(message_from_ARM.indexOf(':'),message_from_ARM.indexOf(TERMINADOR_DE_MENSAGEM)+2);
 			
-			String message=message_from_ARM.substring(message_from_ARM.indexOf(':'),stemp.indexOf(':')+1);
-			if (message.length()==19 || message.length()==3)
+			if(Protocolo.countOccurrences(message, ':')>1)
 			{
-				update_variables(message);
+				//erro msg sem nenhum terminador ":1223232:3232"
+				String temp=message_from_ARM.substring((message_from_ARM.indexOf(':')+1));
+				message_from_ARM=message_from_ARM.substring(temp.indexOf(':')+1);
+				System.out.println("Erro no recebimento da MSG (sem terminador)");
+				
 			}
 			else
 			{
-				System.out.println("Erro no recebimento da MSG");
+				if (Protocolo.countOccurrences(message, '%')>1)
+				{
+					
+					// erro msg com terminador incompleto :312313%:2223%!
+					//String temp=message_from_ARM.substring((message_from_ARM.indexOf(':')+1));
+					message_from_ARM=message_from_ARM.substring(message_from_ARM.indexOf('%')+1);
+					if(Protocolo.countOccurrences(message_from_ARM,':')==0)
+					{
+						message_from_ARM="";
+					}
+					else
+					{
+						message_from_ARM=message_from_ARM.substring(message_from_ARM.indexOf(':'));
+						
+					}
+					
+					System.out.println("Erro no recebimento da MSG (% sem !)"+ message_from_ARM);
+				}
+				else
+				{
+					if(Protocolo.countOccurrences(message, '!')>1)
+					{
+						// erro msg com terminador incompleto :312313%:2223%!
+						//String temp=message_from_ARM.substring((message_from_ARM.indexOf(':')+1));
+						message_from_ARM=message_from_ARM.substring(message_from_ARM.indexOf('!')+1);
+						if(Protocolo.countOccurrences(message_from_ARM,':')==0)
+						{
+							message_from_ARM="";
+						}
+						else
+						{
+							message_from_ARM=message_from_ARM.substring(message_from_ARM.indexOf(':'));
+							
+						}
+						
+						System.out.println("Erro no recebimento da MSG (! perdido)"+ message_from_ARM);
+					}
+					else
+					{
+					update_variables(message);
+					
+					
+					message_from_ARM=message_from_ARM.substring(message_from_ARM.indexOf(TERMINADOR_DE_MENSAGEM)+2);
+					}
+				}
 			}
 			
+			/*
+			if (Protocolo.countOccurrences(message, ':')==1)
+			{
+				update_variables(message);
+				System.out.println(message);
+				
+				message_from_ARM=message_from_ARM.substring(message_from_ARM.indexOf(TERMINADOR_DE_MENSAGEM)+2);
+			}
+			else
+			{
+				
+				//elimina a mensagem sem terminador
+				String temp=message_from_ARM.substring((message_from_ARM.indexOf(':')+1));
+				message_from_ARM=message_from_ARM.substring(temp.indexOf(':')+1);
+				System.out.println("Erro no recebimento da MSG");
+			}
+			*/
 			
-			message_from_ARM=message_from_ARM.substring(stemp.indexOf(':')+1);
+			
+			
 		
 		}
 	}
@@ -223,19 +298,16 @@ public class Protocolo {
 		int okZPZ;
 		if(msg.charAt(1)=='3')
 		{
-			
-				X= (double) Integer.parseInt(msg.substring(2,8))/100;
-				Z= (double) Integer.parseInt(msg.substring(8,14))/100;
+				//String stringX=msg.substring(beginIndex)
+				X= Double.parseDouble(msg.substring(2,8));
+				Z= Double.parseDouble(msg.substring(8,14));
 				linha_G= Integer.parseInt(msg.substring(14,17));
 				status= Integer.parseInt(msg.substring(17,18));
 				fim_de_curso= Integer.parseInt(msg.substring(18,19));
 				IHM.atualizaXZ(X, Z);
-				System.out.println(X);
-				System.out.println(Z);
-				System.out.println(linha_G);
+				System.out.println("X="+X+" Z="+Z+" linha_G="+linha_G+" status="+status+" fim_de_curso="+fim_de_curso);
 				IHM.atualizaCodigoGEmExecucao(linha_G);
-				System.out.println(status);
-				System.out.println(fim_de_curso);
+				
 		}
 		else
 		{
@@ -268,7 +340,7 @@ public class Protocolo {
 					  if(msg.charAt(1)=='7')
 					  {
 						  fim_de_curso=Integer.parseInt(msg.substring(2,3));
-						  System.out.println(fim_de_curso);
+						  System.out.println("fim de curso?" +fim_de_curso);
 					  }
 					  else
 					  {
