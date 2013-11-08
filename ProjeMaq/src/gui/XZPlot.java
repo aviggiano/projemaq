@@ -16,15 +16,6 @@ public class XZPlot extends JPanel {
 	public XZPlot(String title) {
 
         series = new XYSeries("Posição da Ferramenta");
-        series.add(1.0, 500.2);
-        series.add(5.0, 694.1);
-        series.add(4.0, 100.0);
-        series.add(12.5, 734.4);
-        series.add(17.3, 453.2);
-        series.add(21.2, 500.2);
-        series.add(21.9, null);
-        series.add(25.6, 734.4);
-        series.add(30.0, 453.2);
         XYSeriesCollection data = new XYSeriesCollection(series);
         JFreeChart chart = ChartFactory.createXYLineChart(
             "Posição da Ferramenta",

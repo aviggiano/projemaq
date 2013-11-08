@@ -76,6 +76,14 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	public static final int INFO = 0;
 	public static final int ERRO = 1;
 	
+	public static enum parametros {
+		VELOCIDADE(0), DIAMETRO(1), ZERO_PECA_X(2), ZERO_PECA_Z(3), X(4), Z(5);
+		int index;
+		parametros(int index) {
+			this.index = index;
+		}
+	}; 
+	
     // variaveis
     private JFileChooser fileChooser;
     
@@ -122,10 +130,11 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private JLabel labelUnidadeDoDiametro;
 	private JList listCodigoGEmExecucao;
 	private JScrollPane listScrollerCodigoG;
-	private DefaultListModel listModelParametros;
+	private static DefaultListModel listModelParametros;
 	private JList<String> listParametros;
 	private JScrollPane listScrollerParametros;
 	private JButton buttonARM;
+	private XZPlot xzPlot;
     
     /*
      * Constructor
@@ -134,8 +143,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
     	/**
     	 * isso e' feito no botao Conexao ARM
     	 */
-    	//init external classes
-    	//initExternalClasses();
+    	//TODO ver se isso nao ta bugando o outro arm = new ARM(baud, com)
+    	initExternalClasses();
         
     	//set title, size and location
         setTitleSizeAndLocation();
@@ -203,8 +212,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	}
 	
 	private void create6() {
-		String[] parametros = { "Velocidade da peça:", "Diâmetro da peça:",
-				"Zero peça:", "X:", "Z:" };
+		String[] parametros = {"Velocidade da peça:", "Diâmetro da peça:",
+				"Zero peça X:", "Zero peça Z:", "X:", "Z:" };
 		listModelParametros = new DefaultListModel();
 		for (String p : parametros) {
 			listModelParametros.addElement(p);
@@ -276,7 +285,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 
 	private void create3() {
 		// grafico XZ
-		XZPlot xzPlot = new XZPlot("XZ Series Demo");
+		xzPlot = new XZPlot("XZ Series Demo");
         xzPlot.setVisible(true);
 
         panel3 = new JPanel();
@@ -447,7 +456,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 
 	private void create1() {
 		// Conectar ARM
-		buttonARM = new JButton("Conectar ARM");
+		buttonARM = new JButton("     Conectar ARM", new ImageIcon(getClass().getResource("../img/preferences-system.png")));
 		buttonARM.addActionListener(this);
 		buttonARM.setEnabled(true);
 		
@@ -599,14 +608,14 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		
 	} 
 	private void conexaoARM() {
-		//TODO
         JPanel panelPopUp = new JPanel();
         
         JLabel labelCOMPort = new JLabel ("COM Port");
         JComboBox<String> comboBoxCOMPort = new JComboBox<String>(availableCOMPorts());
         
         JLabel labelBaudRate = new JLabel("Baud");
-        JTextField textFieldBaudRate = new JTextField("9600");
+        int defaultBaudRate = 38400;
+        JTextField textFieldBaudRate = new JTextField(String.valueOf(defaultBaudRate));
         
         panelPopUp.add(labelCOMPort);
         panelPopUp.add(comboBoxCOMPort);
@@ -624,12 +633,18 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
                 	try {
 						arm.connect();
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
                 }
                 else {
-                	System.out.println("nay");
+                	append("Conexão cancelada.", ERRO);
+                	try {
+                		arm.disconnect();	
+                	}
+                	catch (Exception ex) {
+                		System.out.println(ex.getMessage());
+                	}
+                	
                 }
 	}
 	
@@ -770,13 +785,17 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	    		textFieldDiametroDaPeca.setText("0");
 	    		diametro = 0;
 	    	}
-			arm.setDiametroDaPeca(diametro);
+	    	arm.setDiametroDaPeca(diametro);
 			append("Diâmetro da peça: " + arm.getDiametroDaPeca() + " mm.", INFO);
 			textFieldDiametroDaPeca.setText(String.valueOf(arm.getDiametroDaPeca()));
 			
-			listModelParametros.setElementAt("Diâmetro da peça: " + diametro + " mm", 1);
-
+			atualizaDiametroDaPeca(diametro);
 		}
+	 
+	public static void atualizaDiametroDaPeca(double diametro) {
+		listModelParametros.setElementAt("Diâmetro da peça: " + diametro
+				+ " mm", parametros.DIAMETRO.index);
+	}
 	
     private void atualizaVelocidadeJog() {
     	int vel = ( textFieldVelocidade.getText().isEmpty()) ? 
@@ -790,9 +809,13 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		arm.setVelocidadeJog(vel);
 		append("Velocidade da movimentação manual: " + arm.getVelocidadeJog() + " % Vmax.", INFO);
 		textFieldVelocidade.setText(String.valueOf(arm.getVelocidadeJog()));
-		
-		listModelParametros.setElementAt("Velocidade da peça: " + vel + " % Vmax", 0);
+
+		atualizaVelocidadeJog(vel);
 	}
+    
+    private static void atualizaVelocidadeJog(int vel) {
+		listModelParametros.setElementAt("Velocidade da peça: " + vel + " % Vmax", 0);
+    }
 
 	private void setLookAndFeel(String nomeDoLookAndFeel) {
         try {
@@ -958,18 +981,6 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 
     }
     
-    private void appendToParameters(String text) {
-    	/*
-		try {
-			panel6.getStyledDocument().insertString(
-					panel6.getStyledDocument().getLength(), "\n" + text, null);
-		} catch (BadLocationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
-    }
-
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		//System.out.println("clicked");
@@ -1018,6 +1029,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
             return;
         }
 		if (e.getSource() == buttonXplus) {
+			
 			append("X+ released", INFO);
 			arm.processReceiveCommand(4, arm.getVelocidadeJog(), false);
 		}
@@ -1033,5 +1045,18 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 			append("Z- released", INFO);
 			arm.processReceiveCommand(7, arm.getVelocidadeJog(), false);
 		}
+	}
+	
+	public static void atualizaXZ(double x, double z) {
+		listModelParametros.setElementAt("X: " + x + " mm", parametros.X.index);
+		listModelParametros.setElementAt("Z: " + z + " mm", parametros.Z.index);
+	}
+	
+	public static void atualizaZeroPecaX (double zpx) {
+		listModelParametros.setElementAt("Zero peça X:" + zpx + " mm", parametros.ZERO_PECA_X.index);
+	}
+	
+	public static void atualizaZeroPecaZ (double zpz) {
+		listModelParametros.setElementAt("Zero peça Z:" + zpz + " mm", parametros.ZERO_PECA_Z.index);
 	}
 }

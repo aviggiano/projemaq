@@ -98,10 +98,9 @@ public class ARM {
 	public void connect() throws Exception {
 		CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(this.commPortName);
 		
-		System.out.println(portIdentifier);
+		System.out.println(portIdentifier.getName());
 		if (portIdentifier.isCurrentlyOwned()) {
-			System.out.println("Error: Port '" + portIdentifier.getName()
-					+ "' is currently in use");
+			IHM.append("ERRO: Porta " + portIdentifier.getName() + " em uso.", IHM.ERRO);
 		} else {
 			int timeout = 2000;
 			CommPort commPort = portIdentifier.open(this.getClass().getName(),
@@ -116,7 +115,9 @@ public class ARM {
 				(new Thread(new SerialReader(inputStream))).start();
 				(new Thread(new SerialWriter(outputStream))).start();
 			} else {
-				System.out.println("Error: Only serial ports are handled.");
+				String err = "Error RXTX: Only serial ports are handled.";
+				IHM.append(err, IHM.ERRO);
+				System.out.println(err);
 			}
 		}
 	} // connect
@@ -124,6 +125,8 @@ public class ARM {
 	public void disconnect() {
 		try {
 			serialPort.close();
+		} catch (NullPointerException np) {
+			System.out.println("ERRO: tentou disconectar sem ter conectado anteriormente.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -161,7 +164,8 @@ public class ARM {
 			try {
 				while ((len = this.in.read(buffer)) > -1) {
 					String s = new String(buffer, 0, len);
-					//System.out.println("Uplink: " + s);
+					// TODO interpretar uplink
+					System.out.println("Uplink: " + s);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
