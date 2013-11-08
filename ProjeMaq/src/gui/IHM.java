@@ -99,9 +99,9 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private JPanel panel1;
 	private JButton buttonCarregarCodigoG;
 	private JButton buttonEnviarCodigoG;
-	private JButton buttonStop;
-	private JButton buttonPlay;
-	private JButton buttonPause;
+	private static JButton buttonStop;
+	private static JButton buttonPlay;
+	private static JButton buttonPause;
 	private JPanel panel2;
 	private JButton buttonZerarX;
 	private JButton buttonZerarZ;
@@ -549,10 +549,10 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		}
 		else if (actionEvent.getSource() == buttonEnviarCodigoG) {
 			enviarArquivo();
-			//Como a IHM sabe se o ARM recebeu o código? apagar essas linhas depois
-			buttonPlay.setEnabled(true);
-			buttonStop.setEnabled(true);
-			buttonPause.setEnabled(true);
+			//Como a IHM sabe se o ARM recebeu o código? ===== feito na fct libera botoes
+			//buttonPlay.setEnabled(true);
+			//buttonStop.setEnabled(true);
+			//buttonPause.setEnabled(true);
 		}
 		else if (actionEvent.getSource() == buttonStop) {
 			append("STOP", INFO);
@@ -1057,15 +1057,23 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	
 	public void test() {}
 	
-	public static void atualizaZeroPecaX (double zpx) {
+	public static void atualizaZeroPecaX (int zpx) {
 		listModelParametros.setElementAt("Zero peça X:" + zpx + " mm", parametros.ZERO_PECA_X.index);
 	}
 	
-	public static void atualizaZeroPecaZ (double zpz) {
+	public static void atualizaZeroPecaZ (int zpz) {
 		listModelParametros.setElementAt("Zero peça Z:" + zpz + " mm", parametros.ZERO_PECA_Z.index);
 	}
 	
 	public static void atualizaCodigoGEmExecucao (int nLinha) {
 		listCodigoGEmExecucao.setSelectedIndex(nLinha-1); // linha 1 === indice 0 
+	}
+
+	public static void liberarBotoes() {
+		buttonPlay.setEnabled(true);
+		buttonStop.setEnabled(true);
+		buttonPause.setEnabled(true);
+		// TODO Auto-generated method stub
+		
 	}
 }

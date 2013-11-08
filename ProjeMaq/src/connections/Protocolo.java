@@ -1,5 +1,7 @@
 package connections;
 
+import gui.IHM;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +13,7 @@ public class Protocolo {
     public static final int UPLINK_MESSAGE_SIZE = 19;
     public static final int EVENTUAL_MESSAGE_SIZE = 3;
     public static final int CODIGO_G_MESSAGE_SIZE = 27;
+    public static String message_from_ARM="";
 	
 	public Protocolo() {
 		super();
@@ -167,5 +170,114 @@ public class Protocolo {
 		accum = (char) (ff - accum);
 		accum = (char) (accum + um);
 		return accum;
+	}
+	
+	public static int countOccurrences(String haystack, char needle)
+	{
+	    int count = 0;
+	    for (int i=0; i < haystack.length(); i++)
+	    {
+	        if (haystack.charAt(i) == needle)
+	        {
+	             count++;
+	        }
+	    }
+	    return count;
+	}
+	
+	public static void traduz_uplink(String s) {
+		
+		message_from_ARM=message_from_ARM.concat(s);
+		
+		
+		while(Protocolo.countOccurrences(message_from_ARM, ':')>1)
+		{
+			
+			String stemp=message_from_ARM.substring((message_from_ARM.indexOf(':')+1));
+			
+			String message=message_from_ARM.substring(message_from_ARM.indexOf(':'),stemp.indexOf(':')+1);
+			if (message.length()==19 || message.length()==3)
+			{
+				update_variables(message);
+			}
+			else
+			{
+				System.out.println("Erro no recebimento da MSG");
+			}
+			
+			
+			message_from_ARM=message_from_ARM.substring(stemp.indexOf(':')+1);
+		
+		}
+	}
+
+	private static void update_variables(String msg) {
+		//System.out.println(msg);
+		double X;
+		double Z;
+		int linha_G;
+		int fim_de_curso;
+		int status;
+		int okG;
+		int okZPX;
+		int okZPZ;
+		if(msg.charAt(1)=='3')
+		{
+			
+				X= (double) Integer.parseInt(msg.substring(2,8))/100;
+				Z= (double) Integer.parseInt(msg.substring(8,14))/100;
+				linha_G= Integer.parseInt(msg.substring(14,17));
+				status= Integer.parseInt(msg.substring(17,18));
+				fim_de_curso= Integer.parseInt(msg.substring(18,19));
+				IHM.atualizaXZ(X, Z);
+				System.out.println(X);
+				System.out.println(Z);
+				System.out.println(linha_G);
+				IHM.atualizaCodigoGEmExecucao(linha_G);
+				System.out.println(status);
+				System.out.println(fim_de_curso);
+		}
+		else
+		{
+		  if(msg.charAt(1)=='4'&&msg.charAt(2)=='1')
+		  {
+			  IHM.liberarBotoes();
+			  okG=Integer.parseInt(msg.substring(2,3));
+			  
+			  System.out.println(okG);
+			
+		  }
+		  else
+		  {
+			  if(msg.charAt(1)=='5')
+			  {
+				  okZPX=Integer.parseInt(msg.substring(2,3));
+				  System.out.println(okZPX);
+				  IHM.atualizaZeroPecaX(okZPX);
+			  }
+			  else
+			  {
+				  if(msg.charAt(1)=='6')
+				  {
+					  okZPZ=Integer.parseInt(msg.substring(2,3));
+					  System.out.println(okZPZ);
+					  IHM.atualizaZeroPecaZ(okZPZ);
+				  }
+				  else
+				  {
+					  if(msg.charAt(1)=='7')
+					  {
+						  fim_de_curso=Integer.parseInt(msg.substring(2,3));
+						  System.out.println(fim_de_curso);
+					  }
+					  else
+					  {
+						  System.out.println("ERRO PROTOCOLO");
+					  }
+				  }
+			  }
+		  }
+		}
+		
 	}
 }

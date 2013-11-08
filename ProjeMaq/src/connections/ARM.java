@@ -166,6 +166,8 @@ public class ARM {
 					String s = new String(buffer, 0, len);
 					// TODO interpretar uplink
 					System.out.println("Uplink: " + s);
+					if(s!=null)
+					Protocolo.traduz_uplink(s);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
