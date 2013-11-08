@@ -85,6 +85,8 @@ public class ARM {
 			//feito por Renan:
 			outputStream.write(stringToByteArray(s)); //  + Protocolo.TERMINADOR_DE_MENSAGEM esta' incluso na propria classe protocolo
 			outputStream.flush();
+		} catch (NullPointerException np) {
+			System.out.println("ERRO: Tentou escrever sem ter conectado antes.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -126,7 +128,7 @@ public class ARM {
 		try {
 			serialPort.close();
 		} catch (NullPointerException np) {
-			System.out.println("ERRO: tentou disconectar sem ter conectado anteriormente.");
+			System.out.println("ERRO: Tentou disconectar sem ter conectado anteriormente.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

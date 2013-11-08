@@ -679,14 +679,12 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
         
         int reponse = JOptionPane.showConfirmDialog(this, panelPopUp , "Enviar comando em código G", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 if (reponse == 0) {
-                	arm.processReceiveGCode(comando.getText());
+                	arm.processReceiveGCode(comando.getText() + Protocolo.TERMINADOR_DE_MENSAGEM);
                 	append("Comando enviado com sucesso.", INFO);
                 }
                 else {
                 	append("Envio cancelado.", ERRO);
                 }
-                
-                
 	}
 
 	//Funcao que captura o evento de segurar o clique de X+, X-, Z+, Z-
