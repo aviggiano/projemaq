@@ -111,7 +111,6 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private JButton buttonZless;
 	private JPanel panel3;
 	private JScrollPane panel4;
-	private JTextArea textAreaCodigoGEmExecucao;
 	private JScrollPane panel5;
 	private static JTextPane textPaneAvisosDoSistema;
 	private JScrollPane panel6;
@@ -128,13 +127,14 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private JLabel labelDiametroDaPeca;
 	private JTextField textFieldDiametroDaPeca;
 	private JLabel labelUnidadeDoDiametro;
-	private JList listCodigoGEmExecucao;
+	private static JList listCodigoGEmExecucao;
 	private JScrollPane listScrollerCodigoG;
 	private static DefaultListModel listModelParametros;
 	private JList<String> listParametros;
 	private JScrollPane listScrollerParametros;
 	private JButton buttonARM;
-	private XZPlot xzPlot;
+	private static XZPlot xzPlot;
+	private DefaultListModel listModelCodigoGEmExecucao;
     
     /*
      * Constructor
@@ -263,13 +263,15 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	}
 
 	private void create4() {
-		listCodigoGEmExecucao = new JList<String>();
+		listModelCodigoGEmExecucao = new DefaultListModel();
+		
+		listCodigoGEmExecucao = new JList<String>(listModelCodigoGEmExecucao);
 		listCodigoGEmExecucao.setLayoutOrientation(JList.VERTICAL);
 		listCodigoGEmExecucao.setVisibleRowCount(-1); //?
+		
 		listScrollerCodigoG = new JScrollPane(listCodigoGEmExecucao);
 		listScrollerCodigoG.setPreferredSize(new Dimension(200, 300));
 		listScrollerCodigoG.setBorder(new TitledBorder("Código G em execução"));
-
 /*		
 		textAreaCodigoGEmExecucao = new JTextArea("", 
 				19, 30);
@@ -1050,7 +1052,10 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	public static void atualizaXZ(double x, double z) {
 		listModelParametros.setElementAt("X: " + x + " mm", parametros.X.index);
 		listModelParametros.setElementAt("Z: " + z + " mm", parametros.Z.index);
+		xzPlot.add(x, z);
 	}
+	
+	public void test() {}
 	
 	public static void atualizaZeroPecaX (double zpx) {
 		listModelParametros.setElementAt("Zero peça X:" + zpx + " mm", parametros.ZERO_PECA_X.index);
@@ -1058,5 +1063,9 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	
 	public static void atualizaZeroPecaZ (double zpz) {
 		listModelParametros.setElementAt("Zero peça Z:" + zpz + " mm", parametros.ZERO_PECA_Z.index);
+	}
+	
+	public static void atualizaCodigoGEmExecucao (int nLinha) {
+		listCodigoGEmExecucao.setSelectedIndex(nLinha-1); // linha 1 === indice 0 
 	}
 }
