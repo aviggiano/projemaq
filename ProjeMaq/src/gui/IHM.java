@@ -77,7 +77,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	public static final int ERRO = 1;
 	
 	public static enum parametros {
-		VELOCIDADE(0), DIAMETRO(1), ZERO_PECA_X(2), ZERO_PECA_Z(3), X(4), Z(5);
+		VELOCIDADE(0), DIAMETRO(1), X(2), Z(3),
+		BLANK(4), ZERO_PECA_X(5), ZERO_PECA_Z(6);
 		int index;
 		parametros(int index) {
 			this.index = index;
@@ -212,8 +213,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	}
 	
 	private void create6() {
-		String[] parametros = {"Velocidade da peça:", "Diâmetro da peça:",
-				"Zero peça X:", "Zero peça Z:", "X:", "Z:" };
+		String[] parametros = {"Velocidade da peça:", "Diâmetro da peça:", "X:", "Z:", 
+				" ", "Zero peça X não setado", "Zero peça Z não setado"};
 		listModelParametros = new DefaultListModel();
 		for (String p : parametros) {
 			listModelParametros.addElement(p);
@@ -1056,11 +1057,13 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	public void test() {}
 	
 	public static void atualizaZeroPecaX (int zpx) {
-		listModelParametros.setElementAt("Zero peça X:" + zpx + " mm", parametros.ZERO_PECA_X.index);
+		if (zpx == 1)
+			listModelParametros.setElementAt("Zero peça X setado", parametros.ZERO_PECA_X.index);
 	}
 	
 	public static void atualizaZeroPecaZ (int zpz) {
-		listModelParametros.setElementAt("Zero peça Z:" + zpz + " mm", parametros.ZERO_PECA_Z.index);
+		if (zpz == 1)
+			listModelParametros.setElementAt("Zero peça Z setado", parametros.ZERO_PECA_Z.index);
 	}
 	
 	public static void atualizaCodigoGEmExecucao (int nLinha) {

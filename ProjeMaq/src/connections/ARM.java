@@ -167,9 +167,10 @@ public class ARM {
 				while ((len = this.in.read(buffer)) > -1) {
 					String s = new String(buffer, 0, len);
 					// TODO interpretar uplink
-					System.out.println("Uplink: " + s);
-					if(s!=null)
-					Protocolo.traduz_uplink(s);
+					if(s != null || s!="" || s != "\r" || s != "\n" || s != "\r\n") {
+						System.out.println(s);
+						Protocolo.traduz_uplink(s);
+					}
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
