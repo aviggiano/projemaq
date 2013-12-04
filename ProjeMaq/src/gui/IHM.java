@@ -1,7 +1,6 @@
 package gui;
 
 import antlrp.*;
-
 import gnu.io.CommPortIdentifier;
 
 import java.awt.BorderLayout;
@@ -49,6 +48,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
@@ -136,6 +136,10 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private JButton buttonARM;
 	private static XZPlot xzPlot;
 	private DefaultListModel listModelCodigoGEmExecucao;
+	static final int VEL_MIN = 0;
+	static final int VEL_MAX = 100;
+	static final int VEL_INIT = 50;
+	
     
     /*
      * Constructor
@@ -342,6 +346,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
         labelUnidadeDoDiametro = new JLabel("mm");
 		
         // Velocidade
+        /* Vel antigo
         labelVelocidade = new JLabel("Velocidade:");
         String velocidadeDefault = "50";
         textFieldVelocidade = new JTextField(velocidadeDefault + "    ");
@@ -386,7 +391,38 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
           });
 
         labelUnidadeDaVelocidade = new JLabel("% Vmax");
+        
+        */
+        
+        //Vel Slider
+        labelVelocidade = new JLabel("Velocidade:");
+        final JSlider velocidadeJog = new JSlider(JSlider.HORIZONTAL, VEL_MIN, VEL_MAX, VEL_INIT);
+        //velocidadeJog.addChangeListener(this);
+
+        
+        //Turn on labels at major tick marks.
+        velocidadeJog.setMajorTickSpacing(10);
+        velocidadeJog.setMinorTickSpacing(1);
+        velocidadeJog.setPaintTicks(true);
+        velocidadeJog.setPaintLabels(true);
+        labelUnidadeDaVelocidade = new JLabel("% Vmax");
+        
+
 		
+velocidadeJog.addChangeListener(new ChangeListener() {
+    public void stateChanged(ChangeEvent e) {
+    	JSlider source = (JSlider)e.getSource();
+    	if (!source.getValueIsAdjusting()) {
+    	arm.setVelocidadeJog(velocidadeJog.getValue());
+		append("Velocidade da movimentação manual: " + arm.getVelocidadeJog() + " % Vmax.", INFO);
+    	
+    	}
+    }
+  });
+
+
+
+
 		// botao Setar Zero Peça Eixo X
 		buttonZerarX = new JButton("Zerar eixo X");
 		buttonZerarX.addActionListener(this);
@@ -444,7 +480,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		
 		JPanel panelVelocidade = new JPanel();
 		panelVelocidade.add(labelVelocidade);
-        panelVelocidade.add(textFieldVelocidade);
+        panelVelocidade.add(velocidadeJog);
         panelVelocidade.add(labelUnidadeDaVelocidade);
         
 		panel2 = new JPanel();
@@ -635,6 +671,9 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
                 	
                 	try {
 						arm.connect();
+						arm.setVelocidadeJog(50);
+						append("Velocidade da movimentação manual: " + arm.getVelocidadeJog() + " % Vmax.", INFO);
+						
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
