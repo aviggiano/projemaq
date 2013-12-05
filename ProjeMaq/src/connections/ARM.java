@@ -15,7 +15,8 @@ import java.io.OutputStream;
 public class ARM {
 	private int velocidadeJog; // valor em % de Vmax
 	private double diametroDaPeca;
-
+	//public static boolean IS_CONNECTED = false;
+	
 	private int baudRate;
     private String commPortName;
     private SerialPort serialPort;
@@ -114,6 +115,7 @@ public class ARM {
 				inputStream = serialPort.getInputStream();
 				outputStream = serialPort.getOutputStream();
 
+				//IS_CONNECTED = true;
 				(new Thread(new SerialReader(inputStream))).start();
 				(new Thread(new SerialWriter(outputStream))).start();
 			} else {
@@ -127,6 +129,7 @@ public class ARM {
 	public void disconnect() {
 		try {
 			serialPort.close();
+			//IS_CONNECTED = false;
 		} catch (NullPointerException np) {
 			System.out.println("ERRO: Tentou disconectar sem ter conectado anteriormente.");
 		} catch (Exception e) {
