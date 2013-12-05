@@ -68,6 +68,8 @@ import javax.swing.text.StyleConstants;
 
 import org.jfree.util.StringUtils;
 
+import com.sun.corba.se.spi.extension.ZeroPortPolicy;
+
 import connections.ARM;
 import connections.Protocolo;
 
@@ -120,7 +122,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 
 	private JLabel labelAtencao;
 
-	private Font font;
+	private Font font = new Font("Arial", Font.PLAIN, 36);;
 
 	private BufferedImage imageIconWarning;
 	private ARM arm;
@@ -135,6 +137,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private JScrollPane listScrollerParametros;
 	private JButton buttonARM;
 	private static XZPlot xzPlot;
+	private static boolean zeroPecaX = false;
+	private static boolean zeroPecaZ = false;
 	private DefaultListModel listModelCodigoGEmExecucao;
 	static final int VEL_MIN = 0;
 	static final int VEL_MAX = 100;
@@ -148,7 +152,6 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
     	/**
     	 * isso e' feito no botao Conexao ARM
     	 */
-    	//TODO ver se isso nao ta bugando o outro arm = new ARM(baud, com)
     	initExternalClasses();
         
     	//set title, size and location
@@ -225,12 +228,15 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		}
 
 		listParametros = new JList<String>(listModelParametros);
+
+		listParametros.setFont(listParametros.getFont().deriveFont(22.0f));
+		
 		listParametros.setLayoutOrientation(JList.VERTICAL);
 		listParametros.setVisibleRowCount(-1); // ?
 		listScrollerParametros = new JScrollPane(listParametros);
-		listScrollerParametros.setPreferredSize(new Dimension(200, 165));
+		listScrollerParametros.setPreferredSize(new Dimension(400, 300));
 		listScrollerParametros.setBorder(new TitledBorder("Parâmetros"));
-
+		
 		panel6 = listScrollerParametros;
 		
 /*		
@@ -254,7 +260,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private void create5() {
 		textPaneAvisosDoSistema = new JTextPane();
 		textPaneAvisosDoSistema.setText("IHM incializada com sucesso.");
-		textPaneAvisosDoSistema.setPreferredSize(new Dimension (400, 150));
+		textPaneAvisosDoSistema.setPreferredSize(new Dimension (800, 150));
 		
         font = new Font("Arial", Font.PLAIN, 12);
         textPaneAvisosDoSistema.setFont(font);
@@ -274,8 +280,10 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		listCodigoGEmExecucao.setLayoutOrientation(JList.VERTICAL);
 		listCodigoGEmExecucao.setVisibleRowCount(-1); //?
 		
+		listCodigoGEmExecucao.setFont(listCodigoGEmExecucao.getFont().deriveFont(22.0f));
+		
 		listScrollerCodigoG = new JScrollPane(listCodigoGEmExecucao);
-		listScrollerCodigoG.setPreferredSize(new Dimension(200, 300));
+		listScrollerCodigoG.setPreferredSize(new Dimension(400, 300));
 		listScrollerCodigoG.setBorder(new TitledBorder("Código G em execução"));
 /*		
 		textAreaCodigoGEmExecucao = new JTextArea("", 
@@ -296,8 +304,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
         xzPlot.setVisible(true);
 
         panel3 = new JPanel();
-        panel3.add(xzPlot);
-        
+        //panel3.add(xzPlot);
 	}
 
 	private void create2() {
@@ -551,12 +558,13 @@ velocidadeJog.addChangeListener(new ChangeListener() {
 		west.add(panel2);
 		west.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 
-		JPanel centercenter = panel3;//new JPanel();
-		panel3.add(panel4);
+		JPanel centercenter = new JPanel();
+		centercenter.add(panel6);
+		centercenter.add(panel4);
 		
 		JPanel centersouth = new JPanel();
 		centersouth.add(panel5, BorderLayout.CENTER);
-		centersouth.add(panel6, BorderLayout.WEST);
+		//centersouth.add(panel6, BorderLayout.WEST);
 
 		JPanel center = new JPanel();
 		center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
@@ -571,7 +579,7 @@ velocidadeJog.addChangeListener(new ChangeListener() {
 		
 		container.add(west, BorderLayout.WEST);
 		container.add(center, BorderLayout.CENTER);
-		container.add(south, BorderLayout.SOUTH);
+		//container.add(south, BorderLayout.SOUTH);
 		
 		this.setVisible(true); 
 	}
@@ -602,6 +610,9 @@ velocidadeJog.addChangeListener(new ChangeListener() {
 			buttonCarregarCodigoG.setEnabled(true);
 		}
 		else if (actionEvent.getSource() == buttonPlay) {
+			if (zeroPecaSetado() && !desejaDarPlay()) {
+				return;
+			}
 			append("PLAY", INFO);
 			arm.processReceiveCommand(1,0);
 			buttonZless.setEnabled(false);
@@ -622,11 +633,11 @@ velocidadeJog.addChangeListener(new ChangeListener() {
 			atualizaDiametroDaPeca();
 		}
 		else if (actionEvent.getSource() == buttonZerarX) {
-			append("Eixo X zerado.", INFO);
+			append("Comando enviado: Zerar eixo X.", INFO);
 			arm.processReceiveCommand(8,(int)(10*arm.getDiametroDaPeca()));
 		}
 		else if (actionEvent.getSource() == buttonZerarZ) {
-			append("Eixo Z zerado.", INFO);
+			append("Comando enviado: Zerar eixo Z.", INFO);
 			arm.processReceiveCommand(9,0);
 		}
 		else if (actionEvent.getSource() == buttonXless) {
@@ -645,7 +656,23 @@ velocidadeJog.addChangeListener(new ChangeListener() {
 			createConsolePopup();
 		}		
 		
-	} 
+	}
+	
+	private boolean zeroPecaSetado () {
+		return zeroPecaX && zeroPecaZ;
+	}
+	
+	private boolean desejaDarPlay() {
+		JPanel panelPopUp = new JPanel();
+        
+        JLabel desejaDarPlay = new JLabel ("Zero peça não setado. Deseja prosseguir?");
+        panelPopUp.add(desejaDarPlay);
+        
+        panelPopUp.setLayout(new BoxLayout(panelPopUp, BoxLayout.Y_AXIS));
+        
+        return (0 == JOptionPane.showConfirmDialog(this, panelPopUp , "Deseja prosseguir?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE));
+	}
+	
 	private void conexaoARM() {
         JPanel panelPopUp = new JPanel();
         
@@ -672,8 +699,6 @@ velocidadeJog.addChangeListener(new ChangeListener() {
                 	try {
 						arm.connect();
 						arm.setVelocidadeJog(50);
-						append("Velocidade da movimentação manual: " + arm.getVelocidadeJog() + " % Vmax.", INFO);
-						
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -876,7 +901,7 @@ velocidadeJog.addChangeListener(new ChangeListener() {
     
     private void setTitleSizeAndLocation() {
         this.setTitle("PMR2450 - Torno CNC");
-        frameSize = new Dimension ((int)(screenSize.width*0.7), (int)(screenSize.height*0.80));
+        frameSize = new Dimension ((int)(screenSize.width*0.9), (int)(screenSize.height*0.90));
         this.setSize(frameSize);
         
         //this.setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH );
@@ -963,7 +988,7 @@ velocidadeJog.addChangeListener(new ChangeListener() {
             if (returnValue == JFileChooser.APPROVE_OPTION) { 
                 File file = fileChooser.getSelectedFile();
                 
-                verificaGramatica(file.getAbsolutePath()); 
+                //verificaGramatica(file.getAbsolutePath()); 
                 
                 linhasDoArquivo = readData(file);
                 
@@ -998,13 +1023,27 @@ velocidadeJog.addChangeListener(new ChangeListener() {
     		append("É necessário carregar um código G antes de enviá-lo à máquina.", ERRO);
     		return;
     	}
-    	/*
-    	// escreve linha por linha no microcontrolador
-    	for (String linha : linhasDoArquivo) {
-        	arm.write(linha);
-    	}
-    	*/
     	
+    	// escreve linha por linha no microcontrolador - Renan modificou 05/12
+    	String linhaComProtocolo = "";
+    	for (String linha : linhasDoArquivo) {
+    		linhaComProtocolo=linhaComProtocolo.concat(":1 ");
+    		linhaComProtocolo=linhaComProtocolo.concat(linha);
+    		linhaComProtocolo=linhaComProtocolo.concat("%!");	
+    		System.out.println("lalala"+linhaComProtocolo);
+        	arm.write(linhaComProtocolo);
+        	/*
+        	try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			*/
+        	linhaComProtocolo="";
+    	}
+    	
+    	
+    	/*
     	// escreve uma String gigante
     	StringBuilder builder = new StringBuilder();
     	builder.append(":1 ");
@@ -1012,13 +1051,12 @@ velocidadeJog.addChangeListener(new ChangeListener() {
     		//System.out.println(s);
     	    builder.append(s+"\r\n");
     	}
-    	// TODO tratar paridade posteriormente
     	// builder.append("PPP");
     	builder.append(Protocolo.TERMINADOR_DE_MENSAGEM);
     	arm.processReceiveGCode(builder.toString());
     	//System.out.println(builder);
     	append("Fim de envio de código G.", INFO);
-
+		*/
     }
     
 	@Override
@@ -1096,13 +1134,17 @@ velocidadeJog.addChangeListener(new ChangeListener() {
 	public void test() {}
 	
 	public static void atualizaZeroPecaX (int zpx) {
-		if (zpx == 1)
+		if (zpx == 1) {
+			zeroPecaX = true;
 			listModelParametros.setElementAt("Zero peça X setado", parametros.ZERO_PECA_X.index);
+		}
 	}
 	
 	public static void atualizaZeroPecaZ (int zpz) {
-		if (zpz == 1)
+		if (zpz == 1) {
+			zeroPecaZ = true;
 			listModelParametros.setElementAt("Zero peça Z setado", parametros.ZERO_PECA_Z.index);
+		}
 	}
 	
 	public static void atualizaCodigoGEmExecucao (int nLinha) {
@@ -1113,7 +1155,5 @@ velocidadeJog.addChangeListener(new ChangeListener() {
 		buttonPlay.setEnabled(true);
 		buttonStop.setEnabled(true);
 		buttonPause.setEnabled(true);
-		// TODO Auto-generated method stub
-		
 	}
 }

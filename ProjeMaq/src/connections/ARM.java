@@ -139,7 +139,7 @@ public class ARM {
 		for (int i = 0; i < s.length(); i++) {
 			byteArray[i] = (byte) s.charAt(i);
 		}
-		System.out.println("(String) " + s + " == (byte) " + byteArray);
+		//System.out.println("(String) " + s + " == (byte) " + byteArray);
 		return byteArray;
 	}
 	

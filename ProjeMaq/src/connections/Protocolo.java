@@ -288,16 +288,18 @@ public class Protocolo {
 		int okG;
 		int okZPX;
 		int okZPZ;
-		if (msg.charAt(1) == '3' && msg.length() == 21) {
+		//System.out.println("msg é:"+msg);
+		if (msg.charAt(1) == '3' && msg.length() == 25) {
 			// String stringX=msg.substring(beginIndex)
-			X = Double.parseDouble(msg.substring(2, 8));
-			Z = Double.parseDouble(msg.substring(8, 14));
-			linha_G = Integer.parseInt(msg.substring(14, 17));
-			status = Integer.parseInt(msg.substring(17, 18));
-			fim_de_curso = Integer.parseInt(msg.substring(18, 19));
+			X = Double.parseDouble(msg.substring(2, 10));
+			//System.out.println("msg é:"+msg);
+			Z = Double.parseDouble(msg.substring(10, 18));
+			linha_G = Integer.parseInt(msg.substring(18, 21));
+			status = Integer.parseInt(msg.substring(21, 22));
+			fim_de_curso = Integer.parseInt(msg.substring(22, 23));
 			IHM.atualizaXZ(X, Z);
-			System.out.println("X=" + X + " Z=" + Z + " linha_G=" + linha_G
-					+ " status=" + status + " fim_de_curso=" + fim_de_curso);
+			//System.out.println("X=" + X + " Z=" + Z + " linha_G=" + linha_G
+			//		+ " status=" + status + " fim_de_curso=" + fim_de_curso);
 			IHM.atualizaCodigoGEmExecucao(linha_G);
 
 		} else {
@@ -305,23 +307,23 @@ public class Protocolo {
 				IHM.liberarBotoes();
 				okG = Integer.parseInt(msg.substring(2, 3));
 
-				System.out.println(okG);
+				//System.out.println(okG);
 
 			} else {
 				if (msg.charAt(1) == '5') {
 					okZPX = Integer.parseInt(msg.substring(2, 3));
-					System.out.println(okZPX);
+					//System.out.println(okZPX);
 					IHM.atualizaZeroPecaX(okZPX);
 				} else {
 					if (msg.charAt(1) == '6') {
 						okZPZ = Integer.parseInt(msg.substring(2, 3));
-						System.out.println(okZPZ);
+						//System.out.println(okZPZ);
 						IHM.atualizaZeroPecaZ(okZPZ);
 					} else {
 						if (msg.charAt(1) == '7') {
 							fim_de_curso = Integer
 									.parseInt(msg.substring(2, 3));
-							System.out.println("fim de curso?" + fim_de_curso);
+							//System.out.println("fim de curso?" + fim_de_curso);
 						} else {
 							System.out.println("ERRO PROTOCOLO");
 						}
