@@ -301,10 +301,10 @@ public class Protocolo {
 			//System.out.println("X=" + X + " Z=" + Z + " linha_G=" + linha_G
 			//		+ " status=" + status + " fim_de_curso=" + fim_de_curso);
 			IHM.atualizaCodigoGEmExecucao(linha_G);
-
 		} else {
 			if (msg.charAt(1) == '4' && msg.charAt(2) == '1') {
 				IHM.liberarBotoes();
+				IHM.append("Código recebido pelo ARM", IHM.INFO);
 				okG = Integer.parseInt(msg.substring(2, 3));
 
 				//System.out.println(okG);

@@ -215,9 +215,9 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	}
 
 	private void create6() {
-		String[] parametros = { "Velocidade da peça:", "Diâmetro da peça:",
-				"X:", "Z:", " ", "Zero peça X não setado",
-				"Zero peça Z não setado" };
+		String[] parametros = { " ", "Diâmetro da peça:",
+				"X:", "Z:", " ", "Zero peça X não definido",
+				"Zero peça Z não definido" };
 		listModelParametros = new DefaultListModel();
 		for (String p : parametros) {
 			listModelParametros.addElement(p);
@@ -254,7 +254,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private void create5() {
 		textPaneAvisosDoSistema = new JTextPane();
 		textPaneAvisosDoSistema.setText("IHM incializada com sucesso.");
-		textPaneAvisosDoSistema.setPreferredSize(new Dimension(800, 150));
+		textPaneAvisosDoSistema.setPreferredSize(new Dimension(800, 500));
 
 		font = new Font("Arial", Font.PLAIN, 24);
 		textPaneAvisosDoSistema.setFont(font);
@@ -306,6 +306,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	private void create2() {
 		// Diametro
 		labelDiametroDaPeca = new JLabel("Diâmetro da Peça:");
+		labelDiametroDaPeca.setFont(new Font("Arial", 1, 20));
 		textFieldDiametroDaPeca = new JTextField("            ");
 		((AbstractDocument) textFieldDiametroDaPeca.getDocument())
 				.setDocumentFilter(new DocumentFilter() {
@@ -327,6 +328,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 								attr);
 					}
 				});
+		textFieldDiametroDaPeca.setFont(new Font("Arial", 1, 20));
 		textFieldDiametroDaPeca.addActionListener(this); // interpreta o <enter>
 															// do usuario
 		// interpreta o <tab>
@@ -351,6 +353,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 			}
 		});
 		labelUnidadeDoDiametro = new JLabel("mm");
+		labelUnidadeDoDiametro.setFont(new Font("Arial", 1, 20));
 
 		// Velocidade
 		/*
@@ -388,6 +391,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 
 		// Vel Slider
 		labelVelocidade = new JLabel("Velocidade:");
+		labelVelocidade.setFont(new Font("Arial", 1, 20));
+
 		final JSlider velocidadeJog = new JSlider(JSlider.HORIZONTAL, VEL_MIN,
 				VEL_MAX, VEL_INIT);
 		// velocidadeJog.addChangeListener(this);
@@ -398,6 +403,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		velocidadeJog.setPaintTicks(true);
 		velocidadeJog.setPaintLabels(true);
 		labelUnidadeDaVelocidade = new JLabel("% Vmax");
+		labelUnidadeDaVelocidade.setFont(new Font("Arial", 1, 20));
 
 		velocidadeJog.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -415,11 +421,13 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		buttonZerarX = new JButton("Zerar eixo X");
 		buttonZerarX.addActionListener(this);
 		buttonZerarX.setEnabled(true);
+		buttonZerarX.setFont(new Font("Arial", 1, 20));
 
 		// botao Setar Zero Peça Eixo Z
 		buttonZerarZ = new JButton("Zerar eixo Z");
 		buttonZerarZ.addActionListener(this);
 		buttonZerarZ.setEnabled(true);
+		buttonZerarZ.setFont(new Font("Arial", 1, 20));
 
 		// botao X+
 		buttonXplus = new JButton("X+", new ImageIcon(getClass().getResource(
@@ -427,6 +435,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		buttonXplus.addActionListener(this);
 		buttonXplus.addMouseListener(this);
 		buttonXplus.setEnabled(true);
+		buttonXplus.setFont(new Font("Arial", 1, 20));
 
 		// botao X-
 		buttonXless = new JButton("X-", new ImageIcon(getClass().getResource(
@@ -434,6 +443,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		buttonXless.addActionListener(this);
 		buttonXless.addMouseListener(this);
 		buttonXless.setEnabled(true);
+		buttonXless.setFont(new Font("Arial", 1, 20));
 
 		// botao Z+
 		buttonZplus = new JButton("Z+ ", new ImageIcon(getClass().getResource(
@@ -441,6 +451,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		buttonZplus.addActionListener(this);
 		buttonZplus.addMouseListener(this);
 		buttonZplus.setEnabled(true);
+		buttonZplus.setFont(new Font("Arial", 1, 20));
 
 		// botao Z-
 		buttonZless = new JButton("Z-  ", new ImageIcon(getClass().getResource(
@@ -448,6 +459,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		buttonZless.addActionListener(this);
 		buttonZless.addMouseListener(this);
 		buttonZless.setEnabled(true);
+		buttonZless.setFont(new Font("Arial", 1, 20));
 
 		buttonsJog();
 
@@ -491,36 +503,46 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 				.getResource("../img/preferences-system.png")));
 		buttonARM.addActionListener(this);
 		buttonARM.setEnabled(true);
+		buttonARM.setFont(new Font("Arial", 1, 20));
 
 		// Carregar código G
 		buttonCarregarCodigoG = new JButton("Carregar código G", new ImageIcon(
 				getClass().getResource("../img/filesave.png")));
 		buttonCarregarCodigoG.addActionListener(this);
 		buttonCarregarCodigoG.setEnabled(true);
+		buttonCarregarCodigoG.setFont(new Font("Arial", 1, 20));
 
 		// Enviar código G
 		buttonEnviarCodigoG = new JButton("    Enviar código G", new ImageIcon(
 				getClass().getResource("../img/extract-archive.png")));
 		buttonEnviarCodigoG.addActionListener(this);
 		buttonEnviarCodigoG.setEnabled(false);
+		buttonEnviarCodigoG.setFont(new Font("Arial", 1, 20));
+
 
 		// Stop
 		buttonStop = new JButton("", new ImageIcon(getClass().getResource(
 				"../img/player_stop.png")));
 		buttonStop.addActionListener(this);
 		buttonStop.setEnabled(false);
+		buttonStop.setFont(new Font("Arial", 1, 20));
+
 
 		// Play
 		buttonPlay = new JButton("", new ImageIcon(getClass().getResource(
 				"../img/player_play.png")));
 		buttonPlay.addActionListener(this);
 		buttonPlay.setEnabled(false);
+		buttonPlay.setFont(new Font("Arial", 1, 20));
+
 
 		// Pause
 		buttonPause = new JButton("", new ImageIcon(getClass().getResource(
 				"../img/player_pause.png")));
 		buttonPause.addActionListener(this);
 		buttonPause.setEnabled(false);
+		buttonPause.setFont(new Font("Arial", 1, 20));
+
 
 		JPanel panelBotoesDeControle = new JPanel();
 		panelBotoesDeControle.setLayout(new GridLayout(1, 3));
@@ -600,7 +622,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 			buttonEnviarCodigoG.setEnabled(true);
 			buttonCarregarCodigoG.setEnabled(true);
 		} else if (actionEvent.getSource() == buttonPlay) {
-			if (!zeroPecaSetado() && !desejaDarPlay()) {
+			if (!zeroPecaSetado() && !desejaDarPlay() ) {
 				return;
 			}
 			append("PLAY", INFO);
@@ -646,7 +668,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		JPanel panelPopUp = new JPanel();
 
 		JLabel desejaDarPlay = new JLabel(
-				"Zero peça não setado. Deseja prosseguir?");
+				"Zero peça não definido. Deseja prosseguir?");
 		panelPopUp.add(desejaDarPlay);
 
 		panelPopUp.setLayout(new BoxLayout(panelPopUp, BoxLayout.Y_AXIS));
@@ -696,6 +718,11 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 			try {
 				arm.connect();
 				arm.setVelocidadeJog(50);
+				append("Velocidade da movimentação manual: " + arm.getVelocidadeJog()
+						+ " % Vmax.", INFO);
+				
+				//TODO : tirar depois!!!
+				//liberarBotoes();
 				/*
 				buttonARM.setText("  Desconectar ARM");
 				buttonARM.revalidate();
@@ -880,12 +907,12 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 
 	private void setTitleSizeAndLocation() {
 		this.setTitle("PMR2450 - Torno CNC");
+		/*
 		frameSize = new Dimension((int) (screenSize.width * 0.9),
 				(int) (screenSize.height * 0.90));
 		this.setSize(frameSize);
-
-		// this.setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH
-		// );
+*/
+		 this.setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH );
 
 		setLocation(0, 0); // centralizar?
 
@@ -893,13 +920,11 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
+				System.exit(0);
 				try {
 					arm.disconnect();
 				} catch (Exception ex) {
-
 				}
-
-				System.exit(0);
 			}
 		});
 	}
@@ -927,10 +952,10 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	}
 
 	public static void scroll() {
-	//	if (shouldScroll()) {
+		//if (shouldScroll()) {
 			scrollPaneConsole.getVerticalScrollBar().setValue(
 					scrollPaneConsole.getVerticalScrollBar().getMaximum());
-	//	}
+		//}
 	}
 
 	public static boolean shouldScroll() {
@@ -1124,7 +1149,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	public static void atualizaZeroPecaX(int zpx) {
 		if (zpx == 1) {
 			zeroPecaX = true;
-			listModelParametros.setElementAt("Zero peça X setado",
+			listModelParametros.setElementAt("Zero peça X definido",
 					parametros.ZERO_PECA_X.index);
 		}
 	}
@@ -1132,14 +1157,14 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	public static void atualizaZeroPecaZ(int zpz) {
 		if (zpz == 1) {
 			zeroPecaZ = true;
-			listModelParametros.setElementAt("Zero peça Z setado",
+			listModelParametros.setElementAt("Zero peça Z definido",
 					parametros.ZERO_PECA_Z.index);
 		}
 	}
 
 	public static void atualizaCodigoGEmExecucao(int nLinha) {
 		// TODO: se linha 10 20 30 40, dividir nLinha/10
-		listCodigoGEmExecucao.setSelectedIndex(nLinha - 1); // linha 1 ===
+		listCodigoGEmExecucao.setSelectedIndex(nLinha); // linha 0 ===
 															// indice 0
 	}
 
