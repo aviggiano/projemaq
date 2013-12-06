@@ -113,7 +113,7 @@ public class Protocolo {
 	public Map<String, String> uplink(String mensagem) throws Exception {
 		if (mensagem.length() != UPLINK_MESSAGE_SIZE) {
 			throw new Exception(
-					"Tamanho do uplink incompatÃ­vel com o protocolo.");
+					"Tamanho do uplink incompatíl com o protocolo.");
 		}
 		Map<String, String> ans = new HashMap<String, String>();
 
@@ -129,7 +129,7 @@ public class Protocolo {
 	public boolean eventuais(String mensagem) throws Exception {
 		if (mensagem.length() != EVENTUAL_MESSAGE_SIZE) {
 			throw new Exception(
-					"Tamanho da mensagem eventual incompatÃ­vel com o protocolo.");
+					"Tamanho da mensagem eventual incompatíl com o protocolo.");
 		}
 		return (mensagem.charAt(2) == '1');
 	}

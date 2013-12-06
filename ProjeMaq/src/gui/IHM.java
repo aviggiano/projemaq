@@ -1138,6 +1138,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	}
 
 	public static void atualizaCodigoGEmExecucao(int nLinha) {
+		// TODO: se linha 10 20 30 40, dividir nLinha/10
 		listCodigoGEmExecucao.setSelectedIndex(nLinha - 1); // linha 1 ===
 															// indice 0
 	}
