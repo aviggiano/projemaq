@@ -164,15 +164,6 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 
 		// criar as diferentes partes do container
 
-		/**
-		 * ________ ___________ _____ | | | | | | | | | | | | | 1 | | 3 | | 4 |
-		 * |________| |___________| |_____| ________ ___________ _____ | | | | |
-		 * | | 2 | | 5 | | 6 | |________| |___________| |_____|
-		 * 
-		 * ________________________________ | 7 |
-		 * |________________________________|
-		 */
-
 		create1();
 		create2();
 		create3();
@@ -1025,6 +1016,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 				listScrollerCodigoG.revalidate();
 				listScrollerCodigoG.repaint();
 
+				atualizaCodigoGEmExecucao(0);
 				buttonEnviarCodigoG.setEnabled(true);
 			} else {
 				append("\nProblema na seleção do arquivo.", ERRO);
