@@ -150,9 +150,6 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	 * Constructor
 	 */
 	public IHM() {
-		/**
-		 * isso e' feito no botao Conexao ARM
-		 */
 		initExternalClasses();
 
 		// set title, size and location
@@ -163,7 +160,6 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		Container container = getContentPane();
 
 		// criar as diferentes partes do container
-
 		create1();
 		create2();
 		create3();
@@ -174,7 +170,6 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 
 		// junta as diferentes partes
 		assemble(container);
-
 	}
 
 	private void create7() {
@@ -206,9 +201,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	}
 
 	private void create6() {
-		String[] parametros = { " ", "Diâmetro da peça:",
-				"X:", "Z:", " ", "Zero peça X não definido",
-				"Zero peça Z não definido" };
+		String[] parametros = { " ", "Diâmetro da peça:", "X:", "Z:", " ",
+				"Zero peça X não definido", "Zero peça Z não definido" };
 		listModelParametros = new DefaultListModel();
 		for (String p : parametros) {
 			listModelParametros.addElement(p);
@@ -219,27 +213,12 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		listParametros.setFont(listParametros.getFont().deriveFont(22.0f));
 
 		listParametros.setLayoutOrientation(JList.VERTICAL);
-		listParametros.setVisibleRowCount(-1); // ?
+		listParametros.setVisibleRowCount(-1);
 		listScrollerParametros = new JScrollPane(listParametros);
 		listScrollerParametros.setPreferredSize(new Dimension(400, 300));
 		listScrollerParametros.setBorder(new TitledBorder("Parâmetros"));
 
 		panel6 = listScrollerParametros;
-
-		/*
-		 * panel6 = new JTextPane();
-		 * 
-		 * panel6.setPreferredSize(new Dimension (200, 165));
-		 * panel6.setText("Velocidade da peça: ");
-		 * appendToParameters("Zero Peça: "); appendToParameters("X: ");
-		 * appendToParameters("Z: ");
-		 * 
-		 * Font font = new Font("Arial", Font.PLAIN, 16); panel6.setFont(font);
-		 * panel6.setEditable(false);
-		 * 
-		 * panel6.setLayout(new GridLayout(0,1)); panel6.setBorder(new
-		 * TitledBorder("Parâmetros da máquina CNC"));
-		 */
 	}
 
 	private void create5() {
@@ -271,18 +250,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		listScrollerCodigoG = new JScrollPane(listCodigoGEmExecucao);
 		listScrollerCodigoG.setPreferredSize(new Dimension(400, 300));
 		listScrollerCodigoG.setBorder(new TitledBorder("Código G em execução"));
-		/*
-		 * textAreaCodigoGEmExecucao = new JTextArea("", 19, 30); font = new
-		 * Font("Arial", Font.PLAIN, 36);
-		 * textAreaCodigoGEmExecucao.setFont(font);
-		 * textAreaCodigoGEmExecucao.setEditable(false);
-		 * scrollPaneCodigoGEmExecucao = new
-		 * JScrollPane(textAreaCodigoGEmExecucao);
-		 * scrollPaneCodigoGEmExecucao.setBorder(new
-		 * TitledBorder("Código G em execução"));
-		 */
 		panel4 = listScrollerCodigoG; // scrollPaneCodigoGEmExecucao;
-
 	}
 
 	private void create3() {
@@ -345,40 +313,6 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		});
 		labelUnidadeDoDiametro = new JLabel("mm");
 		labelUnidadeDoDiametro.setFont(new Font("Arial", 1, 20));
-
-		// Velocidade
-		/*
-		 * Vel antigo labelVelocidade = new JLabel("Velocidade:"); String
-		 * velocidadeDefault = "50"; textFieldVelocidade = new
-		 * JTextField(velocidadeDefault + "    "); ((AbstractDocument)
-		 * textFieldVelocidade.getDocument()).setDocumentFilter(new
-		 * DocumentFilter(){
-		 * 
-		 * @Override public void insertString(FilterBypass fb, int off , String
-		 * str, AttributeSet attr) throws BadLocationException { // remove
-		 * non-digits fb.insertString(off, str.replaceAll("\\D++", ""), attr); }
-		 * 
-		 * @Override public void replace(FilterBypass fb, int off , int len,
-		 * String str, AttributeSet attr) throws BadLocationException { //
-		 * remove non-digits fb.replace(off, len, str.replaceAll("\\D++", ""),
-		 * attr); } }); textFieldVelocidade.addActionListener(this); //
-		 * interpreta o <enter> do usuario // interpreta o <tab>
-		 * textFieldVelocidade.setInputVerifier(new InputVerifier() {
-		 * 
-		 * @Override public boolean verify(JComponent input) { JTextField tField
-		 * = (JTextField) input; return
-		 * (Integer.parseInt(tField.getText().trim()) >=0 &&
-		 * Integer.parseInt(tField.getText().trim()) <= 100); } }); //
-		 * interpreta o <tab> textFieldVelocidade.addFocusListener(new
-		 * FocusListener() {
-		 * 
-		 * @Override public void focusGained(FocusEvent e) { // nao faz nada }
-		 * 
-		 * @Override public void focusLost(FocusEvent e) {
-		 * atualizaVelocidadeJog(); } });
-		 * 
-		 * labelUnidadeDaVelocidade = new JLabel("% Vmax");
-		 */
 
 		// Vel Slider
 		labelVelocidade = new JLabel("Velocidade:");
@@ -485,7 +419,6 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		panel2.add(panelZerar);
 		panel2.add(new JLabel(" "));
 		panel2.add(panelSetinhas);
-
 	}
 
 	private void create1() {
@@ -510,14 +443,12 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		buttonEnviarCodigoG.setEnabled(false);
 		buttonEnviarCodigoG.setFont(new Font("Arial", 1, 20));
 
-
 		// Stop
 		buttonStop = new JButton("", new ImageIcon(getClass().getResource(
 				"../img/player_stop.png")));
 		buttonStop.addActionListener(this);
 		buttonStop.setEnabled(false);
 		buttonStop.setFont(new Font("Arial", 1, 20));
-
 
 		// Play
 		buttonPlay = new JButton("", new ImageIcon(getClass().getResource(
@@ -526,14 +457,12 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 		buttonPlay.setEnabled(false);
 		buttonPlay.setFont(new Font("Arial", 1, 20));
 
-
 		// Pause
 		buttonPause = new JButton("", new ImageIcon(getClass().getResource(
 				"../img/player_pause.png")));
 		buttonPause.addActionListener(this);
 		buttonPause.setEnabled(false);
 		buttonPause.setFont(new Font("Arial", 1, 20));
-
 
 		JPanel panelBotoesDeControle = new JPanel();
 		panelBotoesDeControle.setLayout(new GridLayout(1, 3));
@@ -590,10 +519,10 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	@Override
 	public void actionPerformed(ActionEvent actionEvent) {
 		if (actionEvent.getSource() == buttonARM) {
-			//if (!ARM.IS_CONNECTED)
-				conexaoARM();
-			//else 
-			//	deconexaoARM();
+			// if (!ARM.IS_CONNECTED)
+			conexaoARM();
+			// else
+			// deconexaoARM();
 		} else if (actionEvent.getSource() == buttonCarregarCodigoG) {
 			carregarArquivo();
 		} else if (actionEvent.getSource() == buttonEnviarCodigoG) {
@@ -613,7 +542,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 			buttonEnviarCodigoG.setEnabled(true);
 			buttonCarregarCodigoG.setEnabled(true);
 		} else if (actionEvent.getSource() == buttonPlay) {
-			if (!zeroPecaSetado() && !desejaDarPlay() ) {
+			if (!zeroPecaSetado() && !desejaDarPlay()) {
 				return;
 			}
 			append("PLAY", INFO);
@@ -668,17 +597,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 				"Deseja prosseguir?", JOptionPane.YES_NO_OPTION,
 				JOptionPane.WARNING_MESSAGE));
 	}
-/*
-	private void deconexaoARM() {
-		append("ARM desconectado");
-		
-		buttonARM.setText("     Conectar ARM");
-		buttonARM.revalidate();
-		buttonARM.repaint();
-		
-		arm.disconnect();
-	}
-*/	
+
 	private void conexaoARM() {
 		JPanel panelPopUp = new JPanel();
 
@@ -709,16 +628,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 			try {
 				arm.connect();
 				arm.setVelocidadeJog(50);
-				append("Velocidade da movimentação manual: " + arm.getVelocidadeJog()
-						+ " % Vmax.", INFO);
-				
-				//TODO : tirar depois!!!
-				//liberarBotoes();
-				/*
-				buttonARM.setText("  Desconectar ARM");
-				buttonARM.revalidate();
-				buttonARM.repaint();
-				*/
+				append("Velocidade da movimentação manual: "
+						+ arm.getVelocidadeJog() + " % Vmax.", INFO);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -775,66 +686,6 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 
 	// Funcao que captura o evento de segurar o clique de X+, X-, Z+, Z-
 	private void buttonsJog() {
-		/*
-		 * int timerDelay = 100; //Botao X+ final Timer timer_Xplus = new
-		 * Timer(timerDelay , new ActionListener() {
-		 * 
-		 * @Override public void actionPerformed(ActionEvent e) {
-		 * System.out.println("Button X + Pressed!");
-		 * arm.processReceiveCommand(4, arm.getVelocidadeJog()); } });
-		 * 
-		 * final ButtonModel bModel_Xplus = buttonXplus.getModel();
-		 * bModel_Xplus.addChangeListener(new ChangeListener() { public void
-		 * stateChanged(ChangeEvent cEvt) { if (bModel_Xplus.isPressed() &&
-		 * !timer_Xplus.isRunning()) { timer_Xplus.start(); } else if
-		 * (!bModel_Xplus.isPressed() && timer_Xplus.isRunning()) {
-		 * timer_Xplus.stop(); } } });
-		 * 
-		 * //Botao X- final Timer timer_Xless = new Timer(timerDelay , new
-		 * ActionListener() {
-		 * 
-		 * @Override public void actionPerformed(ActionEvent e) {
-		 * System.out.println("Button X - Pressed!");
-		 * arm.processReceiveCommand(6, arm.getVelocidadeJog()); } });
-		 * 
-		 * final ButtonModel bModel_Xless = buttonXless.getModel();
-		 * bModel_Xless.addChangeListener(new ChangeListener() {
-		 * 
-		 * @Override public void stateChanged(ChangeEvent cEvt) { if
-		 * (bModel_Xless.isPressed() && !timer_Xless.isRunning()) {
-		 * timer_Xless.start(); } else if (!bModel_Xless.isPressed() &&
-		 * timer_Xless.isRunning()) { timer_Xless.stop(); } } });
-		 * 
-		 * //Botao Z+ final Timer timer_Zplus = new Timer(timerDelay , new
-		 * ActionListener() {
-		 * 
-		 * @Override public void actionPerformed(ActionEvent e) {
-		 * System.out.println("Button Z + Pressed!");
-		 * arm.processReceiveCommand(5, arm.getVelocidadeJog()); } });
-		 * 
-		 * final ButtonModel bModel_Zplus = buttonZplus.getModel();
-		 * bModel_Zplus.addChangeListener(new ChangeListener() {
-		 * 
-		 * @Override public void stateChanged(ChangeEvent cEvt) { if
-		 * (bModel_Zplus.isPressed() && !timer_Zplus.isRunning()) {
-		 * timer_Zplus.start(); } else if (!bModel_Zplus.isPressed() &&
-		 * timer_Zplus.isRunning()) { timer_Zplus.stop(); } } });
-		 * 
-		 * //Botao Z- final Timer timer_Zless = new Timer(timerDelay , new
-		 * ActionListener() {
-		 * 
-		 * @Override public void actionPerformed(ActionEvent e) {
-		 * System.out.println("Button Z- Pressed!");
-		 * arm.processReceiveCommand(7, arm.getVelocidadeJog()); } });
-		 * 
-		 * final ButtonModel bModel_Zless = buttonZless.getModel();
-		 * bModel_Zless.addChangeListener(new ChangeListener() {
-		 * 
-		 * @Override public void stateChanged(ChangeEvent cEvt) { if
-		 * (bModel_Zless.isPressed() && !timer_Zless.isRunning()) {
-		 * timer_Zless.start(); } else if (!bModel_Zless.isPressed() &&
-		 * timer_Zless.isRunning()) { timer_Zless.stop(); } } });
-		 */
 	}
 
 	private void atualizaDiametroDaPeca() {
@@ -898,14 +749,9 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 
 	private void setTitleSizeAndLocation() {
 		this.setTitle("PMR2450 - Torno CNC");
-		/*
-		frameSize = new Dimension((int) (screenSize.width * 0.9),
-				(int) (screenSize.height * 0.90));
-		this.setSize(frameSize);
-*/
-		 this.setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH );
+		this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
-		setLocation(0, 0); // centralizar?
+		setLocation(0, 0);
 
 		// exit on close
 		this.addWindowListener(new WindowAdapter() {
@@ -943,10 +789,10 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	}
 
 	public static void scroll() {
-		//if (shouldScroll()) {
-			scrollPaneConsole.getVerticalScrollBar().setValue(
-					scrollPaneConsole.getVerticalScrollBar().getMaximum());
-		//}
+		// if (shouldScroll()) {
+		scrollPaneConsole.getVerticalScrollBar().setValue(
+				scrollPaneConsole.getVerticalScrollBar().getMaximum());
+		// }
 	}
 
 	public static boolean shouldScroll() {
@@ -969,7 +815,7 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 			textPaneAvisosDoSistema.getStyledDocument().insertString(
 					textPaneAvisosDoSistema.getStyledDocument().getLength(),
 					"\n" + text, style);
-			
+
 			scroll();
 		} catch (BadLocationException e) {
 			e.printStackTrace();
@@ -1050,38 +896,21 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 			linhaComProtocolo = linhaComProtocolo.concat("%!");
 			System.out.println("lalala" + linhaComProtocolo);
 			arm.write(linhaComProtocolo);
-			/*
-			 * try { Thread.sleep(10); } catch (InterruptedException e) {
-			 * e.printStackTrace(); }
-			 */
 			linhaComProtocolo = "";
 		}
 
-		/*
-		 * // escreve uma String gigante StringBuilder builder = new
-		 * StringBuilder(); builder.append(":1 "); for(String s :
-		 * linhasDoArquivo) { //System.out.println(s); builder.append(s+"\r\n");
-		 * } // builder.append("PPP");
-		 * builder.append(Protocolo.TERMINADOR_DE_MENSAGEM);
-		 * arm.processReceiveGCode(builder.toString());
-		 * //System.out.println(builder); append("Fim de envio de código G.",
-		 * INFO);
-		 */
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// System.out.println("clicked");
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// System.out.println("entered");
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// System.out.println("exited");
 	}
 
 	@Override
@@ -1155,9 +984,8 @@ public class IHM extends JFrame implements ActionListener, MouseListener {
 	}
 
 	public static void atualizaCodigoGEmExecucao(int nLinha) {
-		// TODO: se linha 10 20 30 40, dividir nLinha/10
 		listCodigoGEmExecucao.setSelectedIndex(nLinha); // linha 0 ===
-															// indice 0
+														// indice 0
 	}
 
 	public static void liberarBotoes() {
