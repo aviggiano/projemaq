@@ -11,12 +11,11 @@ import gui.IHM;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-//teste git 11Oct2013 antonio
+
 public class ARM {
 	private int velocidadeJog; // valor em % de Vmax
 	private double diametroDaPeca;
-	//public static boolean IS_CONNECTED = false;
-	
+
 	private int baudRate;
     private String commPortName;
     private SerialPort serialPort;
@@ -45,14 +44,7 @@ public class ARM {
 		this.velocidadeJog = velocidadeJog;
 	}
 	
-	/**
-	 * Funcao utilizada para os botoes diferentes de X+-Z+-, onde isPressed nao tem significado. 
-	 * Perceber que essa implementacao, apesar de generica, e' bastante error-prone. 
-	 * O programador desavisado pode esquecer de adicionar a variavel isPressed e obter comportamentos inesperados.
-	 * 
-	 * @param nbotao o numero correspondente do botao, segundo o protocolo.
-	 * @param vel a velocidade atual da peca.
-	 */
+// As funções a seguir enviam mensagens para o ARM
 	public void processReceiveCommand (int nbotao, int vel) {
 		this.write(Protocolo.processReceiveCommand(nbotao, vel, true));
 	}
@@ -62,10 +54,10 @@ public class ARM {
 	}
 	
 	public void processReceiveGCode (String mensagem) {
-		System.out.println(mensagem);
 		this.write(mensagem);
 	}
 	
+	// Função que enumera as porta de comnicação disponíveis (quado o usuário clica em conectar ARM)
 	public static String[] availableCOMPorts () {
         ArrayList<String> ports = new ArrayList<String>();
 
@@ -81,10 +73,10 @@ public class ARM {
         return new String[ports.size()];
 	}
 	
+	// Função que manda mensagens para o ARM
 	public void write (String s) {
 		try {
-			//feito por Renan:
-			outputStream.write(stringToByteArray(s)); //  + Protocolo.TERMINADOR_DE_MENSAGEM esta' incluso na propria classe protocolo
+			outputStream.write(stringToByteArray(s)); 
 			outputStream.flush();
 		} catch (NullPointerException np) {
 			System.out.println("ERRO: Tentou escrever sem ter conectado antes.");
@@ -93,11 +85,13 @@ public class ARM {
 		}
 	}
 	
+	
 	public static void read (String s) {
 		IHM.append("ARM > IHM: " + s);
-		// Protocolo.doSomething(s);
+	
 	}
 
+	// Função que conecta o ARM
 	public void connect() throws Exception {
 		CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(this.commPortName);
 		
@@ -115,7 +109,6 @@ public class ARM {
 				inputStream = serialPort.getInputStream();
 				outputStream = serialPort.getOutputStream();
 
-				//IS_CONNECTED = true;
 				(new Thread(new SerialReader(inputStream))).start();
 				(new Thread(new SerialWriter(outputStream))).start();
 			} else {
@@ -129,20 +122,19 @@ public class ARM {
 	public void disconnect() {
 		try {
 			serialPort.close();
-			//IS_CONNECTED = false;
 		} catch (NullPointerException np) {
-			System.out.println("ERRO: Tentou disconectar sem ter conectado anteriormente.");
+			System.out.println("ERRO: Tentou desconectar sem ter conectado anteriormente.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	} // disconnect
 
+	//Função que converte uma String em um array de bytes.
 	public byte[] stringToByteArray(String s) {
 		byte[] byteArray = new byte[s.length()];
 		for (int i = 0; i < s.length(); i++) {
 			byteArray[i] = (byte) s.charAt(i);
 		}
-		//System.out.println("(String) " + s + " == (byte) " + byteArray);
 		return byteArray;
 	}
 	
@@ -155,6 +147,7 @@ public class ARM {
 		this.diametroDaPeca = diametroDaPeca;
 	}
 
+	// Função que lê as informações que chegam pela porta serial
 	public static class SerialReader implements Runnable {
 
 		InputStream in;
@@ -169,9 +162,9 @@ public class ARM {
 			try {
 				while ((len = this.in.read(buffer)) > -1) {
 					String s = new String(buffer, 0, len);
-					// TODO interpretar uplink
+					
 					if(s != null || s!="" || s != "\r" || s != "\n" || s != "\r\n") {
-						System.out.println(s);
+						
 						Protocolo.traduz_uplink(s);
 					}
 				}
